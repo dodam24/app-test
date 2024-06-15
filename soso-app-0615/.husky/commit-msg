@@ -1,0 +1,10 @@
+#!/usr/bin/env sh
+. "$(dirname -- "$0")/_/husky.sh"
+
+message="$(cat $1)"
+if echo "$message" | grep -q -E '^feat: \[(fix|refactor|implements|replace|add|style|remove)\]'; then
+  exit 0
+else
+  echo "Invalid commit message. Please use one of the following commit types: feat: [fix], feat: [refactor], feat: [implements], feat: [replace]"
+  exit 1
+fi

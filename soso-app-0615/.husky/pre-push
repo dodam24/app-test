@@ -1,0 +1,19 @@
+#!/bin/sh
+. "$(dirname -- "$0")/_/husky.sh"
+
+branch=$(git rev-parse --abbrev-ref HEAD)
+
+protected_branch="main"
+
+while read local_ref local_sha remote_ref remote_sha
+do
+  if [[ "$remote_ref" == "refs/heads/$protected_branch" ]]; then
+    echo "You are not allowed to push to the $protected_branch branch directly from a feature branch."
+
+    git reset --soft HEAD~1
+
+    exit 1
+  fi
+done
+
+exit 0
