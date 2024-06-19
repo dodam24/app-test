@@ -1,9 +1,29 @@
 import AppBackHeader from "@/components/header/AppBackHeader";
 import AppLayout from "@/components/layout/AppLayout";
 import { Styles } from "@/style/Styles";
+// import axios from "axios";
+// import { useEffect } from "react";
+import { useParams } from "react-router-dom";
 import styled from "styled-components";
 
 const NoticeDetails = () => {
+    const params = useParams();
+    console.log(params);
+
+    // useEffect(() => {
+    //     let body = {
+    //         id: params.id,
+    //     };
+    //     axios
+    //         .post("/api/notice/detail", body)
+    //         .then((response) => {
+    //             console.log(response.data);
+    //         })
+    //         .catch((error) => {
+    //             console.log(error);
+    //         }, []);
+    // });
+
     // FaqDetails 컴포넌트와 동일 -> Details 컴포넌트로 뺄 것! (date 옵션 유무)
     return (
         <AppLayout props={{ header: <AppBackHeader /> }}>

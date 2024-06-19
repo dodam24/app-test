@@ -4,40 +4,45 @@ import { Styles } from "@/style/Styles";
 import { useState } from "react";
 import styled from "styled-components";
 import Chat from "@/assets/images/icons/icon_emptychat.png";
-// import useModal from "@/hooks/useModal";
-// import DynamicModal from "@/components/modal/DynamicModal";
-// import ConfirmationModal from "@/components/modal/ui/ConfirmationModal";
+// import Email from "@/assets/images/icons/icon_email_c.png";
+import EmptyPageComponent from "../EmptyComponent";
 
 const InquiryEmptyList = () => {
-    // const { isOpen, openModal, closeModal } = useModal();
+    // 탭 버튼
+    const [currentTab, setCurrentTab] = useState<number>(0);
+    const selectedMenuHandler = (index: number) => {
+        setCurrentTab(index);
+    };
+    const tabMenuData = [
+        { title: "상담 접수", content: "Tab menu one" },
+        { title: "상담 내역", content: "Tab menu two" },
+    ];
 
-    const [isActive] = useState<boolean>(true);
     return (
         <AppLayout props={{ header: <AppBackHeader title="E-mail 상담" /> }}>
             <StyledInquiryEmptyListWrap>
                 <TabMenuContainer>
-                    <TabMenuButton className={isActive ? "active" : ""}>상담 접수</TabMenuButton>
-                    <TabMenuButton>상담 내역</TabMenuButton>
+                    {tabMenuData.map((el, index) => (
+                        <TabMenuButton
+                            key={index}
+                            className={index === currentTab ? "active" : ""}
+                            onClick={() => selectedMenuHandler(index)}
+                        >
+                            {el.title}
+                        </TabMenuButton>
+                    ))}
                 </TabMenuContainer>
                 <TabMenuContent>
-                    {/* <button onClick={openModal}>버튼</button>
-
-                    <DynamicModal open={isOpen} close={closeModal}>
-                        <ConfirmationModal
-                            title="등록 완료"
-                            message={`답변은 입력하신 이메일로 발송될 예정입니다.`}
-                            cancelButtonText="취소"
-                            buttonText="확인"
-                            close={closeModal}
-                            optionCancel
+                    {/* Empty Component */}
+                    {/* 조건: 상담 내역을 클릭했을 때, 상담 내역이 없으면 Empty Component 표시 */}
+                    {currentTab === 0 ? (
+                        <div>상담 접수 content</div>
+                    ) : (
+                        <EmptyPageComponent
+                            icon={<img src={Chat} alt="이메일 상담" />}
+                            message={`조회된 상담 내역이 없어요.`}
                         />
-                    </DynamicModal> */}
-                    <div>
-                        <span>
-                            <img src={Chat} />
-                        </span>
-                        <p>조회된 상담 내역이 없어요.</p>
-                    </div>
+                    )}
                 </TabMenuContent>
             </StyledInquiryEmptyListWrap>
         </AppLayout>
@@ -59,7 +64,7 @@ const TabMenuButton = styled.button`
     color: ${Styles.colors.natural40};
     font-size: ${Styles.font.size.fontsize15};
     font-weight: ${Styles.font.weight.medium};
-    border-bottom: 1px solid ${Styles.colors.natural10};
+    border-bottom: 2px solid ${Styles.colors.natural10};
 
     &.active {
         color: ${Styles.colors.primary100};
@@ -74,22 +79,16 @@ const TabMenuContent = styled.div`
     align-items: center;
     justify-content: center;
 
-    div {
+    & > .empty_component {
         display: flex;
         flex-direction: column;
         align-items: center;
         justify-content: center;
         gap: 0.6rem;
 
-        /* tab content 내용 가운데 정렬 */
-        /* position: absolute;
-        top: 30%; */
-        span {
+        img {
             width: 4.5rem;
             height: 4.5rem;
-            img {
-                width: 100%;
-            }
         }
         p {
             color: ${Styles.colors.natural40};

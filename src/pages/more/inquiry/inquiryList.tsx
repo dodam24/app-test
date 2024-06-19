@@ -6,7 +6,17 @@ import styled from "styled-components";
 import ArrowDown from "@/assets/images/icons/icon_arrowDown.png";
 
 const InquiryList = () => {
-    // 화살표 아이콘 누르면 회전하면서 내용 보여주기
+    // 탭 버튼
+    const [currentTab, setCurrentTab] = useState<number>(0);
+    const selectedMenuHandler = (index: number) => {
+        setCurrentTab(index);
+    };
+    const tabMenuData = [
+        { title: "상담 접수", content: "Tab menu one" },
+        { title: "상담 내역", content: "Tab menu two" },
+    ];
+
+    // List 데이터
     const inquiryData = [
         {
             title: "앱 사용 문의 드립니다.",
@@ -14,22 +24,24 @@ const InquiryList = () => {
             content: "안녕하세요. 지금 소소상점에서 매입 매출이랑 직원관리는 못쓰는 건가요?",
             state: "접수",
         },
-        // {
-        //     title: "앱 사용 문의 드립니다.",
-        //     date: "2023. 03. 31",
-        //     content: "안녕하세요. 지금 소소상점에서 매입 매출이랑 직원관리는 못쓰는 건가요?",
-        //     state: "접수",
-        // },
     ];
 
-    const [isActive] = useState<boolean>(true);
     return (
         <AppLayout props={{ header: <AppBackHeader title="E-mail 상담" /> }}>
             <StyledInquiryListWrap>
                 <TabMenuContainer>
-                    <TabMenuButton className={isActive ? "active" : ""}>상담 접수</TabMenuButton>
-                    <TabMenuButton>상담 내역</TabMenuButton>
+                    {tabMenuData.map((el, index) => (
+                        <TabMenuButton
+                            key={index}
+                            className={index === currentTab ? "active" : ""}
+                            onClick={() => selectedMenuHandler(index)}
+                        >
+                            {el.title}
+                        </TabMenuButton>
+                    ))}
                 </TabMenuContainer>
+                {/* 탭 메뉴 내용 test */}
+                {/* {tabMenuData[currentTab].content} */}
                 <TabMenuContent>
                     {inquiryData.map((item, index) => (
                         <InquiryListItem key={index}>
@@ -42,9 +54,9 @@ const InquiryList = () => {
                                         <span className="inquiry_state">{item.state}</span>
                                     </div>
                                 </div>
-                                <span className="item_icon">
+                                <button className="item_icon">
                                     <img src={ArrowDown} alt="화살표" />
-                                </span>
+                                </button>
                             </InquiryListItemTitle>
                             <InquiryListItemContent>
                                 <p>
@@ -83,7 +95,7 @@ const TabMenuButton = styled.button`
     color: ${Styles.colors.natural40};
     font-size: ${Styles.font.size.fontsize15};
     font-weight: ${Styles.font.weight.medium};
-    border-bottom: 1px solid ${Styles.colors.natural10};
+    border-bottom: 2px solid ${Styles.colors.natural10};
 
     &.active {
         color: ${Styles.colors.primary100};
@@ -109,17 +121,19 @@ const InquiryListItemTitle = styled.div`
         flex-direction: column;
         padding: 1rem 0;
         width: 100%;
+        gap: 0.6rem;
         h5 {
             color: ${Styles.colors.natural90};
             font-size: ${Styles.font.size.fontsize16};
             font-weight: ${Styles.font.weight.medium};
         }
         .title_details {
-            & > span {
-                margin: 0.1rem;
+            display: flex;
+            span {
+                margin-right: 0.2rem;
+                color: ${Styles.colors.natural50};
                 font-size: ${Styles.font.size.fontsize13};
                 font-weight: ${Styles.font.weight.regular};
-                color: ${Styles.colors.natural50};
                 &.inquiry_state {
                     color: ${Styles.colors.secondary100};
                 }
@@ -162,6 +176,7 @@ const StyledInquiryStateContainer = styled.div`
     border-radius: 0.4rem;
     background: ${Styles.colors.systemBackground};
     padding: 1.5rem 0.8rem;
+    margin-bottom: 1rem;
 
     & > h5 {
         color: ${Styles.colors.natural90};

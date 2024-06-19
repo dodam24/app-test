@@ -7,7 +7,10 @@ import Dummy from "@/assets/images/dummy/dummy_profile.png";
 import RightArrow from "@/assets/images/icons/icon_right_arrow.png";
 
 const Task = () => {
-    const settingsData = [{ title: "자동로그인" }, { title: "알림 설정" }];
+    const settingsData = [
+        { id: "auto_login", label: "자동로그인" },
+        { id: "alarm", label: "알림 설정" },
+    ];
     return (
         <StyledSideBar>
             <StyledSideBarOverlay />
@@ -36,15 +39,15 @@ const Task = () => {
                     <div className="settings">
                         <h6>설정</h6>
                         <ul>
-                            {settingData.map((item, index) => {
-                                <li key={index}>
-                                    <span>{item.title}</span>
+                            {settingsData.map((item) => (
+                                <li key={item.id}>
+                                    <span>{item.label}</span>
                                     <div className="setting_">
-                                        <input type="checkbox" id="auto_login" />
-                                        <label htmlFor="auto_login"></label>
+                                        <input type="checkbox" id={item.id} />
+                                        <label htmlFor={item.id}></label>
                                     </div>
-                                </li>;
-                            })}
+                                </li>
+                            ))}
                         </ul>
                     </div>
                     <span>© BUbaum Corp.</span>
@@ -155,5 +158,75 @@ const StyledSideBarInnerBody = styled.div`
     display: flex;
     flex-direction: column;
     padding: 1.8rem 1rem 2.6rem;
+    & > span {
+        font-size: ${Styles.font.size.fontsize11};
+        font-weight: ${Styles.font.weight.regular};
+        color: ${Styles.colors.natural40};
+        text-align: center;
+    }
+    .settings {
+        flex: 1;
+        height: 100%;
+        overflow: auto;
+        margin-bottom: 1rem;
+        & h6 {
+            font-size: ${Styles.font.size.fontsize18};
+            font-weight: ${Styles.font.weight.medium};
+            color: ${Styles.colors.natural80};
+        }
+
+        & > ul {
+            display: flex;
+            flex-direction: column;
+            gap: 0.6rem;
+            margin-top: 0.7rem;
+        }
+
+        li {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0.8rem;
+            border-radius: 0.4rem;
+            background: ${Styles.colors.systemWhite};
+            span {
+                font-size: ${Styles.font.size.fontsize15};
+                font-weight: ${Styles.font.weight.regular};
+                color: ${Styles.colors.natural80};
+            }
+            input[type="checkbox"] {
+                display: none;
+            }
+            label {
+                position: relative;
+                display: block;
+                width: 2.5rem;
+                height: 1.5rem;
+                border-radius: 0.75rem;
+                background: ${Styles.colors.natural20};
+                cursor: pointer;
+
+                &::before {
+                    content: "";
+                    position: absolute;
+                    top: 0.1rem;
+                    left: 0.1rem;
+                    width: 1.3rem;
+                    height: 1.3rem;
+                    border-radius: 50%;
+                    background: ${Styles.colors.systemWhite};
+                    box-shadow: 0rem 0px 0.8rem 0px rgba(0, 0, 0, 0.2);
+                    transition: 0.3s;
+                }
+            }
+            input[type="checkbox"]:checked + label {
+                background: ${Styles.colors.primary100};
+            }
+            input[type="checkbox"]:checked + label::before {
+                left: calc(100% - 1.4rem);
+            }
+        }
+    }
 `;
+
 export default Task;
