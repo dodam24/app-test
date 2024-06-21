@@ -38,7 +38,9 @@ export default function ConfirmationModal({
                 </ConfirmationContent>
                 <ConfirmationButtonContainer>
                     {optionCancel && (
-                        <ModalActionButton onClick={close}>{cancelButtonText}</ModalActionButton>
+                        <ModalActionButton optionCancel onClick={close}>
+                            {cancelButtonText}
+                        </ModalActionButton>
                     )}
                     <ModalActionButton onClick={handler ? handler : close} $primary>
                         {buttonText}
@@ -79,16 +81,17 @@ const ConfirmationContent = styled.div`
         text-align: center;
         font-size: 0.7rem;
         line-height: 1.4;
+        white-space: break-spaces;
     }
 `;
 const ConfirmationButtonContainer = styled.div`
     display: flex;
+    flex-direction: row;
     width: 100%;
     justify-content: flex-end;
     align-items: center;
     background: ${Styles.colors.systemWhite};
-    border-bottom-left-radius: 0.8rem;
-    border-bottom-right-radius: 0.8rem;
+    border-radius: 0 0 0.8rem 0.8rem;
 `;
 
 // components > button > ModalButtons.tsx (CSS)
@@ -96,8 +99,12 @@ const ModalButton = styled.button`
     width: 100%;
     border: none;
     cursor: pointer;
+    position: relative;
 `;
-export const ModalActionButton = styled(ModalButton)<{ $primary?: boolean }>`
+export const ModalActionButton = styled(ModalButton)<{
+    $primary?: boolean;
+    optionCancel?: boolean;
+}>`
     padding: 0.8rem;
     font-size: 0.7rem;
     border-radius: 0.8rem;
@@ -109,5 +116,29 @@ export const ModalActionButton = styled(ModalButton)<{ $primary?: boolean }>`
         props.$primary &&
         css`
             color: ${Styles.colors.primary100};
-        `}
+        `};
+
+    &:not(:last-child)::after {
+        content: "";
+        position: absolute;
+        top: 0;
+        right: 0;
+        height: 100%;
+        width: 0.05rem;
+        background-color: ${Styles.colors.systemBackground};
+    }
+
+    /* ${(props) =>
+        props.optionCancel &&
+        css`
+            &::after {
+                content: "";
+                position: absolute;
+                top: 0;
+                right: 0;
+                height: 100%;
+                width: 0.05rem;
+                background-color: ${Styles.colors.systemBackground};
+            }
+        `} */
 `;

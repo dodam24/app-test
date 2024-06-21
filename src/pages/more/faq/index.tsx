@@ -3,13 +3,23 @@ import AppLayout from "@/components/layout/AppLayout";
 import { Styles } from "@/style/Styles";
 import styled from "styled-components";
 import Search from "@/assets/images/icons/icon_search.png";
-import RightArrow from "@/assets/images/icons/icon_right_arrow_c.png";
 import Email from "@/assets/images/icons/icon_email_c.png";
 import Phone from "@/assets/images/icons/icon_phone_c.png";
 import { useState } from "react";
+import FaqListItem from "../component/FaqListItem";
 
 const Faq = () => {
-    // 탭 메뉴
+    // faqList: FaqListItem에 있는 임시 데이터이므로 나중에 삭제
+    const faqList = [
+        { title: "소소상점 설치 및 사용이 가능한 스마트 폰이 따로 있나요?" },
+        { title: "개인정보 필수 수집·이용 동의를 철회하고 싶어요." },
+        { title: "앱 알림이 울리지 않아요." },
+        { title: "비밀번호를 바꾸고 싶어요." },
+        { title: "2대 이상의 스마트폰에서 동시에 이용할 수 있나요?" },
+        { title: "휴대폰 번호를 바꿨는데 회원정보를 변경할 수 있나요?" },
+    ];
+
+    // 탭 메뉴 (category)
     const tabData = [
         { title: "앱 이용", content: "앱 이용" },
         { title: "정산내역", content: "정산내역" },
@@ -22,21 +32,12 @@ const Faq = () => {
         setCurrentTab(index);
     };
 
-    // FAQ 리스트
-    const faqList = [
-        { title: "소소상점 설치 및 사용이 가능한 스마트 폰이 따로 있나요?" },
-        { title: "개인정보 필수 수집·이용 동의를 철회하고 싶어요." },
-        { title: "앱 알림이 울리지 않아요." },
-        { title: "비밀번호를 바꾸고 싶어요." },
-        { title: "2대 이상의 스마트폰에서 동시에 이용할 수 있나요?" },
-        { title: "휴대폰 번호를 바꿨는데 회원정보를 변경할 수 있나요?" },
-    ];
     return (
         <AppLayout props={{ header: <AppBackHeader title="고객센터" /> }}>
             <StyledFaqWrap>
                 {/* FAQ 메인 section */}
                 <StyledFaqMainSection>
-                    {/* 검색바 */}
+                    {/* 검색창 */}
                     <SearchTextField>
                         <input type="text" placeholder="궁금한 점을 검색해보세요." />
                         <button className="btn_search">
@@ -57,27 +58,14 @@ const Faq = () => {
                         ))}
                     </TabButtonContainer>
                     <TabButtonContent>
-                        <h3>{tabData[currentTab].content}</h3>
-                        <span>총 {faqList.length}건</span>
+                        <div className="category_title">
+                            <h3>{tabData[currentTab].content}</h3>
+                            <span>총 {faqList.length}건</span>
+                        </div>
+                        <StyledFaqListSection>
+                            <FaqListItem />
+                        </StyledFaqListSection>
                     </TabButtonContent>
-                    {/* FAQ 리스트를 tab content 안에 넣기 */}
-
-                    {/* FAQ 리스트 */}
-                    <StyledFaqListWrap>
-                        {faqList.map((item, index) => (
-                            <StyledFaqListItem key={index}>
-                                <StyledFaqListItemInner>
-                                    <div className="list_item_title">
-                                        <h5>Q</h5>
-                                        <p>{item.title}</p>
-                                    </div>
-                                    <button className="show_more_btn">
-                                        <img src={RightArrow} alt="더보기" />
-                                    </button>
-                                </StyledFaqListItemInner>
-                            </StyledFaqListItem>
-                        ))}
-                    </StyledFaqListWrap>
                 </StyledFaqMainSection>
 
                 <StyledBorderLine />
@@ -175,64 +163,31 @@ const TabButton = styled.button`
 `;
 const TabButtonContent = styled.div`
     display: flex;
-    align-items: center;
-    justify-content: space-between;
+    flex-direction: column;
 
-    & > h3 {
-        color: ${Styles.colors.natural90};
-        font-size: ${Styles.font.size.fontsize15};
-        font-weight: ${Styles.font.weight.medium};
-        line-height: 1.4;
-    }
-    & > span {
-        color: ${Styles.colors.natural60};
-        font-size: ${Styles.font.size.fontsize12};
-        font-weight: ${Styles.font.weight.regular};
-        line-height: 1.4;
+    .category_title {
+        display: flex;
+        justify-content: space-between;
+
+        h3 {
+            color: ${Styles.colors.natural90};
+            font-size: ${Styles.font.size.fontsize15};
+            font-weight: ${Styles.font.weight.medium};
+            line-height: 1.4;
+        }
+        span {
+            color: ${Styles.colors.natural60};
+            font-size: ${Styles.font.size.fontsize12};
+            font-weight: ${Styles.font.weight.regular};
+            line-height: 1.4;
+        }
     }
 `;
 
 // FAQ 리스트
-const StyledFaqListWrap = styled.div`
+const StyledFaqListSection = styled.section`
     margin-top: 0.5rem;
     width: 100%;
-`;
-const StyledFaqListItem = styled.li`
-    list-style: none;
-`;
-const StyledFaqListItemInner = styled.div`
-    display: flex;
-    justify-content: space-between;
-    padding: 1rem 0;
-
-    .list_item_title {
-        display: flex;
-        h5 {
-            width: 1.2rem;
-            height: 1.2rem;
-            flex-shrink: 0;
-            color: ${Styles.colors.primary100};
-            text-align: center;
-            font-size: ${Styles.font.size.fontsize18};
-            font-weight: ${Styles.font.weight.medium};
-        }
-        p {
-            color: ${Styles.colors.natural80};
-            font-size: ${Styles.font.size.fontsize16};
-            font-weight: ${Styles.font.weight.regular};
-            line-height: 1.4;
-            padding: 0 1rem 0 0.6rem;
-        }
-    }
-
-    .show_more_btn {
-        padding: 0;
-        img {
-            width: 1.2rem;
-            height: 1.2rem;
-            flex-shrink: 0;
-        }
-    }
 `;
 const StyledBorderLine = styled.div`
     width: 100%;

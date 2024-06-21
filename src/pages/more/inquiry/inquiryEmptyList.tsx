@@ -4,7 +4,6 @@ import { Styles } from "@/style/Styles";
 import { useState } from "react";
 import styled from "styled-components";
 import Chat from "@/assets/images/icons/icon_emptychat.png";
-// import Email from "@/assets/images/icons/icon_email_c.png";
 import EmptyPageComponent from "../component/EmptyComponent";
 
 const InquiryEmptyList = () => {
@@ -33,16 +32,10 @@ const InquiryEmptyList = () => {
                     ))}
                 </TabMenuContainer>
                 <TabMenuContent>
-                    {/* Empty Component */}
-                    {/* 조건: 상담 내역을 클릭했을 때, 상담 내역이 없으면 Empty Component 표시 */}
-                    {currentTab === 0 ? (
-                        <div>상담 접수 content</div>
-                    ) : (
-                        <EmptyPageComponent
-                            icon={<img src={Chat} alt="이메일 상담" />}
-                            message={`조회된 상담 내역이 없어요.`}
-                        />
-                    )}
+                    <EmptyPageComponent
+                        icon={<img src={Chat} alt="이메일 상담" />}
+                        message={`조회된 상담 내역이 없어요.`}
+                    />
                 </TabMenuContent>
             </StyledInquiryEmptyListWrap>
         </AppLayout>

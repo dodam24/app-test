@@ -113,7 +113,7 @@ const Inquiry = () => {
                     <DynamicModal open={isOpen} close={closeModal}>
                         <ConfirmationModal
                             title="등록 완료"
-                            message={`답변은 입력하신 이메일로 발송될 예정입니다.`}
+                            message={`답변은 입력하신 이메일로\n 발송될 예정입니다.`}
                             buttonText="확인"
                             close={closeModal}
                         />
