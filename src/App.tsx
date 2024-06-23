@@ -18,10 +18,11 @@ import FaqDetails from "@/pages/more/faq/[id]/index";
 import Notice from "@/pages/more/notice";
 import NoticeDetails from "@/pages/more/notice/[id]";
 import Inquiry from "@/pages/more/inquiry";
-import InquiryList from "@/pages/more/inquiry/inquiryList";
-import InquiryEmptyList from "@/pages/more/inquiry/inquiryEmptyList";
 import Alarm from "@/pages/alarm";
 import Setting from "@/pages/setting";
+// 직원용: 출퇴근 등록 및 근무 내역 (temp)
+import Attendance from "@/pages/employees_c/attendance";
+import AttendanceList from "@/pages/employees_c/attendanceList";
 
 function App() {
     return (
@@ -51,8 +52,9 @@ function App() {
                 <Route path="/more/notice" element={<Notice />} />
                 <Route path="/more/notice/:id" element={<NoticeDetails />} />
                 <Route path="/more/inquiry" element={<Inquiry />} />
-                <Route path="/more/inquiryList" element={<InquiryList />} />
-                <Route path="/more/inquiryEmptyList" element={<InquiryEmptyList />} />
+                {/* 직원용: 출/퇴근 등록 및 근무내역 (temp) */}
+                <Route path="/employees_c/attendance" element={<Attendance />} />
+                <Route path="/employees_c/attendanceList" element={<AttendanceList />} />
             </Routes>
         </div>
     );

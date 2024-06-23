@@ -38,9 +38,7 @@ export default function ConfirmationModal({
                 </ConfirmationContent>
                 <ConfirmationButtonContainer>
                     {optionCancel && (
-                        <ModalActionButton optionCancel onClick={close}>
-                            {cancelButtonText}
-                        </ModalActionButton>
+                        <ModalActionButton onClick={close}>{cancelButtonText}</ModalActionButton>
                     )}
                     <ModalActionButton onClick={handler ? handler : close} $primary>
                         {buttonText}
@@ -53,7 +51,7 @@ export default function ConfirmationModal({
 
 // ConfirmationModal (CSS)
 const ConfirmationModalContainer = styled.div`
-    width: 14rem;
+    min-width: 14rem;
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -68,14 +66,12 @@ const ConfirmationContent = styled.div`
     text-align: center;
     gap: 0.8rem;
     padding: 1.7rem 1rem 1.4rem 1rem;
-
     h5 {
         color: ${Styles.colors.natural80};
         text-align: center;
         font-size: 0.9rem;
         font-weight: ${Styles.font.weight.medium};
     }
-
     p {
         color: ${Styles.colors.natural50};
         text-align: center;
@@ -103,7 +99,6 @@ const ModalButton = styled.button`
 `;
 export const ModalActionButton = styled(ModalButton)<{
     $primary?: boolean;
-    optionCancel?: boolean;
 }>`
     padding: 0.8rem;
     font-size: 0.7rem;
@@ -127,18 +122,4 @@ export const ModalActionButton = styled(ModalButton)<{
         width: 0.05rem;
         background-color: ${Styles.colors.systemBackground};
     }
-
-    /* ${(props) =>
-        props.optionCancel &&
-        css`
-            &::after {
-                content: "";
-                position: absolute;
-                top: 0;
-                right: 0;
-                height: 100%;
-                width: 0.05rem;
-                background-color: ${Styles.colors.systemBackground};
-            }
-        `} */
 `;

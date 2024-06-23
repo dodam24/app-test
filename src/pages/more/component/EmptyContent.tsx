@@ -1,12 +1,12 @@
 import { Styles } from "@/style/Styles";
 import styled from "styled-components";
 
-interface EmptyComponentProps {
+interface EmptyContentProps {
     icon: JSX.Element;
     message: string;
 }
 
-const EmptyComponent = ({ icon, message }: EmptyComponentProps) => {
+const EmptyContent = ({ icon, message }: EmptyContentProps) => {
     return (
         <StyledEmptySection>
             {icon}
@@ -33,4 +33,4 @@ const StyledEmptySection = styled.section`
     }
 `;
 
-export default EmptyComponent;
+export default EmptyContent;
