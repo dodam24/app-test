@@ -1,5 +1,5 @@
+import { GoogleIcon, KakaoIcon, NaverIcon } from "@/pages/auth/login/_images/loginImg";
 import styled from "styled-components";
-import { GoogleIcon, KakaoIcon, NaverIcon } from "./loginImg";
 
 const SnsLogin = () => {
     return (

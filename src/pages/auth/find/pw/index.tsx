@@ -1,11 +1,12 @@
-import AppLayout from "@/components/layout/AppLayout";
-import AppBackHeader from "@/components/header/AppBackHeader";
+import { ChangeEvent, useState } from "react";
 import styled from "styled-components";
 import { Styles } from "@/style/Styles";
+
+import AppLayout from "@/components/layout/AppLayout";
+import AppBackHeader from "@/components/header/AppBackHeader";
 import LabelInput from "@/components/input/LabelInput";
 import EnabledButton from "@/components/button/EnabledButton";
 import TimerInput from "@/components/input/TimerInput";
-import { ChangeEvent, useState } from "react";
 import instance from "@/apis/instance";
 
 const FindPW = () => {
@@ -22,7 +23,6 @@ const FindPW = () => {
     };
 
     const handleVerified = (status: boolean, phoneNumber?: string, verificationCode?: string) => {
-        // 수정된 부분
         if (status && phoneNumber && verificationCode) {
             setPhoneNumber(phoneNumber);
             setVerificationCode(verificationCode);

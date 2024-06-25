@@ -1,16 +1,15 @@
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import styled from "styled-components";
-import { Styles } from "../../../style/Styles";
 
 import EnabledButton from "@/components/button/EnabledButton";
 import CustomInput from "@/components/input/CustomInput";
 import LabelInput from "@/components/input/LabelInput";
-import SnsLogin from "./snsLogin";
 import { login } from "@/apis/auth/login";
 import { validatePassword } from "@/utils/inputVerify";
-
-import { CheckIcon, CheckedIcon, LoginLogo } from "./loginImg";
+import SnsLogin from "@/pages/auth/login/SnsLogin";
+import { CheckIcon, CheckedIcon, LoginLogo } from "@/pages/auth/login/_images/loginImg";
+import { Styles } from "@/style/Styles";
 
 const Login = () => {
     const [username, setUsername] = useState<string>("");
@@ -92,6 +91,9 @@ const ReservationWrapper = styled.section`
     padding-top: 60px;
     .custom_btn {
         position: static;
+        left: 0;
+        transform: translateX(0);
+        width: 100%;
     }
 `;
 

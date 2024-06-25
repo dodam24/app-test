@@ -2,18 +2,36 @@ import { styled } from "styled-components";
 import Notice from "@/assets/images/icons/icon_notice_c.png";
 import Customer from "@/assets/images/icons/icon_customer_c.png";
 import { Styles } from "@/style/Styles";
+import { Link } from "react-router-dom";
+
+interface MoreCustomerServiceProps {
+    icon: string;
+    alt: string;
+    title: string;
+    link: string;
+}
 
 const MoreCustomerService = () => {
+    const CustomerServiceItem = ({ icon, alt, title, link }: MoreCustomerServiceProps) => {
+        return (
+            <Link to={link}>
+                <div className="service_item">
+                    <img src={icon} alt={alt}></img>
+                    <h5>{title}</h5>
+                </div>
+            </Link>
+        );
+    };
+
     return (
         <StyledCustomerServiceContainer>
-            <div className="service_item">
-                <img src={Notice} alt="공지사항"></img>
-                <h5>공지사항</h5>
-            </div>
-            <div className="service_item">
-                <img src={Customer} alt="고객센터"></img>
-                <h5>고객센터</h5>
-            </div>
+            <CustomerServiceItem
+                icon={Notice}
+                alt="공지사항"
+                title="공지사항"
+                link="/more/notice"
+            />
+            <CustomerServiceItem icon={Customer} alt="고객센터" title="고객센터" link="/more/faq" />
         </StyledCustomerServiceContainer>
     );
 };

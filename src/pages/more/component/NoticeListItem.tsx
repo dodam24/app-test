@@ -1,4 +1,5 @@
 import { Styles } from "@/style/Styles";
+import { Link } from "react-router-dom";
 import styled from "styled-components";
 
 const NoticeListItem = () => {
@@ -28,11 +29,13 @@ const NoticeListItem = () => {
     return (
         <ul>
             {noticeList &&
-                noticeList.map((item, index) => (
-                    <StyledNoticeListItem key={index}>
+                noticeList.map((item, id) => (
+                    <StyledNoticeListItem key={id}>
                         <StyledNoticeListItemInner>
-                            <h5>{item.title}</h5>
-                            <span>{item.created_at}</span>
+                            <Link to={`/notice/${id}`}>
+                                <h5>{item.title}</h5>
+                                <span>{item.created_at}</span>
+                            </Link>
                         </StyledNoticeListItemInner>
                     </StyledNoticeListItem>
                 ))}

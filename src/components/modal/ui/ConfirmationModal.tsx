@@ -10,6 +10,7 @@ interface ConfirmationModalProps {
     handler?: () => void;
     optionCancel?: boolean;
     updateContent?: React.ReactNode;
+    modalSize?: "normal" | "large";
 }
 
 // Modal (UI)
@@ -22,42 +23,42 @@ export default function ConfirmationModal({
     cancelButtonText = "취소",
     optionCancel,
     updateContent,
+    modalSize = "normal",
 }: ConfirmationModalProps) {
     return (
-        <div>
-            <ConfirmationModalContainer>
-                <ConfirmationContent>
-                    {updateContent ? (
-                        updateContent
-                    ) : (
-                        <>
-                            <h5>{title}</h5>
-                            <p>{message}</p>
-                        </>
-                    )}
-                </ConfirmationContent>
-                <ConfirmationButtonContainer>
-                    {optionCancel && (
-                        <ModalActionButton onClick={close}>{cancelButtonText}</ModalActionButton>
-                    )}
-                    <ModalActionButton onClick={handler ? handler : close} $primary>
-                        {buttonText}
-                    </ModalActionButton>
-                </ConfirmationButtonContainer>
-            </ConfirmationModalContainer>
-        </div>
+        <ConfirmationModalContainer $modalSize={modalSize}>
+            <ConfirmationContent>
+                {updateContent ? (
+                    updateContent
+                ) : (
+                    <>
+                        <h5>{title}</h5>
+                        <p>{message}</p>
+                    </>
+                )}
+            </ConfirmationContent>
+            <ConfirmationButtonContainer>
+                {optionCancel && (
+                    <ModalActionButton onClick={close}>{cancelButtonText}</ModalActionButton>
+                )}
+                <ModalActionButton onClick={handler ? handler : close} $primary>
+                    {buttonText}
+                </ModalActionButton>
+            </ConfirmationButtonContainer>
+        </ConfirmationModalContainer>
     );
 }
 
 // ConfirmationModal (CSS)
-const ConfirmationModalContainer = styled.div`
-    min-width: 14rem;
+const ConfirmationModalContainer = styled.div<{ $modalSize: "normal" | "large" }>`
+    width: ${(props) => (props.$modalSize === "large" ? "90%" : "80%")};
     display: flex;
     flex-direction: column;
     align-items: center;
     border-radius: 0.8rem;
     background: #fafafa;
     box-shadow: 0 1rem 1.25rem -0.25rem rgba(51, 65, 85, 0.1);
+    margin: 0 auto;
 `;
 const ConfirmationContent = styled.div`
     display: flex;
@@ -89,8 +90,6 @@ const ConfirmationButtonContainer = styled.div`
     background: ${Styles.colors.systemWhite};
     border-radius: 0 0 0.8rem 0.8rem;
 `;
-
-// components > button > ModalButtons.tsx (CSS)
 const ModalButton = styled.button`
     width: 100%;
     border: none;

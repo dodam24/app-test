@@ -8,7 +8,7 @@ interface ButtonInputProps extends React.InputHTMLAttributes<HTMLInputElement> {
     option: string;
     handleChange?: (e: React.ChangeEvent<HTMLInputElement>) => void;
     buttonTitle: string;
-    onButtonClick: (e: React.MouseEvent<HTMLButtonElement>) => void;
+    onButtonClick?: (e: React.MouseEvent<HTMLButtonElement>) => void;
 }
 
 const ButtonInput = ({

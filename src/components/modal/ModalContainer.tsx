@@ -1,4 +1,3 @@
-import { Styles } from "@/style/Styles";
 import React from "react";
 import styled, { keyframes } from "styled-components";
 
@@ -37,9 +36,9 @@ const ModalContent = styled.div`
     position: absolute;
     top: 50%;
     left: 50%;
+    width: 100%;
     transform: translate(-50%, -50%);
     border-radius: 1.2rem;
-    background: ${Styles.colors.systemWhite};
     z-index: 200;
 `;
 

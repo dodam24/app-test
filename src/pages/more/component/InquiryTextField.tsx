@@ -38,7 +38,7 @@ const InquiryTextField: React.FC<InquiryTextFieldProps> = ({
                         value={inputValue}
                         onChange={handleInputChange}
                     />
-                    <button className="close_btn" type="reset" onClick={handleClear}></button>
+                    <button className="close_btn" onClick={handleClear}></button>
                 </div>
             ) : (
                 <input
@@ -120,12 +120,14 @@ const StyledTextFieldWrap = styled.div`
             &:focus {
                 border: 0.05rem solid ${Styles.colors.primary100};
             }
+
             &:focus + .close_btn {
-                display: block;
+                opacity: 1;
             }
         }
         & > .close_btn {
-            display: none;
+            display: block;
+            opacity: 0;
             background: url(${Cancel}) no-repeat;
             width: 1rem;
             height: 1rem;

@@ -6,27 +6,65 @@ const AttendanceList = [
     {
         id: 1,
         employee_id: 1,
-        checked_in_at: "2023.03.23 (목) 09:00:00",
-        checked_out_at: "2023.03.23 (목) 18:00:00",
-        work_time: "총 8시간",
+        // ex: "2023.03.23 (목) 18:00:00",
+        checked_in_at: "20230323090000",
+        checked_out_at: "20230323180000",
+        work_time: 8,
     },
     {
         id: 2,
         employee_id: 2,
-        checked_in_at: "2023.03.22 (수) 09:00:00",
-        checked_out_at: "2023.03.22 (수) 26:00:00",
-        work_time: "총 16시간(초과)",
+        checked_in_at: "20230322090000",
+        checked_out_at: "20230322260000",
+        work_time: 16,
     },
 ];
 
-const getWorkTime = (checkedInAt: string, checkedOutAt: string): number => {
-    const checkedInTime = new Date(checkedInAt);
-    const checkedOutTime = new Date(checkedOutAt);
+// 날짜 test
+// const parseDate = (dateStr: string) => {
+//     const year = parseInt(dateStr.substring(0, 4), 10);
+//     const month = parseInt(dateStr.substring(4, 6), 10) - 1;
+//     const day = parseInt(dateStr.substring(6, 8), 10);
+//     const hour = parseInt(dateStr.substring(8, 10), 10);
+//     const minute = parseInt(dateStr.substring(10, 12), 10);
+//     const second = parseInt(dateStr.substring(12, 14), 10);
 
-    const diff = checkedOutTime.getTime() - checkedInTime.getTime();
-    const hours = Math.floor(diff / (1000 * 60 * 60));
-    return hours;
-};
+//     return new Date(year, month, day, hour, minute, second);
+// };
+
+// const hoursToDate = (date: Date, hours: number): Date => {
+//     if (hours >= 24) {
+//         date.setDate(date.getDate() + 1);
+//         date.setHours(hours - 24);
+//     }
+//     return date;
+// };
+
+// const getWorkTime = (checkedInAt: string, checkedOutAt: string): number => {
+//     const checkedInTime = parseDate(checkedInAt);
+//     const checkedOutTime = parseDate(checkedOutAt);
+
+//     checkedOutHour = parseInt(checkedOutAt.substring(8, 10), 10);
+//     checkedOutTime = hoursToDate();
+
+//     const diff = checkedOutTime.getTime() - checkedInTime.getTime();
+//     const hours = Math.floor(diff / (1000 * 60 * 60));
+//     return hours;
+// };
+
+// const formatTime = (dateStr: string): string => {
+//     const date = parseDate(dateStr);
+//     const hours = date.getHours().toString().padStart(2, "0");
+//     const minutes = date.getMinutes().toString().padStart(2, "0");
+//     const seconds = date.getSeconds().toString().padStart(2, "0");
+//     return `${hours}:${minutes}:${seconds}`;
+// };
+
+// getDayOfWeek = (dateStr: string): string => {
+//     const date = parseDate(dateStr);
+//     const daysOfWeek = ["일", "월", "화", "수", "목", "금", "토"];
+//     return daysOfWeek[date.getDay()];
+// };
 
 const EmployeeAttendanceList = () => {
     return (
@@ -34,8 +72,8 @@ const EmployeeAttendanceList = () => {
             {AttendanceList.map((item, index) => (
                 <StyledEmployeeAttendanceList key={index}>
                     <div className="date">
-                        <h6>24</h6>
-                        <span>금</span>
+                        <h6>{item.checked_in_at.substring(6, 8)}</h6>
+                        {/* <span>{getDayOfWeek(item.checked_in_at)}</span> */}
                     </div>
                     <div className="time">
                         <div className="check_in">
@@ -46,7 +84,7 @@ const EmployeeAttendanceList = () => {
                             <div className="work_time">
                                 <img src={AccessTime} alt="근무시간" />
                                 <span>
-                                    총 {getWorkTime(item.checked_in_at, item.checked_out_at)}시간
+                                    {/* 총 {getWorkTime(item.checked_in_at, item.checked_out_at)}시간 */}
                                 </span>
                             </div>
                         </div>

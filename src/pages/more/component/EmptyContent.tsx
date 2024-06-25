@@ -10,7 +10,7 @@ const EmptyContent = ({ icon, message }: EmptyContentProps) => {
     return (
         <StyledEmptySection>
             {icon}
-            <p>{message}</p>
+            {message === "" ? "없음" : <p>{message}</p>}
         </StyledEmptySection>
     );
 };

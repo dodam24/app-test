@@ -7,16 +7,17 @@ import Email from "@/assets/images/icons/icon_email_c.png";
 import Phone from "@/assets/images/icons/icon_phone_c.png";
 import { useState } from "react";
 import FaqListItem from "../component/FaqListItem";
+// import { Link } from "react-router-dom";
 
 const Faq = () => {
-    // faqList: FaqListItem에 있는 임시 데이터이므로 나중에 삭제
+    // faqList: FaqListItem에 있는 임시 데이터이므로 추후 삭제
     const faqList = [
-        { title: "소소상점 설치 및 사용이 가능한 스마트 폰이 따로 있나요?" },
-        { title: "개인정보 필수 수집·이용 동의를 철회하고 싶어요." },
-        { title: "앱 알림이 울리지 않아요." },
-        { title: "비밀번호를 바꾸고 싶어요." },
-        { title: "2대 이상의 스마트폰에서 동시에 이용할 수 있나요?" },
-        { title: "휴대폰 번호를 바꿨는데 회원정보를 변경할 수 있나요?" },
+        { id: 1, title: "소소상점 설치 및 사용이 가능한 스마트 폰이 따로 있나요?" },
+        { id: 2, title: "개인정보 필수 수집·이용 동의를 철회하고 싶어요." },
+        { id: 3, title: "앱 알림이 울리지 않아요." },
+        { id: 4, title: "비밀번호를 바꾸고 싶어요." },
+        { id: 5, title: "2대 이상의 스마트폰에서 동시에 이용할 수 있나요?" },
+        { id: 6, title: "휴대폰 번호를 바꿨는데 회원정보를 변경할 수 있나요?" },
     ];
 
     // 탭 메뉴 (category)
@@ -35,17 +36,13 @@ const Faq = () => {
     return (
         <AppLayout props={{ header: <AppBackHeader title="고객센터" /> }}>
             <StyledFaqWrap>
-                {/* FAQ 메인 section */}
                 <StyledFaqMainSection>
-                    {/* 검색창 */}
                     <SearchTextField>
                         <input type="text" placeholder="궁금한 점을 검색해보세요." />
                         <button className="btn_search">
                             <img src={Search} alt="검색" />
                         </button>
                     </SearchTextField>
-
-                    {/* 탭 메뉴 */}
                     <TabButtonContainer>
                         {tabData.map((item, index) => (
                             <TabButton
@@ -64,6 +61,7 @@ const Faq = () => {
                         </div>
                         <StyledFaqListSection>
                             <FaqListItem />
+                            {/* <Link to={`/faq/${id}`}></Link> */}
                         </StyledFaqListSection>
                     </TabButtonContent>
                 </StyledFaqMainSection>

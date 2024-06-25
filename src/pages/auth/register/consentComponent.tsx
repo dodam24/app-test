@@ -1,7 +1,8 @@
 import { useState } from "react";
 import styled from "styled-components";
 import { Styles } from "@/style/Styles";
-import { CheckedOff, CheckedOn } from "./registerImg";
+
+import { CheckedOff, CheckedOn } from "@/pages/auth/register/_images/register_img";
 
 const ConsentComponent = () => {
     const [checkboxStates, setCheckboxStates] = useState([

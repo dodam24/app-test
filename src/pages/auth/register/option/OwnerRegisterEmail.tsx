@@ -1,7 +1,8 @@
 import { useState, ChangeEvent, MouseEvent } from "react";
-import { ToggleIcon } from "../registerImg";
 import styled from "styled-components";
 import { Styles } from "@/style/Styles";
+
+import { ToggleIcon } from "@/pages/auth/register/_images/register_img";
 
 const emailDomains = ["naver.com", "gmail.com", "nate.com", "daum.net", "icloud.com", "직접입력"];
 

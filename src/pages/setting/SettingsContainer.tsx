@@ -1,23 +1,23 @@
 import { Link } from "react-router-dom";
 import styled from "styled-components";
 import Toggle from "@/components/toggle/Toggle";
+import SettingsOption from "@/pages/setting/SettingsOption";
 
 import { Styles } from "@/style/Styles";
-
-import RightArrow from "@/assets/images/icons/icon_right_arrow.png";
+import { RightArrow } from "@/pages/setting/_images/Icons";
 
 const SettingsContainer = () => {
     return (
         <StyledSettingsContainer>
             <StyledSettings>
                 <StyledSetting>
-                    <Link to="/me">
+                    <Link to="/setting/me">
                         <span>내 정보 확인</span>
                         <img src={RightArrow} alt="더보기" />
                     </Link>
                 </StyledSetting>
                 <StyledSetting>
-                    <Link to="/password_chagne">
+                    <Link to="/setting/change_password">
                         <span>비밀번호 변경</span>
                         <img src={RightArrow} alt="더보기" />
                     </Link>
@@ -31,22 +31,13 @@ const SettingsContainer = () => {
                     <Toggle id="alarm_setting" />
                 </StyledSetting>
                 <StyledSetting>
-                    <Link to="/terms">
+                    <Link to="/setting/terms">
                         <span>약관동의관리</span>
                         <img src={RightArrow} alt="더보기" />
                     </Link>
                 </StyledSetting>
             </StyledSettings>
-            <StyledSettingApp>
-                <div className="logout">
-                    <button>로그아웃</button>
-                </div>
-                <div className="version">
-                    <span>v 1.1.600</span>
-                    <p>최신 버전 입니다.</p>
-                    {/* <button>업데이트</button> */}
-                </div>
-            </StyledSettingApp>
+            <SettingsOption />
         </StyledSettingsContainer>
     );
 };
@@ -81,49 +72,6 @@ const StyledSetting = styled.li`
             display: block;
             width: 1.2rem;
             height: 1.2rem;
-        }
-    }
-`;
-const StyledSettingApp = styled.div`
-    padding: 0 1rem 4.85rem;
-    & > .logout {
-        padding: 0.8rem 0;
-        border-bottom: 0.05rem solid ${Styles.colors.natural10};
-        button {
-            width: fit-content;
-            height: 2.1rem;
-            font-size: ${Styles.font.size.fontsize13};
-            font-weight: ${Styles.font.weight.regular};
-            color: ${Styles.colors.natural60};
-        }
-    }
-
-    & > .version {
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        justify-content: center;
-        gap: 0.2rem;
-        margin-top: 3.9rem;
-
-        span {
-            font-size: ${Styles.font.size.fontsize15};
-            font-weight: ${Styles.font.weight.regular};
-            color: ${Styles.colors.natural80};
-        }
-        p {
-            font-size: ${Styles.font.size.fontsize13};
-            font-weight: ${Styles.font.weight.regular};
-            color: ${Styles.colors.natural40};
-        }
-        button {
-            margin-top: 1rem;
-            padding: 0.5rem 0.9rem;
-            border-radius: 0.4rem;
-            border: 0.05rem solid ${Styles.colors.primary100};
-            font-size: ${Styles.font.size.fontsize14};
-            font-weight: ${Styles.font.weight.regular};
-            color: ${Styles.colors.primary100};
         }
     }
 `;

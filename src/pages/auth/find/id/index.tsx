@@ -1,24 +1,25 @@
 import { useState, ChangeEvent } from "react";
+import { Styles } from "@/style/Styles";
+import styled from "styled-components";
+
 import AppLayout from "@/components/layout/AppLayout";
 import AppBackHeader from "@/components/header/AppBackHeader";
-import styled from "styled-components";
-import { Styles } from "@/style/Styles";
 import EnabledButton from "@/components/button/EnabledButton";
 import LabelInput from "@/components/input/LabelInput";
 import TimerInput from "@/components/input/TimerInput";
+
 import instance from "@/apis/instance";
 
 const FindID = () => {
     const [name, setName] = useState("");
-    const [phoneNumber, setPhoneNumber] = useState<string | null>(null); // 수정된 부분
-    const [verificationCode, setVerificationCode] = useState<string | null>(null); // 수정된 부분
+    const [phoneNumber, setPhoneNumber] = useState<string>("");
+    const [verificationCode, setVerificationCode] = useState<string>("");
 
     const handleNameChange = (e: ChangeEvent<HTMLInputElement>) => {
         setName(e.target.value);
     };
 
     const handleVerified = (status: boolean, phoneNumber?: string, verificationCode?: string) => {
-        // 수정된 부분
         if (status && phoneNumber && verificationCode) {
             setPhoneNumber(phoneNumber);
             setVerificationCode(verificationCode);

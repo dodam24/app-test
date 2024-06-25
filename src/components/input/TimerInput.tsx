@@ -8,7 +8,7 @@ const VERIFICATION_CODE_LENGTH = 6;
 
 interface TimerInputProps {
     initialSeconds: number;
-    onVerified?: (status: boolean, phoneNumber?: string, verificationCode?: string) => void;
+    onVerified: (status: boolean, phoneNumber?: string, verificationCode?: string) => void;
 }
 
 interface VerificationStatus {
@@ -16,7 +16,7 @@ interface VerificationStatus {
     message: string;
 }
 
-function TimerInput({ initialSeconds /*onVerified*/ }: TimerInputProps) {
+function TimerInput({ initialSeconds, onVerified }: TimerInputProps) {
     const [isVerified, setIsVerified] = useState<boolean>(false);
     const [isRequestSent, setIsRequestSent] = useState<boolean>(false);
     const [phoneNumber, setPhoneNumber] = useState<string>("");
@@ -122,7 +122,7 @@ function TimerInput({ initialSeconds /*onVerified*/ }: TimerInputProps) {
         }
     };
     const handleVerificationSuccess = () => {
-        // onVerified(true, formatPhoneNumberForServer(phoneNumber), verificationCode);
+        onVerified(true, formatPhoneNumberForServer(phoneNumber), verificationCode);
     };
     //인증 코드 확인
     const handleTest = async (callphone_number: string, verificationCode: string) => {
@@ -139,14 +139,14 @@ function TimerInput({ initialSeconds /*onVerified*/ }: TimerInputProps) {
             console.log(json);
 
             setIsActive(false);
-            // onVerified(true);
+            onVerified(true);
         } catch (error) {
             console.error("인증 실패", phoneNumber);
             setVerificationStatus({
                 verified: false,
                 message: "인증번호가 틀렸습니다.",
             });
-            // onVerified(false);
+            onVerified(false);
         }
     };
     //재전송 코드

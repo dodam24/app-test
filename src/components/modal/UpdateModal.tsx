@@ -2,7 +2,7 @@ import { Styles } from "@/style/Styles";
 import styled from "styled-components";
 import Alarm from "@/assets/images/icons/icon_modal_alarm_c.png";
 
-// update modal: width: 16.75rem; padding: 2.5rem 1.2rem 2rem 1.2rem;
+// update modal: padding: 2.5rem 1.2rem 2rem 1.2rem;
 // new_modal_message: <p>태그 \n 사이 gap: 0.2rem;
 // 모달 불러올 때 handler에 '업데이트' 처리
 const UpdateModal = () => {

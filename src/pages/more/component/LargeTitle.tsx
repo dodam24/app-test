@@ -14,7 +14,7 @@ const LargeTitle: React.FC<LargeTitleProps> = ({ title }) => {
 
 export default LargeTitle;
 
-const StyledLargeTitle = styled.h3`
+const StyledLargeTitle = styled.div`
     display: flex;
     align-items: center;
     justify-content: center;

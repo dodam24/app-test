@@ -1,7 +1,8 @@
-import AppLayout from "@/components/layout/AppLayout";
-import AppBackHeader from "@/components/header/AppBackHeader";
 import styled from "styled-components";
 import { Styles } from "@/style/Styles";
+
+import AppLayout from "@/components/layout/AppLayout";
+import AppBackHeader from "@/components/header/AppBackHeader";
 import EnabledButton from "@/components/button/EnabledButton";
 
 const FindIdList = () => {
@@ -19,7 +20,7 @@ const FindIdList = () => {
 
     return (
         <AppLayout props={{ header: <AppBackHeader title="아이디 목록" /> }}>
-            <StyledFindIdrListWrapper>
+            <StyledFindIdListWrapper>
                 <h3>
                     고객님의 정보와 일치하는
                     <br />
@@ -40,11 +41,12 @@ const FindIdList = () => {
                     <EnabledButton className="firstBtn" title="비밀번호찾기" />
                     <EnabledButton className="secondBtn" title="로그인" />
                 </EnabledButtonInner>
-            </StyledFindIdrListWrapper>
+            </StyledFindIdListWrapper>
         </AppLayout>
     );
 };
-const StyledFindIdrListWrapper = styled.div`
+
+const StyledFindIdListWrapper = styled.div`
     width: 100%;
     padding: 0 1rem 0.6rem;
     h3 {
@@ -57,6 +59,7 @@ const StyledFindIdrListWrapper = styled.div`
         margin: 1rem 0 1.5rem;
     }
 `;
+
 const StyledIdList = styled.ul`
     list-style-type: none;
     padding: 1.2rem 0.8rem;
@@ -80,17 +83,28 @@ const StyledIdList = styled.ul`
                 -moz-appearance: none;
                 appearance: none;
                 width: 1rem;
-                height: 20px;
+                height: 1rem;
                 margin: 0;
                 border: 0.1rem solid ${Styles.colors.natural30};
                 border-radius: 50%;
                 outline: none;
                 cursor: pointer;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                background-color: transparent;
 
                 &:checked {
+                    background-color: ${Styles.colors.systemWhite};
+                    border-color: ${Styles.colors.primary100};
+                }
+
+                &:checked::before {
+                    content: "";
+                    width: 0.5rem;
+                    height: 0.5rem;
+                    border-radius: 50%;
                     background-color: ${Styles.colors.primary100};
-                    border: 0.25rem solid ${Styles.colors.systemWhite};
-                    box-shadow: 0 0 0 0.08rem ${Styles.colors.primary100};
                 }
             }
             p {
@@ -102,18 +116,31 @@ const StyledIdList = styled.ul`
         }
     }
 `;
+
 const EnabledButtonInner = styled.div`
     display: flex;
-    width: 100%;
     gap: 0.75rem;
+    width: 100%;
+    position: fixed;
+    bottom: 0.6rem;
+    left: 50%;
+    transform: translateX(-50%);
+    padding: 0 1rem;
     .firstBtn {
         width: 50%;
+        position: static;
+        left: initial;
+        transform: translateX(0);
         background-color: ${Styles.colors.systemWhite};
         color: ${Styles.colors.primary100};
         border: 1px solid ${Styles.colors.primary100};
     }
     .secondBtn {
+        position: static;
         width: 50%;
+        right: initial;
+        transform: translateX(0);
     }
 `;
+
 export default FindIdList;

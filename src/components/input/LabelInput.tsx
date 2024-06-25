@@ -37,8 +37,8 @@ const LabelInput = ({
 
     return (
         <StyledLabelInputWrapper $isInvalid={isInvalid} $isFocused={isFocused}>
-            {option && <label htmlFor={id}>{option}</label>}
             <StyledInputInner $isInvalid={isInvalid} $isFocused={isFocused}>
+                {option && <label htmlFor={id}>{option}</label>}
                 <StyledInput
                     onChange={handleChange}
                     type={inputType}
@@ -72,19 +72,17 @@ const StyledLabelInputWrapper = styled.div<{ $isInvalid?: boolean; $isFocused?: 
     align-items: start;
     justify-content: space-between;
     margin-bottom: 1.2rem;
-
-    label {
-        color: ${Styles.colors.natural80};
-        font-size: ${Styles.font.size.fontsize14};
-        font-weight: ${Styles.font.weight.regular};
-        margin-bottom: 0.4rem;
-    }
 `;
 
 const StyledInputInner = styled.div<{ $isInvalid?: boolean; $isFocused?: boolean }>`
     width: 100%;
     position: relative;
     align-items: center;
+    label {
+        color: ${Styles.colors.natural80};
+        font-size: ${Styles.font.size.fontsize14};
+        font-weight: ${Styles.font.weight.regular};
+    }
 `;
 
 const StyledInput = styled.input<{ $isInvalid?: boolean; $isFocused?: boolean }>`
@@ -98,6 +96,7 @@ const StyledInput = styled.input<{ $isInvalid?: boolean; $isFocused?: boolean }>
     background: ${Styles.colors.systemBackground};
     border: none;
     border-radius: 0.4rem;
+    margin-top: 0.4rem;
 
     &::placeholder {
         color: ${Styles.colors.natural40};

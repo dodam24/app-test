@@ -4,6 +4,8 @@ import styled from "styled-components";
 import Details from "../../component/Details";
 
 const NoticeDetails = () => {
+    // test
+
     const noticeTempData = [
         {
             id: "1",

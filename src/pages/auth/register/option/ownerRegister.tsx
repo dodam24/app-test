@@ -1,18 +1,20 @@
 import { useState, ChangeEvent } from "react";
+import { Styles } from "@/style/Styles";
+import styled from "styled-components";
+
 import AppBackHeader from "@/components/header/AppBackHeader";
 import AppLayout from "@/components/layout/AppLayout";
-import styled from "styled-components";
-import { Styles } from "@/style/Styles";
-import EnabledButton from "@/components/button/EnabledButton";
 import LabelInput from "@/components/input/LabelInput";
 import ButtonInput from "@/components/input/ButtonInput";
-import ConsentComponent from "../consentComponent";
+import EnabledButton from "@/components/button/EnabledButton";
 import TimerInput from "@/components/input/TimerInput";
-import OwnerRegisterEmail from "./OwnerRegisterEmail";
-import { validateId } from "@/utils/inputVerify";
-import { registerIdverify } from "@/apis/auth/register";
 
-const OwmerRegister = () => {
+import { registerIdverify } from "@/apis/auth/register";
+import { validateId } from "@/utils/inputVerify";
+import ConsentComponent from "@/pages/auth/register/ConsentComponent";
+import OwnerRegisterEmail from "@/pages/auth/register/option/OwnerRegisterEmail";
+
+const OwnerRegister = () => {
     const [username, setUsername] = useState("");
     const [isUsernameValid, setIsUsernameValid] = useState(false);
     const [password, setPassword] = useState("");
@@ -79,22 +81,20 @@ const OwmerRegister = () => {
                 />
                 <LabelInput
                     placeholder="8~20자리 영문+숫자+특수문자 포함"
-                    showPasswordToggle={true}
+                    showPasswordToggle
                     option="비밀번호"
                     maxLength={20}
                     id="password"
-                    type="password"
                     value={password}
                     onChange={handlePasswordChange}
                 />
                 <StyledPwVerify>
                     <LabelInput
                         placeholder="비밀번호를 한번 더 입력해 주세요."
-                        showPasswordToggle={true}
+                        showPasswordToggle
                         option="비밀번호 확인"
                         maxLength={20}
                         id="passwordverify"
-                        type="password"
                         value={passwordVerify}
                         onChange={handlePasswordVerifyChange}
                     />
@@ -121,6 +121,7 @@ const OwmerRegister = () => {
 const StyledRegisterWrapper = styled.div`
     width: 100%;
     padding: 0 1rem 0.6rem;
+    margin-bottom: 2.5rem;
     h3 {
         color: ${Styles.colors.natural90};
         font-size: ${Styles.font.size.fontsize18};
@@ -143,4 +144,4 @@ const PasswordMismatchError = styled.div`
     margin-left: 0.8rem;
 `;
 
-export default OwmerRegister;
+export default OwnerRegister;

@@ -2,7 +2,6 @@ import { NavLink } from "react-router-dom";
 import { Styles } from "@/style/Styles";
 import styled from "styled-components";
 
-// AppMenus 링크, 아이콘 변경 필요
 const AppMenus = [
     {
         to: "/employee",
@@ -13,20 +12,20 @@ const AppMenus = [
     {
         to: "/checkin",
         name: "출근등록",
-        enableIcon: "src/assets/images/icons/icon_checkin_off_c.png",
+        enableIcon: "src/assets/images/icons/icon_checkin_on_c.png",
         disableIcon: "src/assets/images/icons/icon_checkin_off_c.png",
     },
     {
         to: "/checkout",
         name: "퇴근등록",
-        enableIcon: "src/assets/images/icons/icon_checkout_off_c.png",
+        enableIcon: "src/assets/images/icons/icon_checkout_on_c.png",
         disableIcon: "src/assets/images/icons/icon_checkout_off_c.png",
     },
     {
         to: "/attendancelist",
         name: "근무내역",
         enableIcon: "src/assets/images/icons/icon_attendance_list_on_c.png",
-        disableIcon: "src/assets/images/icons/icon_attendance_list_on_c.png",
+        disableIcon: "src/assets/images/icons/icon_attendance_list_off_c.png",
     },
 ];
 
@@ -81,12 +80,7 @@ const StyledEmployeeFooterBarLink = styled(NavLink)<{ enable: string; disable: s
     color: ${Styles.colors.natural40};
     font-size: ${Styles.font.size.fontsize11};
     font-weight: ${Styles.font.weight.regular};
-    /* background: url(${(props) => props.disable}) center 20% / 1.2rem 1.2rem no-repeat; */
-
-    background-image: url(${(props) => props.disable});
-    background-size: 1.2rem 1.2rem;
-    background-repeat: no-repeat;
-    background-position: center 20%;
+    background: url(${(props) => props.disable}) center 20% / 1.2rem 1.2rem no-repeat;
 
     &.active {
         background-image: url(${(props) => props.enable});

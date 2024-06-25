@@ -17,7 +17,7 @@ export const StyledEnabledButton = styled.button`
     left: 50%;
     transform: translateX(-50%);
     height: 2.8rem;
-    width: calc(100% - 1rem);
+    width: calc(100% - 2rem);
     border-radius: 0.4rem;
     background: ${Styles.colors.primary100};
     opacity: 1;
