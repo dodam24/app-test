@@ -1,8 +1,10 @@
-import React from "react"; // React를 임포트합니다.
-import styled from "styled-components";
-import { Styles } from "@/style/Styles";
-import { WalletIcon, MoneyIcon, GiftIcon, HouseIcon } from "@/pages/loan/_images/loanImg";
+import React from "react";
 import { useNavigate } from "react-router-dom";
+import styled from "styled-components";
+
+import { Styles } from "@/style/Styles";
+
+import { WalletIcon, MoneyIcon, GiftIcon, HouseIcon } from "@/pages/loan/_images/loanImg";
 
 interface LoanData {
     id: number;

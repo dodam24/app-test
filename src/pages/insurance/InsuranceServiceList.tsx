@@ -1,8 +1,11 @@
+import styled from "styled-components";
+
 import AppBackHeader from "@/components/header/AppBackHeader";
 import AppLayout from "@/components/layout/AppLayout";
-import styled from "styled-components";
-import { Styles } from "@/style/Styles";
 import EnabledButton from "@/components/button/EnabledButton";
+
+import { Styles } from "@/style/Styles";
+
 import { ArrowIcon } from "@/pages/insurance/_images/insurance";
 
 const insuranceData = [

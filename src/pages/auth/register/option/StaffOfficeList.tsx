@@ -1,6 +1,7 @@
 import { useState } from "react";
 import styled from "styled-components";
-import { Styles } from "@/style/Styles"; // Styles 파일의 경로를 올바르게 지정
+
+import { Styles } from "@/style/Styles";
 
 interface Office {
     id: string;

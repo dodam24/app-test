@@ -8,8 +8,10 @@ import LabelInput from "@/components/input/LabelInput";
 import { login } from "@/apis/auth/login";
 import { validatePassword } from "@/utils/inputVerify";
 import SnsLogin from "@/pages/auth/login/SnsLogin";
-import { CheckIcon, CheckedIcon, LoginLogo } from "@/pages/auth/login/_images/loginImg";
+
 import { Styles } from "@/style/Styles";
+
+import { CheckIcon, CheckedIcon, LoginLogo } from "@/pages/auth/login/_images/loginImg";
 
 const Login = () => {
     const [username, setUsername] = useState<string>("");
@@ -88,7 +90,7 @@ const ReservationWrapper = styled.section`
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    padding-top: 60px;
+    padding-top: 3rem;
     .custom_btn {
         position: static;
         left: 0;
@@ -99,7 +101,7 @@ const ReservationWrapper = styled.section`
 
 const Form = styled.form`
     width: 100%;
-    padding: 0 20px;
+    padding: 0 1rem;
 `;
 
 const FormFieldSet = styled.fieldset`
@@ -108,13 +110,13 @@ const FormFieldSet = styled.fieldset`
     justify-content: center;
     align-items: center;
     .login_logo {
-        width: 140px;
-        height: 80px;
+        width: 7rem;
+        height: 4rem;
         flex-shrink: 0;
-        margin-bottom: 38px;
+        margin-bottom: 1.9rem;
     }
     .first_input {
-        margin-bottom: 0.6rem;
+        margin-bottom: 0.2rem;
     }
     .second_input {
         height: 2.8rem;
@@ -124,54 +126,51 @@ const FormFieldSet = styled.fieldset`
 const FormFieldOption = styled.div`
     display: flex;
     justify-content: space-between;
-    margin-top: 12px;
+    margin-top: 0.6rem;
 `;
 
 const SaveIdWrapper = styled.div`
     display: flex;
-    gap: 6px;
+    gap: 0.3rem;
     align-items: center;
 
     input {
-        width: 20px;
-        height: 20px;
-        border-radius: 4px;
+        width: 1rem;
+        height: 1rem;
+        border-radius: 0.2rem;
         background: url(${CheckIcon}) no-repeat center;
-        background-size: 20px 20px;
+        background-size: 1rem 1rem;
         appearance: none;
         margin: 0;
 
         &:checked {
             background: url(${CheckedIcon}) no-repeat center;
-            background-size: 20px 20px;
+            background-size: 1rem 1rem;
         }
     }
 
     label {
         color: ${Styles.colors.natural60};
-        font-family: Pretendard;
         font-size: ${Styles.font.size.fontsize14};
-        font-weight: 400;
-        line-height: normal;
+        font-weight: ${Styles.font.weight.regular};
     }
 `;
 
 const FindOptionsWrapper = styled.div`
     display: flex;
-    gap: 10px;
+    gap: 0.5rem;
     align-items: center;
 
     a {
         color: ${Styles.colors.natural60};
-        font-family: Pretendard;
         font-size: ${Styles.font.size.fontsize14};
-        font-weight: 400;
-        line-height: normal;
+        font-weight: ${Styles.font.weight.regular};
+
         text-decoration: none;
 
         &::before {
             content: "|";
-            margin-right: 10px;
+            margin-right: 0.5rem;
             color: ${Styles.colors.natural60};
         }
 
@@ -187,26 +186,24 @@ const DividerText = styled.div`
     width: 100%;
     font-size: ${Styles.font.size.fontsize14};
     color: ${Styles.colors.natural80};
-    margin: 40px 0 12px;
-    padding: 12px 0;
+    margin: 2rem 0 0.6rem;
+    padding: 0.6rem 0;
     text-align: center;
-    font-family: Pretendard;
-    font-weight: 400;
-    line-height: normal;
+    font-weight: ${Styles.font.weight.regular};
 
     &::before,
     &::after {
         content: "";
         flex: 1;
-        width: 103px;
-        height: 1px;
+        width: 5.15rem;
+        height: 0.05rem;
         background: ${Styles.colors.natural30};
     }
     &::before {
-        margin-right: 16px;
+        margin-right: 0.8rem;
     }
     &::after {
-        margin-left: 16px;
+        margin-left: 0.8rem;
     }
 `;
 
@@ -214,24 +211,23 @@ const RegisterWrapper = styled.div`
     display: flex;
     justify-content: center;
     align-items: center;
-    margin-bottom: 46px;
-    gap: 6px;
+    margin-bottom: 2.3rem;
+    gap: 0.3rem;
 `;
 
 const RegisterPrompt = styled.span`
     color: var(--Natural-N40, #a3a3a8);
     font-family: Pretendard;
     font-size: ${Styles.font.size.fontsize14};
-    font-weight: 400;
-    line-height: normal;
+    font-weight: ${Styles.font.weight.regular};
 `;
 
 const RegisterLink = styled(Link)`
     color: ${Styles.colors.primary100};
     font-family: Pretendard;
     font-size: ${Styles.font.size.fontsize14};
-    font-weight: 500;
-    line-height: normal;
+    font-weight: ${Styles.font.weight.medium};
+
     text-underline-position: under;
 `;
 

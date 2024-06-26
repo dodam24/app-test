@@ -2,6 +2,7 @@ import EnabledButton from "@/components/button/EnabledButton";
 import { Styles } from "@/style/Styles";
 import styled, { createGlobalStyle } from "styled-components";
 import Attendance from "@/assets/images/icons/icon_attendance_timer_c.png";
+import TimePicker from "@/pages/employees_c/component/TimePicker";
 
 const EmployeeAttendance = () => {
     return (
@@ -16,7 +17,8 @@ const EmployeeAttendance = () => {
                 </div>
             </StyledAttendanceDisplay>
             <StyledAttendanceTimer>
-                <div className="timer_main">09 : 02 : 46</div>
+                {/* <div className="timer_main">09 : 02 : 46</div> */}
+                <TimePicker />
                 <p className="timer_option">※ 선택가능범위 : 현재시각 ± 10분</p>
             </StyledAttendanceTimer>
             <EnabledButton title="등록" />
@@ -77,10 +79,10 @@ const StyledAttendanceTimer = styled.section`
     flex-direction: column;
     margin: 2.2rem 1rem 1.8rem 1rem;
     gap: 7rem;
-    .timer_main {
-        text-align: center; /* 임시 */
+    /* .timer_main {
+        text-align: center;
         background: linear-gradient(180deg, rgba(255, 255, 255, 0) 80.9%, #fff 96.63%);
-    }
+    } */
     .timer_option {
         color: ${Styles.colors.natural50};
         font-size: ${Styles.font.size.fontsize13};

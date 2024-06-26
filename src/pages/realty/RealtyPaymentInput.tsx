@@ -1,6 +1,6 @@
 import styled from "styled-components";
-import { Styles } from "@/style/Styles";
 import LabelInput from "@/components/input/LabelInput";
+import { Styles } from "@/style/Styles";
 
 const RealtyPaymentInput = () => {
     const idList = [{ title: "임대료" }, { title: "관리비" }, { title: "수리비" }];

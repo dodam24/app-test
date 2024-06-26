@@ -1,8 +1,10 @@
+import styled from "styled-components";
+
 import AppBackHeader from "@/components/header/AppBackHeader";
 import AppLayout from "@/components/layout/AppLayout";
-import styled from "styled-components";
-import { Styles } from "@/style/Styles";
 import EnabledButton from "@/components/button/EnabledButton";
+
+import { Styles } from "@/style/Styles";
 const RealtyExamine = () => {
     return (
         <AppLayout props={{ header: <AppBackHeader title="서류검토" /> }}>

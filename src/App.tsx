@@ -48,6 +48,11 @@ import ChangePassword from "@/pages/setting/password";
 import Terms from "@/pages/setting/terms";
 import TermsDetail from "@/pages/setting/terms/[id]";
 import EditPhone from "@/pages/setting/me/phone";
+import ManageStaffRegister from "@/pages/manage/staffRegister";
+import StaffApproval from "@/pages/manage/staffRegister/StaffApproval";
+import StaffManageInfo from "@/pages/manage/staffRegister/StaffManageInfo";
+import ManagePaymentRegister from "@/pages/manage/paymentRegister";
+import Payment from "@/pages/payment";
 
 function App() {
     return (
@@ -98,6 +103,11 @@ function App() {
                 <Route path="/shop/info" element={<ShopInfo />} />
                 <Route path="/shop/payment" element={<ShopPayment />} />
 
+                <Route path="/manage/staff/register" element={<ManageStaffRegister />} />
+                <Route path="/manage/staff/approval" element={<StaffApproval />} />
+                <Route path="/manage/staff/info" element={<StaffManageInfo />} />
+                <Route path="/manage/payment/register" element={<ManagePaymentRegister />} />
+
                 <Route path={"*"} element={<NotFound />} />
                 {/* 도담 작업사항 */}
                 <Route path="/more" element={<More />} />
@@ -109,6 +119,8 @@ function App() {
                 {/* 직원용: 출/퇴근 등록 및 근무내역 (temp) */}
                 <Route path="/employees_c/attendance" element={<Attendance />} />
                 <Route path="/employees_c/attendanceList" element={<AttendanceList />} />
+
+                <Route path="/payment" element={<Payment />} />
             </Routes>
         </div>
     );

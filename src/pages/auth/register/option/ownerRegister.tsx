@@ -1,5 +1,4 @@
 import { useState, ChangeEvent } from "react";
-import { Styles } from "@/style/Styles";
 import styled from "styled-components";
 
 import AppBackHeader from "@/components/header/AppBackHeader";
@@ -13,6 +12,8 @@ import { registerIdverify } from "@/apis/auth/register";
 import { validateId } from "@/utils/inputVerify";
 import ConsentComponent from "@/pages/auth/register/ConsentComponent";
 import OwnerRegisterEmail from "@/pages/auth/register/option/OwnerRegisterEmail";
+
+import { Styles } from "@/style/Styles";
 
 const OwnerRegister = () => {
     const [username, setUsername] = useState("");

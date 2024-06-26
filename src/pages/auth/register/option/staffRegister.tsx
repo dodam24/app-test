@@ -1,6 +1,5 @@
 import { useState, ChangeEvent } from "react";
 import styled from "styled-components";
-import { Styles } from "@/style/Styles";
 
 import AppBackHeader from "@/components/header/AppBackHeader";
 import AppLayout from "@/components/layout/AppLayout";
@@ -8,10 +7,12 @@ import LabelInput from "@/components/input/LabelInput";
 import EnabledButton from "@/components/button/EnabledButton";
 import TimerInput from "@/components/input/TimerInput";
 import ButtonInput from "@/components/input/ButtonInput";
-
 import { validateId } from "@/utils/inputVerify";
-import { ToggleIcon } from "@/pages/auth/register/_images/register_img";
 import { registerIdverify } from "@/apis/auth/register";
+
+import { Styles } from "@/style/Styles";
+
+import { ToggleIcon } from "@/pages/auth/register/_images/register_img";
 
 const StaffRegister = () => {
     const [username, setUsername] = useState("");

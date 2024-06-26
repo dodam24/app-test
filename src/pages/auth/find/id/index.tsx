@@ -1,5 +1,4 @@
 import { useState, ChangeEvent } from "react";
-import { Styles } from "@/style/Styles";
 import styled from "styled-components";
 
 import AppLayout from "@/components/layout/AppLayout";
@@ -7,8 +6,9 @@ import AppBackHeader from "@/components/header/AppBackHeader";
 import EnabledButton from "@/components/button/EnabledButton";
 import LabelInput from "@/components/input/LabelInput";
 import TimerInput from "@/components/input/TimerInput";
-
 import instance from "@/apis/instance";
+
+import { Styles } from "@/style/Styles";
 
 const FindID = () => {
     const [name, setName] = useState("");

@@ -1,5 +1,5 @@
-import { GoogleIcon, KakaoIcon, NaverIcon } from "@/pages/auth/login/_images/loginImg";
 import styled from "styled-components";
+import { GoogleIcon, KakaoIcon, NaverIcon } from "@/pages/auth/login/_images/loginImg";
 
 const SnsLogin = () => {
     return (
@@ -24,11 +24,11 @@ const SnsLoginWrapper = styled.div`
     align-items: center;
     justify-content: center;
     width: 100%;
-    gap: 24px;
-    margin-bottom: 142px;
+    gap: 1.2rem;
+    margin-bottom: 7.1rem;
     img {
-        width: 54px;
-        height: 54px;
+        width: 2.7rem;
+        height: 2.7rem;
         flex-shrink: 0;
     }
 `;

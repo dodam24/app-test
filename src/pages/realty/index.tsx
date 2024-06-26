@@ -1,16 +1,44 @@
-import { useRef } from "react";
+import { useRef, useState } from "react";
+import styled from "styled-components";
+
 import AppBackHeader from "@/components/header/AppBackHeader";
 import AppLayout from "@/components/layout/AppLayout";
-import styled from "styled-components";
-import { Styles } from "@/style/Styles";
 import EnabledButton from "@/components/button/EnabledButton";
+
+import { Styles } from "@/style/Styles";
+
 import { PlusIcon, SearchIcon, TrashIcon } from "@/pages/realty/_images/realtyImg";
 
 const Realty = () => {
     const fileInputRefs = useRef<(HTMLInputElement | null)[]>([]);
+    const [previews, setPreviews] = useState<(string | null)[]>(Array(2).fill(null));
 
     const handleClick = (index: number) => {
         fileInputRefs.current[index]?.click();
+    };
+
+    const handleFileChange = (index: number, event: React.ChangeEvent<HTMLInputElement>) => {
+        const file = event.target.files?.[0];
+        if (file) {
+            const objectUrl = URL.createObjectURL(file);
+            setPreviews((prev) => {
+                const newPreviews = [...prev];
+                newPreviews[index] = objectUrl;
+                return newPreviews;
+            });
+        }
+    };
+
+    const handleReset = (index: number) => {
+        setPreviews((prev) => {
+            const newPreviews = [...prev];
+            newPreviews[index] = null;
+            return newPreviews;
+        });
+        const fileInput = fileInputRefs.current[index];
+        if (fileInput) {
+            fileInput.value = "";
+        }
     };
 
     const documents = ["신분증", "임대차 계약서"];
@@ -28,23 +56,27 @@ const Realty = () => {
                         <p>{doc}</p>
                         <StyledDocumentInner>
                             <StyledCustomFileInput>
-                                <img
-                                    src={PlusIcon}
-                                    alt="파일 선택"
-                                    onClick={() => handleClick(index)}
-                                    className="input_image"
-                                />
+                                {previews[index] ? (
+                                    <img
+                                        src={previews[index]!}
+                                        alt="미리보기"
+                                        className="pull_image"
+                                    />
+                                ) : (
+                                    <img src={PlusIcon} alt="파일 선택" className="input_image" />
+                                )}
                                 <input
                                     type="file"
                                     ref={(el) => (fileInputRefs.current[index] = el)}
                                     className="file_input"
+                                    onChange={(e) => handleFileChange(index, e)}
                                 />
                             </StyledCustomFileInput>
                             <StyledDocumentBtn>
-                                <button>
+                                <button onClick={() => handleClick(index)}>
                                     <img src={SearchIcon} alt="" />
                                 </button>
-                                <button>
+                                <button onClick={() => handleReset(index)}>
                                     <img src={TrashIcon} alt="" />
                                 </button>
                             </StyledDocumentBtn>
@@ -100,6 +132,7 @@ const StyledCustomFileInput = styled.div`
     display: flex;
     justify-content: center;
     align-items: center;
+    padding: 0.5rem 0;
 
     .file_input {
         display: none;
@@ -109,6 +142,12 @@ const StyledCustomFileInput = styled.div`
         cursor: pointer;
         width: 2rem;
         height: 2rem;
+        object-fit: cover;
+    }
+    .pull_image {
+        width: 4rem;
+        height: 4rem;
+        object-fit: cover;
     }
 `;
 const StyledDocumentBtn = styled.div`

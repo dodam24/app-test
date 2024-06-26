@@ -1,6 +1,7 @@
+import styled from "styled-components";
+
 import AppBackHeader from "@/components/header/AppBackHeader";
 import AppLayout from "@/components/layout/AppLayout";
-import styled from "styled-components";
 import EnabledButton from "@/components/button/EnabledButton";
 import LabelInput from "@/components/input/LabelInput";
 import ButtonInput from "@/components/input/ButtonInput";

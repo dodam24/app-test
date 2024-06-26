@@ -5,13 +5,13 @@ import useModal from "@/hooks/useModal";
 import EnabledButton from "@/components/button/EnabledButton";
 import DynamicModal from "@/components/modal/DynamicModal";
 import ConfirmationModal from "@/components/modal/ui/ConfirmationModal";
-import OptionInput from "@/pages/setting/password/_components/OptionInput";
+import OptionInput from "@/components/input/OptionInput";
 
 import { Styles } from "@/style/Styles";
 
 const ChangePassword = () => {
     const { isOpen, openModal, closeModal } = useModal();
-    const error = false;
+    const error = true;
 
     const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
@@ -29,30 +29,46 @@ const ChangePassword = () => {
                     </h2>
                     <div className="form_input">
                         <OptionInput
+                            type="password"
                             id="currentPassword"
-                            placeholder="비밀번호를 입력해 주세요."
                             name="password"
+                            placeholder="비밀번호를 입력해 주세요."
+                            label="현재 비밀번호"
                             options={{
-                                label: "현재 비밀번호",
-                                errorStatus: error,
-                                errorMessage: "비밀번호가 일치하지 않습니다.",
+                                buttonOption: {
+                                    passwordOption: true,
+                                },
+                                error: {
+                                    errorStatus: error,
+                                    errorMessage: "비밀번호가 일치하지 않습니다.",
+                                },
                             }}
                         />
                         <div className="new_password">
                             <OptionInput
+                                type="password"
                                 id="newPassword"
-                                placeholder="8~20자리 영문+숫자+특수문자 포함"
                                 name="newPassword"
+                                placeholder="8~20자리 영문+숫자+특수문자 포함"
+                                label="새로운 비밀번호"
                                 options={{
-                                    label: "새로운 비밀번호",
+                                    buttonOption: {
+                                        passwordOption: true,
+                                    },
                                 }}
                             />
                             <OptionInput
+                                type="password"
                                 placeholder="비밀번호를 한번 더 입력해 주세요."
                                 name="newPasswordCheck"
                                 options={{
-                                    errorStatus: error,
-                                    errorMessage: "비밀번호가 일치하지 않습니다.",
+                                    buttonOption: {
+                                        passwordOption: true,
+                                    },
+                                    error: {
+                                        errorStatus: error,
+                                        errorMessage: "비밀번호가 일치하지 않습니다.",
+                                    },
                                 }}
                             />
                         </div>

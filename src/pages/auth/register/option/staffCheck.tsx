@@ -1,10 +1,11 @@
 import styled from "styled-components";
-import { Styles } from "@/style/Styles";
 
 import AppLayout from "@/components/layout/AppLayout";
 import AppBackHeader from "@/components/header/AppBackHeader";
 import StaffOfficeSearch from "@/pages/auth/register/option/StaffOfficeSearch";
 import StaffOfficeList from "@/pages/auth/register/option/StaffOfficeList";
+
+import { Styles } from "@/style/Styles";
 
 const StaffCheck = () => {
     return (

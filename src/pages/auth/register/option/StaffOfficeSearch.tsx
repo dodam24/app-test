@@ -1,8 +1,9 @@
 import { useState } from "react";
 import styled from "styled-components";
-import { Styles } from "@/style/Styles";
 
 import EnabledButton from "@/components/button/EnabledButton";
+
+import { Styles } from "@/style/Styles";
 
 import { SearchIcon, ToggleIcon } from "@/pages/auth/register/_images/register_img";
 

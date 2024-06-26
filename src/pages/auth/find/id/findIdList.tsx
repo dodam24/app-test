@@ -1,9 +1,10 @@
 import styled from "styled-components";
-import { Styles } from "@/style/Styles";
 
 import AppLayout from "@/components/layout/AppLayout";
 import AppBackHeader from "@/components/header/AppBackHeader";
 import EnabledButton from "@/components/button/EnabledButton";
+
+import { Styles } from "@/style/Styles";
 
 const FindIdList = () => {
     // 임시 데이터 예시
@@ -63,7 +64,7 @@ const StyledFindIdListWrapper = styled.div`
 const StyledIdList = styled.ul`
     list-style-type: none;
     padding: 1.2rem 0.8rem;
-    border-radius: 8px;
+    border-radius: 0.4rem;
     border: 1px solid ${Styles.colors.natural10};
     display: flex;
     flex-direction: column;

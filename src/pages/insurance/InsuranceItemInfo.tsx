@@ -1,9 +1,12 @@
 import { useState } from "react";
+import styled from "styled-components";
+
 import AppBackHeader from "@/components/header/AppBackHeader";
 import AppLayout from "@/components/layout/AppLayout";
-import styled from "styled-components";
-import { Styles } from "@/style/Styles";
 import EnabledButton from "@/components/button/EnabledButton";
+
+import { Styles } from "@/style/Styles";
+
 import { ArrowDownIcon, ArrowUpIcon, FireBuildingIcon } from "@/pages/insurance/_images/insurance";
 
 const data = [
@@ -73,7 +76,7 @@ const StyledInfoWrapper = styled.div`
         font-weight: ${Styles.font.weight.medium};
     }
     img {
-        width: 130px;
+        width: 6.5rem;
         margin: 2rem 0;
     }
 `;

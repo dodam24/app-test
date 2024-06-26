@@ -1,5 +1,4 @@
 import styled from "styled-components";
-import { Styles } from "@/style/Styles";
 
 import AppLayout from "@/components/layout/AppLayout";
 import AppBackHeader from "@/components/header/AppBackHeader";
@@ -7,6 +6,8 @@ import LabelInput from "@/components/input/LabelInput";
 import ButtonInput from "@/components/input/ButtonInput";
 import EnabledButton from "@/components/button/EnabledButton";
 import ConsentComponent from "@/pages/auth/register/ConsentComponent";
+
+import { Styles } from "@/style/Styles";
 
 const PhoneAuth = () => {
     return (

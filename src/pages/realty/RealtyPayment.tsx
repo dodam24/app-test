@@ -1,9 +1,11 @@
+import styled from "styled-components";
+
 import AppBackHeader from "@/components/header/AppBackHeader";
 import AppLayout from "@/components/layout/AppLayout";
-import styled from "styled-components";
-import { Styles } from "@/style/Styles";
 import EnabledButton from "@/components/button/EnabledButton";
 import RealtyPaymentInput from "@/pages/realty/RealtyPaymentInput";
+
+import { Styles } from "@/style/Styles";
 
 const RealtyPayment = () => {
     return (

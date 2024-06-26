@@ -1,6 +1,5 @@
 import { ChangeEvent, useState } from "react";
 import styled from "styled-components";
-import { Styles } from "@/style/Styles";
 
 import AppLayout from "@/components/layout/AppLayout";
 import AppBackHeader from "@/components/header/AppBackHeader";
@@ -8,6 +7,8 @@ import LabelInput from "@/components/input/LabelInput";
 import EnabledButton from "@/components/button/EnabledButton";
 import TimerInput from "@/components/input/TimerInput";
 import instance from "@/apis/instance";
+
+import { Styles } from "@/style/Styles";
 
 const FindPW = () => {
     const [name, setName] = useState("");

@@ -1,7 +1,11 @@
+import styled from "styled-components";
+
 import AppHeader from "@/components/header/AppHeader";
 import AppLayout from "@/components/layout/AppLayout";
-import styled from "styled-components";
+import ShopSwiper from "./ShopSwiper";
+
 import { Styles } from "@/style/Styles";
+
 import {
     BabyIcon,
     ClothIcon,
@@ -12,7 +16,6 @@ import {
     InteriorIcon,
     SportIcon,
 } from "./_images/shop";
-import ShopSwiper from "./ShopSwiper";
 
 const shopTagData = [
     {

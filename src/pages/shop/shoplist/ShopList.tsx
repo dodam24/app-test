@@ -1,8 +1,11 @@
 import { useState } from "react";
+import styled from "styled-components";
+
 import AppHeader from "@/components/header/AppHeader";
 import AppLayout from "@/components/layout/AppLayout";
-import styled from "styled-components";
+
 import { Styles } from "@/style/Styles";
+
 import { ArrowDownIcon, FoodImg1, FoodImg2, FoodImg3, FoodImg4 } from "@/pages/shop/_images/shop";
 
 const ShopListData = [
