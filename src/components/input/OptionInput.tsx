@@ -75,6 +75,7 @@ const OptionInput = ({ label, children, options, ...rest }: OptionInputProps) =>
 export default OptionInput;
 
 const StyledOptionInputContainer = styled.div`
+    width: 100%;
     display: flex;
     flex-direction: column;
     gap: 0.4rem;
@@ -86,6 +87,7 @@ const StyledOptionInputContainer = styled.div`
 `;
 const StyledOptionInputInner = styled.div`
     & > span {
+        width: fit-content;
         display: block;
         font-size: ${Styles.font.size.fontsize12};
         font-weight: ${Styles.font.weight.regular};

@@ -13,6 +13,7 @@ export default Button;
 
 const StyledButton = styled.button<{ $size: "sub" | "main" }>`
     min-width: fit-content;
+    width: ${(props) => props.$size === "main" && "100%"};
     height: ${(props) => (props.$size === "main" ? "2.8rem" : "2.3rem")};
     border-radius: 0.4rem;
     padding: 0.7rem 1rem;

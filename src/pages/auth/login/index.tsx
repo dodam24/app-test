@@ -1,69 +1,18 @@
-import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import styled from "styled-components";
 
-import EnabledButton from "@/components/button/EnabledButton";
-import CustomInput from "@/components/input/CustomInput";
-import LabelInput from "@/components/input/LabelInput";
-import { login } from "@/apis/auth/login";
-import { validatePassword } from "@/utils/inputVerify";
 import SnsLogin from "@/pages/auth/login/SnsLogin";
 
 import { Styles } from "@/style/Styles";
 
-import { CheckIcon, CheckedIcon, LoginLogo } from "@/pages/auth/login/_images/loginImg";
+import { CheckIcon, CheckedIcon } from "@/pages/auth/login/_images/loginImg";
+import LoginInput from "@/pages/auth/login/LoginInput";
 
 const Login = () => {
-    const [username, setUsername] = useState<string>("");
-    const [password, setPassword] = useState<string>("");
-    const [isPasswordInvalid, setIsPasswordInvalid] = useState<boolean>(false);
-
-    const handleUsernameChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-        setUsername(e.target.value);
-    };
-
-    const handlePasswordChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-        const { value } = e.target;
-
-        setPassword(value);
-        setIsPasswordInvalid(!validatePassword(value));
-    };
-
-    const handleLogin = async (e: React.FormEvent) => {
-        e.preventDefault();
-
-        try {
-            const response = await login({ username, password });
-            console.log(response);
-        } catch (error) {
-            setIsPasswordInvalid(true);
-        }
-    };
-
     return (
         <ReservationWrapper>
-            <Form onSubmit={handleLogin}>
-                <FormFieldSet>
-                    <img className="login_logo" src={LoginLogo} alt="로그인 로고" />
-                    <CustomInput
-                        className="first_input"
-                        type="text"
-                        id="username"
-                        name="username"
-                        placeholder="아이디"
-                        handleChange={handleUsernameChange}
-                    />
-                    <LabelInput
-                        className="second_input"
-                        placeholder="8~20자리 영문+숫자+특수문자 포함"
-                        handleChange={handlePasswordChange}
-                        showPasswordToggle
-                        isInvalid={isPasswordInvalid}
-                        maxLength={20}
-                        errorMessage="아이디 또는 비밀번호를 다시 입력해주세요."
-                    />
-                </FormFieldSet>
-                <EnabledButton className="custom_btn" title="로그인" disabled={!password} />
+            <Form>
+                <LoginInput />
                 <FormFieldOption>
                     <SaveIdWrapper>
                         <input type="checkbox" />
@@ -102,25 +51,6 @@ const ReservationWrapper = styled.section`
 const Form = styled.form`
     width: 100%;
     padding: 0 1rem;
-`;
-
-const FormFieldSet = styled.fieldset`
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    .login_logo {
-        width: 7rem;
-        height: 4rem;
-        flex-shrink: 0;
-        margin-bottom: 1.9rem;
-    }
-    .first_input {
-        margin-bottom: 0.2rem;
-    }
-    .second_input {
-        height: 2.8rem;
-    }
 `;
 
 const FormFieldOption = styled.div`

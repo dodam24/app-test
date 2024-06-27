@@ -2,10 +2,10 @@ import { Styles } from "@/style/Styles";
 import styled from "styled-components";
 import DynamicModal from "@/components/modal/DynamicModal";
 import ConfirmationModal from "@/components/modal/ui/ConfirmationModal";
-import EnabledButton from "@/components/button/EnabledButton";
 import InquiryTextField from "../component/InquiryTextField";
 import useModal from "@/hooks/useModal";
 import LargeTitle from "../component/LargeTitle";
+import FixedButton from "@/components/button/FixedButton";
 
 // 임시 데이터
 const userInfo = { email: "so**@gmail.com" };
@@ -28,7 +28,7 @@ const InquiryRegistration = () => {
                     3일 소요)
                 </p>
             </StyledInquiryContent>
-            <EnabledButton onClick={openModal} title="등록" />
+            <FixedButton onClick={openModal}>등록</FixedButton>
 
             {/* modal */}
             <DynamicModal open={isOpen} close={closeModal}>

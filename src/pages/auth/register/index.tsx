@@ -2,13 +2,13 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 
-import EnabledButton from "@/components/button/EnabledButton";
 import AppLayout from "@/components/layout/AppLayout";
 import AppBackHeader from "@/components/header/AppBackHeader";
 
 import { Styles } from "@/style/Styles";
 
 import { Owner, Staff, CheckIcon } from "@/pages/auth/register/_images/register_img";
+import FixedButton from "@/components/button/FixedButton";
 
 const Register = () => {
     const [selectedOption, setSelectedOption] = useState("");
@@ -57,12 +57,10 @@ const Register = () => {
                         </StyledInnerWrapper>
                     </StyledOptionListItem>
                 </StyledOptionListWrapper>
-                <EnabledButton
-                    type="button"
-                    title="회원가입 신청"
-                    onClick={handleSubmit}
-                    disabled={!selectedOption}
-                />
+
+                <FixedButton onClick={handleSubmit} disabled={!selectedOption}>
+                    회원가입 신청
+                </FixedButton>
             </StyledRegisterInner>
         </AppLayout>
     );

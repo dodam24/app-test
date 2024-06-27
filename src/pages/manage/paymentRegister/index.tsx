@@ -7,7 +7,7 @@ import ManagePaymentList from "@/pages/manage/paymentRegister/ManagePaymentList"
 
 const ManagePaymentRegister = () => {
     return (
-        <AppLayout props={{ header: <AppBackHeader title="직원 상세정보" /> }}>
+        <AppLayout props={{ header: <AppBackHeader title="지급등록" /> }}>
             <StyledManagePaymentWrapper>
                 <ButtonInput
                     option="지급일"

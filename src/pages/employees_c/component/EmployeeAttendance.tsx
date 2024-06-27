@@ -1,8 +1,8 @@
-import EnabledButton from "@/components/button/EnabledButton";
 import { Styles } from "@/style/Styles";
 import styled, { createGlobalStyle } from "styled-components";
 import Attendance from "@/assets/images/icons/icon_attendance_timer_c.png";
-import TimePicker from "@/pages/employees_c/component/TimePicker";
+import FixedButton from "@/components/button/FixedButton";
+import DigitalClockBasic from "@/pages/employees_c/component/TimePicker";
 
 const EmployeeAttendance = () => {
     return (
@@ -16,12 +16,11 @@ const EmployeeAttendance = () => {
                     <p className="message">오늘도 화이팅 하세요! :)</p>
                 </div>
             </StyledAttendanceDisplay>
+            <DigitalClockBasic />
             <StyledAttendanceTimer>
-                {/* <div className="timer_main">09 : 02 : 46</div> */}
-                <TimePicker />
                 <p className="timer_option">※ 선택가능범위 : 현재시각 ± 10분</p>
             </StyledAttendanceTimer>
-            <EnabledButton title="등록" />
+            <FixedButton>등록</FixedButton>
         </>
     );
 };
