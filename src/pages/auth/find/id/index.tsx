@@ -3,50 +3,20 @@ import styled from "styled-components";
 
 import AppLayout from "@/components/layout/AppLayout";
 import AppBackHeader from "@/components/header/AppBackHeader";
-import EnabledButton from "@/components/button/EnabledButton";
-import LabelInput from "@/components/input/LabelInput";
-import TimerInput from "@/components/input/TimerInput";
-import instance from "@/apis/instance";
 
 import { Styles } from "@/style/Styles";
+import OptionInput from "@/components/input/OptionInput";
 
 const FindID = () => {
-    const [name, setName] = useState("");
-    const [phoneNumber, setPhoneNumber] = useState<string>("");
-    const [verificationCode, setVerificationCode] = useState<string>("");
+    const [value, setValue] = useState({
+        name: "",
+    });
 
-    const handleNameChange = (e: ChangeEvent<HTMLInputElement>) => {
-        setName(e.target.value);
-    };
-
-    const handleVerified = (status: boolean, phoneNumber?: string, verificationCode?: string) => {
-        if (status && phoneNumber && verificationCode) {
-            setPhoneNumber(phoneNumber);
-            setVerificationCode(verificationCode);
-            console.log("인증 성공");
-        } else {
-            console.log("인증 실패");
-        }
-    };
-
-    const handleFindId = async () => {
-        if (!phoneNumber || !verificationCode) {
-            console.error("휴대폰 번호 또는 인증번호가 누락되었습니다.");
-            return;
-        }
-
-        try {
-            const response = await instance.post("/api/v1/members/find-id", {
-                name: name,
-                cellphone_number: phoneNumber,
-                verification_code: verificationCode,
-            });
-            console.log("아이디 찾기 성공");
-            const json = response.data;
-            console.log(json);
-        } catch (error) {
-            console.error("아이디 찾기 실패");
-        }
+    const handle = (e: ChangeEvent<HTMLInputElement>) => {
+        setValue({
+            ...value,
+            [e.target.name]: e.target.value,
+        });
     };
 
     return (
@@ -57,15 +27,14 @@ const FindID = () => {
                     <br />
                     인증을 진행해 주세요.
                 </h3>
-                <LabelInput
-                    option="이름"
-                    placeholder="예) 김소소"
+                <OptionInput
                     type="text"
-                    value={name}
-                    onChange={handleNameChange}
+                    name="name"
+                    value={value.name}
+                    onChange={handle}
+                    placeholder="예) 김소소"
+                    label="이름"
                 />
-                <TimerInput initialSeconds={180} onVerified={handleVerified} />
-                <EnabledButton title="다음" onClick={handleFindId} />
             </StyledFindIdrWrapper>
         </AppLayout>
     );
@@ -86,3 +55,5 @@ const StyledFindIdrWrapper = styled.div`
 `;
 
 export default FindID;
+
+// 작업 필요

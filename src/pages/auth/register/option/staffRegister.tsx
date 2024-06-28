@@ -3,138 +3,207 @@ import styled from "styled-components";
 
 import AppBackHeader from "@/components/header/AppBackHeader";
 import AppLayout from "@/components/layout/AppLayout";
-import LabelInput from "@/components/input/LabelInput";
-import EnabledButton from "@/components/button/EnabledButton";
-import TimerInput from "@/components/input/TimerInput";
-import ButtonInput from "@/components/input/ButtonInput";
-import { validateId } from "@/utils/inputVerify";
-import { registerIdverify } from "@/apis/auth/register";
+
+import { validatePassword, validateId } from "@/utils/inputVerify";
+
+import ConsentComponent from "@/pages/auth/register/ConsentComponent";
 
 import { Styles } from "@/style/Styles";
+import FixedButton from "@/components/button/FixedButton";
+import OptionInput from "@/components/input/OptionInput";
+import Button from "@/components/button/Button";
 
-import { ToggleIcon } from "@/pages/auth/register/_images/register_img";
+import { registerIdverify } from "@/apis/auth/register";
 
 const StaffRegister = () => {
-    const [username, setUsername] = useState("");
-    const [isUsernameValid, setIsUsernameValid] = useState(false);
-    const [password, setPassword] = useState("");
-    const [passwordVerify, setPasswordVerify] = useState("");
-    const [passwordsMatch, setPasswordsMatch] = useState(true);
-    const [showPasswordError, setShowPasswordError] = useState(false);
+    const [value, setValue] = useState({
+        username: "",
+        password: "",
+        passwordverify: "",
+        name: "",
+        cellphone_number: "",
+        verificationCode: "",
+        email: "",
+        company_id: "",
+        account_holder: "",
+        account_number: "",
+        account_bank_code: "",
+        passwordMatch: false,
+        usernameValid: false,
+        idChecked: false,
+        nameValid: false,
+    });
 
-    const handleUsernameChange = (e: ChangeEvent<HTMLInputElement>) => {
-        const { value } = e.target;
-        setUsername(value);
-        setIsUsernameValid(validateId(value));
+    const handle = (e: ChangeEvent<HTMLInputElement>) => {
+        const { name, value: inputValue } = e.target;
+
+        setValue((prevState) => {
+            const newValue = {
+                ...prevState,
+                [name]: inputValue,
+            };
+
+            if (name === "password") {
+                const isPasswordValid = validatePassword(inputValue);
+                newValue.passwordMatch = isPasswordValid && inputValue === prevState.passwordverify;
+            } else if (name === "passwordverify") {
+                newValue.passwordMatch = prevState.password === inputValue;
+            }
+
+            if (name === "username") {
+                const isIdValid = validateId(inputValue);
+                newValue.usernameValid = isIdValid;
+                newValue.idChecked = false;
+            }
+
+            if (name === "name") {
+                newValue.nameValid = inputValue.length >= 2;
+            }
+
+            return newValue;
+        });
     };
 
-    const handlePasswordChange = (e: ChangeEvent<HTMLInputElement>) => {
-        setPassword(e.target.value);
-        validatePasswordMatch(e.target.value, passwordVerify);
-    };
-
-    const handlePasswordVerifyChange = (e: ChangeEvent<HTMLInputElement>) => {
-        setPasswordVerify(e.target.value);
-        validatePasswordMatch(password, e.target.value);
-        setShowPasswordError(true);
-    };
-
-    const validatePasswordMatch = (pw1: string, pw2: string) => {
-        setPasswordsMatch(pw1 === pw2);
-    };
-
-    const handleIdValue = async (username: string) => {
+    const handleCheckId = async () => {
         try {
-            const response = await registerIdverify({ username });
-            console.log("메시지:", response.message);
-            return response;
+            const response = await registerIdverify({ username: value.username });
+            console.log(response);
+            setValue((prevState) => ({
+                ...prevState,
+                idChecked: true,
+            }));
         } catch (error) {
-            console.error("아이디 중복 확인 중 오류 발생:", error);
-        }
-    };
-
-    const handleVerified = (status: boolean) => {
-        if (status) {
-            console.log("인증 성공");
-        } else {
-            console.log("인증 실패 test");
+            console.error(error);
+            setValue((prevState) => ({
+                ...prevState,
+                idChecked: false,
+            }));
         }
     };
 
     return (
         <AppLayout props={{ header: <AppBackHeader title="회원가입" /> }}>
             <StyledRegisterWrapper>
-                <h3>
-                    소소상점과 함께
-                    <br />더 즐거운 사업을 시작해 볼까요?
-                </h3>
-                <ButtonInput
-                    option="가맹점"
-                    buttonTitle="조회"
-                    placeholder="가맹점을 입력해 주세요."
-                    type="text"
-                    id="representative_name"
-                    onButtonClick={() => console.log("가맹점 조회")}
-                />
-                <ButtonInput
-                    option="아이디"
-                    buttonTitle="중복확인"
-                    placeholder="6자 이상 영문+숫자 포함"
-                    type="text"
-                    value={username}
-                    onChange={handleUsernameChange}
-                    disabled={!isUsernameValid}
-                    onButtonClick={() => handleIdValue(username)}
-                    id="username"
-                />
-                <LabelInput
-                    placeholder="8~20자리 영문+숫자+특수문자 포함"
-                    showPasswordToggle
-                    option="비밀번호"
-                    maxLength={20}
-                    id="password"
-                    value={password}
-                    onChange={handlePasswordChange}
-                />
-                <StyledPwVerify>
-                    <LabelInput
-                        placeholder="비밀번호를 한번 더 입력해 주세요."
-                        showPasswordToggle
-                        option="비밀번호 확인"
-                        maxLength={20}
-                        id="passwordverify"
-                        value={passwordVerify}
-                        onChange={handlePasswordVerifyChange}
-                    />
-                    {!passwordsMatch && showPasswordError && (
-                        <PasswordMismatchError>비밀번호가 일치하지 않습니다.</PasswordMismatchError>
-                    )}
-                </StyledPwVerify>
-                <LabelInput placeholder="예) 김소소" option="이름" type="text" id="name" />
-                <TimerInput initialSeconds={180} onVerified={handleVerified} />
-                <StyledBankWrapper>
-                    <label htmlFor="account_bank_code">계좌은행</label>
-                    <StyledBankInner>
-                        <button id="account_bank_code">선택하세요.</button>
-                        <span>
-                            <img src={ToggleIcon} alt="이메일 토글" />
-                        </span>
-                    </StyledBankInner>
-                </StyledBankWrapper>
-                <LabelInput
-                    placeholder="계좌주를 입력해 주세요."
-                    id="account_holder"
-                    option="계좌주"
-                    type="text"
-                />
-                <LabelInput
-                    placeholder="계좌번호를 입력해 주세요."
-                    id="account_number"
-                    option="계좌번호"
-                    type="text"
-                />
-                {/* <ConsentComponent /> */}
-                <EnabledButton title="회원가입 신청" />
+                <Form>
+                    <h3>
+                        소소상점과 함께
+                        <br />더 즐거운 사업을 시작해 볼까요?
+                    </h3>
+                    <FormFieldSet>
+                        <OptionInput
+                            type="text"
+                            name="username"
+                            value={value.username}
+                            onChange={handle}
+                            placeholder="6자 이상 영문+숫자 포함"
+                            label="아이디"
+                            options={{
+                                buttonOption: {
+                                    checkedOption: value.idChecked,
+                                },
+                            }}
+                        >
+                            <Button
+                                size="sub"
+                                disabled={!value.usernameValid}
+                                onClick={handleCheckId}
+                            >
+                                중복확인
+                            </Button>
+                        </OptionInput>
+                        <OptionInput
+                            type="password"
+                            name="password"
+                            value={value.password}
+                            onChange={handle}
+                            placeholder="8~20자리 영문+숫자+특수문자 포함"
+                            maxLength={20}
+                            label="비밀번호"
+                            options={{
+                                buttonOption: {
+                                    passwordOption: true,
+                                    checkedOption: validatePassword(value.password),
+                                },
+                            }}
+                        />
+                        <OptionInput
+                            type="password"
+                            name="passwordverify"
+                            value={value.passwordverify}
+                            onChange={handle}
+                            placeholder="비밀번호를 한번 더 입력해 주세요."
+                            maxLength={20}
+                            label="비밀번호확인"
+                            options={{
+                                buttonOption: {
+                                    passwordOption: true,
+                                    checkedOption: value.passwordMatch,
+                                },
+                            }}
+                        />
+                        <OptionInput
+                            type="text"
+                            name="name"
+                            value={value.name}
+                            onChange={handle}
+                            placeholder="예) 김소소"
+                            label="이름"
+                            options={{
+                                buttonOption: {
+                                    checkedOption: value.nameValid,
+                                },
+                            }}
+                        />
+
+                        <OptionInput
+                            type="text"
+                            name="cellphone_number"
+                            value={value.cellphone_number}
+                            onChange={handle}
+                            placeholder="예) 010-1234-5678"
+                            label="휴대폰번호"
+                        >
+                            <Button size="sub">인증요청</Button>
+                        </OptionInput>
+                        <OptionInput
+                            type="text"
+                            name="verificationCode"
+                            value={value.verificationCode}
+                            onChange={handle}
+                            placeholder="인증번호를 입력해 주세요"
+                        >
+                            <Button size="sub">인증확인</Button>
+                        </OptionInput>
+                        <OptionInput
+                            type="text"
+                            name="account_bank_code"
+                            value={value.account_bank_code}
+                            onChange={handle}
+                            placeholder="선택하세요."
+                            label="계좌은행"
+                        />
+                        {/* 계좌 은행은 버튼으로 만들어야 하는데 모달 미작업 상태라 임시 인풋으로 넣어둠 */}
+                        <OptionInput
+                            type="text"
+                            name="account_holder"
+                            value={value.account_holder}
+                            onChange={handle}
+                            placeholder="계좌주를 입력해 주세요."
+                            label="계좌주"
+                        />
+                        <OptionInput
+                            type="text"
+                            name="account_number"
+                            value={value.account_number}
+                            onChange={handle}
+                            placeholder="계좌번호를 입력해 주세요."
+                            label="계좌번호"
+                        />
+                    </FormFieldSet>
+                    <ConsentComponent />
+
+                    <FixedButton>회원가입 신청</FixedButton>
+                </Form>
             </StyledRegisterWrapper>
         </AppLayout>
     );
@@ -156,59 +225,14 @@ const StyledRegisterWrapper = styled.div`
     }
 `;
 
-const StyledBankWrapper = styled.div`
-    margin-top: 1rem;
-    label {
-        color: ${Styles.colors.natural80};
-        font-size: ${Styles.font.size.fontsize14};
-        font-weight: ${Styles.font.weight.regular};
-    }
-`;
-
-const StyledBankInner = styled.div`
-    position: relative;
-    width: 100%;
+//
+const Form = styled.form``;
+const FormFieldSet = styled.fieldset`
     display: flex;
-    margin: 0.4rem 0 1.2rem;
-    button {
-        width: 100%;
-        height: 2.3rem;
-        padding: 0 0.8rem;
-        align-items: center;
-        background-color: ${Styles.colors.systemBackground};
-        border: none;
-        border-radius: 0.4rem;
-        text-align: left;
-        color: ${Styles.colors.natural40};
-        font-size: ${Styles.font.size.fontsize15};
-        font-weight: ${Styles.font.weight.regular};
-    }
-    span {
-        position: absolute;
-        top: 50%;
-        right: 0.8rem;
-        transform: translateY(-50%);
-        cursor: pointer;
-        display: flex;
-        justify-content: end;
-        align-items: center;
-
-        img {
-            width: 1.2rem;
-            height: 1.2rem;
-            margin: 0;
-        }
-    }
-`;
-const StyledPwVerify = styled.div`
-    position: relative;
-    margin-bottom: 1.5rem;
-`;
-const PasswordMismatchError = styled.div`
-    color: ${Styles.colors.systemError};
-    font-size: ${Styles.font.size.fontsize14};
-    margin-top: -1.1rem;
-    margin-left: 0.8rem;
+    flex-direction: column;
+    gap: 1.2rem;
+    justify-content: center;
+    align-items: center;
 `;
 
 export default StaffRegister;

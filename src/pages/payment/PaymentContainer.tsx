@@ -1,132 +1,183 @@
 import { Styles } from "@/style/Styles";
 import styled from "styled-components";
 import PaymentListItem from "./PaymentListItem";
-import Filter from "./Filter";
 import PaymentListItemHeader from "./PaymentListItemHeader";
 import { Fragment } from "react/jsx-runtime";
 import useScroll from "@/hooks/useScroll";
+import FilterContainer from "@/pages/payment/FilterContainer";
+import { useEffect, useState } from "react";
+import { Link } from "react-router-dom";
 
-const paymentList = [
-    {
-        id: "1",
-        transaction_at: "2023-03-23T15:00:20+09:00",
-        payment_provider_type: "VAN",
-        amount: 44000,
-    },
-    {
-        id: "2",
-        transaction_at: "2023-03-23T15:00:20+09:00",
-        payment_provider_type: "PG",
-        amount: -44000,
-    },
-    {
-        id: "3",
-        transaction_at: "2023-03-23T15:00:20+09:00",
-        payment_provider_type: "VAN",
-        amount: 44000,
-    },
-    {
-        id: "4",
-        transaction_at: "2023-03-23T15:00:20+09:00",
-        payment_provider_type: "PG",
-        amount: -44000,
-    },
-    {
-        id: "5",
-        transaction_at: "2023-03-23T15:00:20+09:00",
-        payment_provider_type: "PG",
-        amount: 44000,
-    },
-    {
-        id: "6",
-        transaction_at: "2023-03-22T15:00:20+09:00",
-        payment_provider_type: "PG",
-        amount: -44000,
-    },
-    {
-        id: "7",
-        transaction_at: "2023-03-22T15:00:20+09:00",
-        payment_provider_type: "VAN",
-        amount: 44000,
-    },
-    {
-        id: "8",
-        transaction_at: "2023-03-22T15:00:20+09:00",
-        payment_provider_type: "VAN",
-        amount: -44000,
-    },
-    {
-        id: "9",
-        transaction_at: "2023-03-22T15:00:20+09:00",
-        payment_provider_type: "VAN",
-        amount: 44000,
-    },
-    {
-        id: "10",
-        transaction_at: "2023-03-21T15:00:20+09:00",
-        payment_provider_type: "VAN",
-        amount: 44000,
-    },
-    {
-        id: "11",
-        transaction_at: "2023-03-21T15:00:20+09:00",
-        payment_provider_type: "PG",
-        amount: -44000,
-    },
-    {
-        id: "12",
-        transaction_at: "2023-03-21T15:00:20+09:00",
-        payment_provider_type: "VAN",
-        amount: 44000,
-    },
-    {
-        id: "13",
-        transaction_at: "2023-03-21T15:00:20+09:00",
-        payment_provider_type: "VAN",
-        amount: -44000,
-    },
-    {
-        id: "14",
-        transaction_at: "2023-03-21T15:00:20+09:00",
-        payment_provider_type: "VAN",
-        amount: 44000,
-    },
-    {
-        id: "15",
-        transaction_at: "2023-03-21T15:00:20+09:00",
-        payment_provider_type: "VAN",
-        amount: 44000,
-    },
-];
+interface paymentContents {
+    id: string;
+    transaction_at: string;
+    payment_provider_type: "PG" | "VAN" | "APP" | "ETC";
+    amount: number;
+}
+
+interface paymentList {
+    page: number;
+    size: number;
+    sort: "ASC" | "DESC";
+    total_pages: number;
+    total_count: number;
+    contents: paymentContents[];
+    message: string;
+    total_amount: number;
+}
 
 const PaymentContainer = () => {
+    const { scrollY } = useScroll();
+
     // const sortedPaymentList = paymentList.map((payment) => {
     //     const getDate = new Date(payment.transaction_at).toLocaleDateString();
     //     console.log(getDate);
     // });
-    const { scrollY } = useScroll();
+
+    const [data, setData] = useState<paymentList>({
+        page: 0,
+        size: 0,
+        sort: "ASC",
+        total_pages: 0,
+        total_count: 0,
+        contents: [],
+        message: "",
+        total_amount: 0,
+    });
+
+    useEffect(() => {
+        setData({
+            ...data,
+            ...{
+                page: 0,
+                size: 0,
+                sort: "ASC",
+                total_pages: 0,
+                total_count: 0,
+                contents: [
+                    {
+                        id: "1",
+                        transaction_at: "2023-03-23T15:00:20+09:00",
+                        payment_provider_type: "VAN",
+                        amount: 44000,
+                    },
+                    {
+                        id: "2",
+                        transaction_at: "2023-03-23T15:00:20+09:00",
+                        payment_provider_type: "PG",
+                        amount: -44000,
+                    },
+                    {
+                        id: "3",
+                        transaction_at: "2023-03-23T15:00:20+09:00",
+                        payment_provider_type: "VAN",
+                        amount: 44000,
+                    },
+                    {
+                        id: "4",
+                        transaction_at: "2023-03-23T15:00:20+09:00",
+                        payment_provider_type: "PG",
+                        amount: -44000,
+                    },
+                    {
+                        id: "5",
+                        transaction_at: "2023-03-23T15:00:20+09:00",
+                        payment_provider_type: "PG",
+                        amount: 44000,
+                    },
+                    {
+                        id: "6",
+                        transaction_at: "2023-03-22T15:00:20+09:00",
+                        payment_provider_type: "PG",
+                        amount: -44000,
+                    },
+                    {
+                        id: "7",
+                        transaction_at: "2023-03-22T15:00:20+09:00",
+                        payment_provider_type: "VAN",
+                        amount: 44000,
+                    },
+                    {
+                        id: "8",
+                        transaction_at: "2023-03-22T15:00:20+09:00",
+                        payment_provider_type: "VAN",
+                        amount: -44000,
+                    },
+                    {
+                        id: "9",
+                        transaction_at: "2023-03-22T15:00:20+09:00",
+                        payment_provider_type: "VAN",
+                        amount: 44000,
+                    },
+                    {
+                        id: "10",
+                        transaction_at: "2023-03-21T15:00:20+09:00",
+                        payment_provider_type: "VAN",
+                        amount: 44000,
+                    },
+                    {
+                        id: "11",
+                        transaction_at: "2023-03-21T15:00:20+09:00",
+                        payment_provider_type: "PG",
+                        amount: -44000,
+                    },
+                    {
+                        id: "12",
+                        transaction_at: "2023-03-21T15:00:20+09:00",
+                        payment_provider_type: "VAN",
+                        amount: 44000,
+                    },
+                    {
+                        id: "13",
+                        transaction_at: "2023-03-21T15:00:20+09:00",
+                        payment_provider_type: "VAN",
+                        amount: -44000,
+                    },
+                    {
+                        id: "14",
+                        transaction_at: "2023-03-21T15:00:20+09:00",
+                        payment_provider_type: "VAN",
+                        amount: 44000,
+                    },
+                    {
+                        id: "15",
+                        transaction_at: "2023-03-21T15:00:20+09:00",
+                        payment_provider_type: "VAN",
+                        amount: 44000,
+                    },
+                ],
+                message: "test",
+                total_amount: 113200,
+            },
+        });
+        return () => {};
+    }, [data]);
 
     return (
         <>
             <StyledTotalPaymentWrap className={`${scrollY >= 130 ? "fixed" : ""}`}>
                 <div>
                     <p>결제 총 금액</p>
-                    <h2>5,000,000원</h2>
+                    <h2 className={data.total_amount >= 0 ? "" : "minus"}>
+                        {data.total_amount.toLocaleString()}원
+                    </h2>
                     <p className="date">2023.03.04 ~ 2023.04.04</p>
                 </div>
             </StyledTotalPaymentWrap>
-            <Filter />
-            {paymentList.map((payment, index) => (
-                <Fragment key={payment.id}>
-                    <PaymentListItemHeader transaction_at={payment.transaction_at} index={index} />
-                    <PaymentListItem payment={payment} index={index} />
-                    {paymentList.length === index + 1 ? (
-                        <div style={{ height: "50rem" }}></div>
-                    ) : (
-                        <div style={{ marginBottom: "1rem" }}></div>
-                    )}
-                </Fragment>
-            ))}
+            <FilterContainer />
+            <StyledPaymentListItemContainer>
+                {data.contents.map((payment, index) => (
+                    <Fragment key={payment.id}>
+                        <PaymentListItemHeader
+                            transaction_at={payment.transaction_at}
+                            index={index}
+                        />
+                        <Link to={`/payment/${payment.id}`}>
+                            <PaymentListItem payment={payment} index={index} />
+                        </Link>
+                    </Fragment>
+                ))}
+            </StyledPaymentListItemContainer>
         </>
     );
 };
@@ -154,6 +205,9 @@ const StyledTotalPaymentWrap = styled.section`
             font-size: ${Styles.font.size.fontsize24};
             font-weight: ${Styles.font.weight.semibold};
             margin-bottom: 0.6rem;
+            &.minus {
+                color: ${Styles.colors.systemError};
+            }
         }
         p.date {
             color: ${Styles.colors.natural30};
@@ -161,4 +215,8 @@ const StyledTotalPaymentWrap = styled.section`
             font-weight: ${Styles.font.weight.regular};
         }
     }
+`;
+
+const StyledPaymentListItemContainer = styled.div`
+    padding-bottom: 2.8rem;
 `;

@@ -1,28 +1,71 @@
+import { useState, ChangeEvent } from "react";
 import styled from "styled-components";
-import LabelInput from "@/components/input/LabelInput";
+
+import OptionInput from "@/components/input/OptionInput";
 import { Styles } from "@/style/Styles";
 
 const RealtyPaymentInput = () => {
+    const [value, setValue] = useState({
+        username: "",
+        name: "",
+        amount: "",
+        fee_rate: "",
+    });
+
+    const handle = (e: ChangeEvent<HTMLInputElement>) => {
+        setValue({
+            ...value,
+            [e.target.name]: e.target.value,
+        });
+    };
     const idList = [{ title: "임대료" }, { title: "관리비" }, { title: "수리비" }];
     return (
         <StyledPaymentInputWrapper>
-            <LabelInput option="아이디" placeholder="아이디를 입력해주세요." id="username" />
-            <LabelInput option="결제자명" placeholder="결제자명을 입력해주세요." id="name" />
-
-            <StyledSelectButton>
-                <label>결제항목 선택</label>
-                <StyledPaymentSelect>
-                    {idList.map((item, index) => (
-                        <li key={index}>
-                            <input type="radio" name="idList" />
-                            <p>{item.title}</p>
-                        </li>
-                    ))}
-                </StyledPaymentSelect>
-            </StyledSelectButton>
-
-            <LabelInput option="결제액" placeholder="결제액을 입력해주세요." name="pay" />
-            <LabelInput option="수수료" id="charge" />
+            <StyledInputContainer>
+                <OptionInput
+                    type="text"
+                    name="username"
+                    value={value.username}
+                    onChange={handle}
+                    placeholder="예) 소소상점"
+                    label="아이디"
+                />
+                <OptionInput
+                    type="text"
+                    name="name"
+                    value={value.name}
+                    onChange={handle}
+                    placeholder="예) 김소소"
+                    label="결제자명"
+                />
+                <StyledSelectButton>
+                    <label>결제항목 선택</label>
+                    <StyledPaymentSelect>
+                        {idList.map((item, index) => (
+                            <li key={index}>
+                                <input type="radio" name="idList" />
+                                <p>{item.title}</p>
+                            </li>
+                        ))}
+                    </StyledPaymentSelect>
+                </StyledSelectButton>
+                <OptionInput
+                    type="text"
+                    name="amount"
+                    value={value.amount}
+                    onChange={handle}
+                    placeholder="금액을 입력해주세요."
+                    label="결제액"
+                />
+                <OptionInput
+                    type="text"
+                    name="fee_rate"
+                    value={value.fee_rate}
+                    onChange={handle}
+                    placeholder="1.5"
+                    label="수수료"
+                />
+            </StyledInputContainer>
         </StyledPaymentInputWrapper>
     );
 };
@@ -80,5 +123,11 @@ const StyledPaymentSelect = styled.ul`
             margin: 0;
         }
     }
+`;
+
+const StyledInputContainer = styled.div`
+    display: flex;
+    flex-direction: column;
+    gap: 1.2rem;
 `;
 export default RealtyPaymentInput;

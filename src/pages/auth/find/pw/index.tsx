@@ -3,52 +3,24 @@ import styled from "styled-components";
 
 import AppLayout from "@/components/layout/AppLayout";
 import AppBackHeader from "@/components/header/AppBackHeader";
-import LabelInput from "@/components/input/LabelInput";
-import EnabledButton from "@/components/button/EnabledButton";
-import TimerInput from "@/components/input/TimerInput";
-import instance from "@/apis/instance";
+// import TimerInput from "@/components/input/TimerInput";
+// import instance from "@/apis/instance";
 
 import { Styles } from "@/style/Styles";
+import OptionInput from "@/components/input/OptionInput";
+import FixedButton from "@/components/button/FixedButton";
 
 const FindPW = () => {
-    const [name, setName] = useState("");
-    const [username, setUserName] = useState("");
-    const [phoneNumber, setPhoneNumber] = useState<string | null>(null);
-    const [verificationCode, setVerificationCode] = useState<string | null>(null);
+    const [value, setValue] = useState({
+        name: "",
+        username: "",
+    });
 
-    const handleNameChange = (e: ChangeEvent<HTMLInputElement>) => {
-        setName(e.target.value);
-    };
-    const handleUserNameChange = (e: ChangeEvent<HTMLInputElement>) => {
-        setUserName(e.target.value);
-    };
-
-    const handleVerified = (status: boolean, phoneNumber?: string, verificationCode?: string) => {
-        if (status && phoneNumber && verificationCode) {
-            setPhoneNumber(phoneNumber);
-            setVerificationCode(verificationCode);
-        }
-    };
-
-    const handleFindPw = async () => {
-        if (!phoneNumber || !verificationCode) {
-            console.error("휴대폰 번호 또는 인증번호가 누락되었습니다.");
-            return;
-        }
-
-        try {
-            const response = await instance.post("/api/v1/members/find-password", {
-                name: name,
-                username: username,
-                cellphone_number: phoneNumber,
-                verification_code: verificationCode,
-            });
-            console.log("비밀번호 찾기 성공");
-            const json = response.data;
-            console.log(json);
-        } catch (error) {
-            console.error("비밀번호 찾기 실패");
-        }
+    const handle = (e: ChangeEvent<HTMLInputElement>) => {
+        setValue({
+            ...value,
+            [e.target.name]: e.target.value,
+        });
     };
 
     return (
@@ -59,22 +31,23 @@ const FindPW = () => {
                     <br />
                     인증을 진행해 주세요.
                 </h3>
-                <LabelInput
-                    option="아이디"
+                <OptionInput
+                    type="text"
+                    name="username"
+                    value={value.username}
+                    onChange={handle}
                     placeholder="예) soso1234"
-                    type="text"
-                    value={username}
-                    onChange={handleUserNameChange}
+                    label="아이디"
                 />
-                <LabelInput
-                    option="이름"
+                <OptionInput
+                    type="text"
+                    name="name"
+                    value={value.name}
+                    onChange={handle}
                     placeholder="예) 김소소"
-                    type="text"
-                    value={name}
-                    onChange={handleNameChange}
+                    label="이름"
                 />
-                <TimerInput initialSeconds={180} onVerified={handleVerified} />
-                <EnabledButton title="다음" onClick={handleFindPw} />
+                <FixedButton>다음</FixedButton>
             </StyledFindPwWrapper>
         </AppLayout>
     );

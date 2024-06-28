@@ -35,6 +35,18 @@ const PaymentListItem = ({ payment }: PaymentProps) => {
                         <span className="time">{transFormTime(payment.transaction_at)}</span>
                     </div>
                 </div>
+                <strong className={payment.amount >= 0 ? "" : "minus"}>
+                    {transFormAmount(payment.amount)}
+                </strong>
+            </div>
+            <div className={`infoContainer`}>
+                <div className="info">
+                    <div className="logo">{payment.payment_provider_type}</div>
+                    <div>
+                        <h3>{payment.payment_provider_type}</h3>
+                        <span className="time">{transFormTime(payment.transaction_at)}</span>
+                    </div>
+                </div>
                 <strong className={payment.amount > 0 ? "" : "minus"}>
                     {transFormAmount(payment.amount)}
                 </strong>
@@ -47,6 +59,7 @@ export default PaymentListItem;
 
 const StyledPaymentListItem = styled.div`
     padding: 0 1rem;
+    margin-bottom: 1rem;
 
     div.infoContainer {
         padding-top: 0.8rem;
@@ -89,6 +102,7 @@ const StyledPaymentListItem = styled.div`
                     font-size: ${Styles.font.size.fontsize15};
                     font-weight: ${Styles.font.weight.medium};
                 }
+
                 > span.time {
                     color: ${Styles.colors.natural40};
                     font-size: ${Styles.font.size.fontsize13};
@@ -101,9 +115,10 @@ const StyledPaymentListItem = styled.div`
             color: ${Styles.colors.natural90};
             font-size: ${Styles.font.size.fontsize16};
             font-weight: ${Styles.font.weight.regular};
-        }
-        strong.minus {
-            color: ${Styles.colors.systemError};
+
+            &.minus {
+                color: ${Styles.colors.systemError};
+            }
         }
     }
 `;

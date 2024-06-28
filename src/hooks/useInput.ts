@@ -3,7 +3,7 @@ import { useState } from "react";
 interface UseInputProps extends React.InputHTMLAttributes<HTMLInputElement> {}
 
 const useInput = ({ ...rest }: UseInputProps) => {
-    const [type, setType] = useState<string>(rest.type || "password");
+    const [type, setType] = useState<string>(rest.type || "text");
     const handleTypeChange = () => {
         setType((prev) => (prev === "password" ? "text" : "password"));
     };

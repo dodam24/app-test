@@ -37,7 +37,7 @@ const LoginInput = () => {
         e.preventDefault();
 
         if (!validatePassword(value.password)) {
-            setError("비밀번호는 8~20자리 영문+숫자+특수문자 포함이어야 합니다.");
+            setError("8~20자리 영문+숫자+특수문자 모두 포함하여 입력해주세요.");
             return;
         }
 

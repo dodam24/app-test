@@ -2,19 +2,39 @@ import styled from "styled-components";
 
 import AppBackHeader from "@/components/header/AppBackHeader";
 import AppLayout from "@/components/layout/AppLayout";
-import ButtonInput from "@/components/input/ButtonInput";
 import ManagePaymentList from "@/pages/manage/paymentRegister/ManagePaymentList";
+import Button from "@/components/button/Button";
+import OptionInput from "@/components/input/OptionInput";
+import { ChangeEvent, useState } from "react";
+import PhoneAuthInput from "@/components/input/PhoneAuthInput";
 
 const ManagePaymentRegister = () => {
+    const [value, setValue] = useState({
+        paymentDate: "",
+    });
+
+    const handle = (e: ChangeEvent<HTMLInputElement>) => {
+        setValue({
+            ...value,
+            [e.target.name]: e.target.value,
+        });
+    };
     return (
         <AppLayout props={{ header: <AppBackHeader title="지급등록" /> }}>
             <StyledManagePaymentWrapper>
-                <ButtonInput
-                    option="지급일"
-                    buttonTitle="세팅"
-                    placeholder="지급일을 입력해주세요."
-                />
+                <OptionInput
+                    type="text"
+                    name="paymentDate"
+                    value={value.paymentDate}
+                    onChange={handle}
+                    placeholder="6자 이상 영문+숫자 포함"
+                    label="지급일"
+                >
+                    <Button size="sub">세팅</Button>
+                </OptionInput>
                 <ManagePaymentList />
+                <PhoneAuthInput />
+                {/* 테스트 화면으로 넣어둠 지울거임 */}
             </StyledManagePaymentWrapper>
         </AppLayout>
     );

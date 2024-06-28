@@ -48,11 +48,14 @@ import ChangePassword from "@/pages/setting/password";
 import Terms from "@/pages/setting/terms";
 import TermsDetail from "@/pages/setting/terms/[id]";
 import EditPhone from "@/pages/setting/me/phone";
+import EditEmail from "@/pages/setting/me/email";
+import Withdraw from "@/pages/setting/me/withdraw";
 import ManageStaffRegister from "@/pages/manage/staffRegister";
 import StaffApproval from "@/pages/manage/staffRegister/StaffApproval";
 import StaffManageInfo from "@/pages/manage/staffRegister/StaffManageInfo";
 import ManagePaymentRegister from "@/pages/manage/paymentRegister";
 import Payment from "@/pages/payment";
+import PaymentDetail from "@/pages/payment/[id]";
 
 function App() {
     return (
@@ -64,6 +67,8 @@ function App() {
                 <Route path="/setting" element={<Setting />} />
                 <Route path="/setting/me" element={<Me />} />
                 <Route path="/setting/me/phone" element={<EditPhone />} />
+                <Route path="/setting/me/email" element={<EditEmail />} />
+                <Route path="/setting/me/withdraw" element={<Withdraw />} />
 
                 <Route path="/setting/change_password" element={<ChangePassword />} />
                 <Route path="/setting/terms" element={<Terms />} />
@@ -121,6 +126,7 @@ function App() {
                 <Route path="/employees_c/attendanceList" element={<AttendanceList />} />
 
                 <Route path="/payment" element={<Payment />} />
+                <Route path="/payment/:id" element={<PaymentDetail />} />
             </Routes>
         </div>
     );

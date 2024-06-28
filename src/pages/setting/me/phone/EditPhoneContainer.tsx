@@ -4,8 +4,13 @@ import Button from "@/components/button/Button";
 import FixedButton from "@/components/button/FixedButton";
 
 import { Styles } from "@/style/Styles";
+import { useInputHandler } from "@/pages/setting/me/phone/utils";
 
 const EditPhoneContainer = () => {
+    const { values, format, handleInputChange } = useInputHandler({
+        phone: "",
+    });
+
     return (
         <StyledEditPhoneContainer>
             <h2>
@@ -18,8 +23,13 @@ const EditPhoneContainer = () => {
                 name="phone"
                 placeholder="예) 010-1234-5678"
                 label="휴대폰번호"
+                autoComplete="off"
+                value={format}
+                onChange={(e) => handleInputChange(e)}
             >
-                <Button size="sub">인증요청</Button>
+                <Button size="sub" disabled={values.phone.length < 11}>
+                    인증요청
+                </Button>
             </OptionInput>
             <FixedButton disabled>저장</FixedButton>
         </StyledEditPhoneContainer>

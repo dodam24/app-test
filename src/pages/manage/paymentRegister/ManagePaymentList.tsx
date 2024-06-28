@@ -54,6 +54,7 @@ const ManagePaymentList = () => {
 export default ManagePaymentList;
 
 const StyledPaymentListWrapper = styled.ul`
+    margin-top: 1.85rem;
     display: flex;
     flex-direction: column;
     gap: 1rem;

@@ -71,7 +71,6 @@ const OwnerRegisterEmail = () => {
 };
 
 const StyledEmailWrapper = styled.div`
-    margin-top: 1.2rem;
     label {
         color: ${Styles.colors.natural80};
         font-size: ${Styles.font.size.fontsize14};
@@ -103,7 +102,7 @@ const StyledEmailWrapper = styled.div`
         gap: 0.3rem;
         align-items: center;
         justify-content: center;
-        margin: 0.4rem 0 1.2rem;
+        margin: 0.4rem 0 0;
     }
 `;
 

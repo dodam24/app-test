@@ -5,12 +5,14 @@ import AppFooterBar from "@/components/footer/AppFooterBar";
 import { Styles } from "@/style/Styles";
 import MoreServiceMenu from "./MoreServiceMenu";
 import MoreUser from "./MoreUser";
+import MoreCustomerService from "@/pages/more/MoreCustomerService";
 
 const More = () => {
     return (
         <AppLayout props={{ header: <AppHeader title="더보기" /> }}>
             <StyledMoreWrap>
                 <MoreUser />
+                <MoreCustomerService />
                 <div className="border" />
                 <MoreServiceMenu />
             </StyledMoreWrap>

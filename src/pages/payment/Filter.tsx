@@ -1,82 +1,117 @@
-import { Styles } from "@/style/Styles";
 import styled from "styled-components";
-import FilterIcon from "@/assets/images/icons/icon_filter.png";
-import useScroll from "@/hooks/useScroll";
+import FilterClose from "@/assets/images/icons/icon_close.png";
+import { Styles } from "@/style/Styles";
+import ConditionOfDate from "@/components/filter/ConditionOfDate";
+import ConditionOfStaffType from "@/components/filter/ConditionOfStaffType";
+import ConditionOfStatus from "@/components/filter/ConditionOfStatus";
+import ConditionOfOrderBy from "@/components/filter/ConditionOfOrderBy";
+import ConditionOfAmount from "@/components/filter/ConditionOfAmount";
+import Button from "@/components/button/Button";
 
-const Filter = () => {
-    const { scrollY } = useScroll();
+interface FilterProps {
+    isFilterOpen: boolean;
+    setIsFilterOpen: React.Dispatch<React.SetStateAction<boolean>>;
+    filterHeaderTitle: string;
+}
+
+const Filter = ({ isFilterOpen, setIsFilterOpen, filterHeaderTitle }: FilterProps) => {
+    const handleFilterInactive = () => {
+        setIsFilterOpen(false);
+    };
+
+    if (isFilterOpen) {
+        setTimeout(() => {
+            document.body.style.overflow = "hidden";
+        }, 100);
+    } else {
+        document.body.style.overflow = "unset";
+    }
 
     return (
-        <>
-            <StyledFilterWrap className={`${scrollY >= 130 ? "fixed" : ""}`}>
-                <StyledFilterContainer className={`${scrollY >= 130 ? "fixed" : ""}`}>
-                    <span>총 34건</span>
-                    <ul>
-                        <li>1개월</li>
-                        <li>전체</li>
-                        <li>최신순</li>
-                        <li>
-                            <img src={FilterIcon} alt="필터" className="icon" />
-                        </li>
-                    </ul>
-                </StyledFilterContainer>
-            </StyledFilterWrap>
-        </>
+        <StyledFilterWrap $isFilterOpen={isFilterOpen}>
+            <StyledFilterContainer $isFilterOpen={isFilterOpen}>
+                <StyledFilterHeader>
+                    <h4>{filterHeaderTitle}</h4>
+                    <img src={FilterClose} alt="필터" onClick={handleFilterInactive} />
+                </StyledFilterHeader>
+                <StyledFilterBody>
+                    <ConditionOfDate />
+                    <ConditionOfStaffType />
+                    <ConditionOfStatus />
+                    <ConditionOfOrderBy />
+                    <ConditionOfAmount />
+                </StyledFilterBody>
+                <Button>조회</Button>
+            </StyledFilterContainer>
+        </StyledFilterWrap>
     );
 };
 
 export default Filter;
 
-const StyledFilterWrap = styled.section`
-    &.fixed {
-        position: fixed;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 6.5rem;
-        display: flex;
-        align-items: flex-end;
-        z-index: 10;
-    }
+const StyledFilterWrap = styled.div<{ $isFilterOpen: boolean }>`
+    position: fixed;
+    left: 0;
+    bottom: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 99999;
+    opacity: 0;
+    visibility: hidden;
+    transition: 0.3s;
+    background-color: rgba(0, 0, 0, 0.2);
 
-    background-color: ${Styles.colors.systemWhite};
+    ${({ $isFilterOpen }) =>
+        $isFilterOpen &&
+        `
+        opacity: 1;
+        visibility: visible;
+    `};
 `;
 
-const StyledFilterContainer = styled.div`
-    &.fixed {
-        width: 100%;
-        z-index: 10;
-    }
+const StyledFilterContainer = styled.div<{ $isFilterOpen: boolean }>`
+    position: inherit;
+    left: 0;
+    bottom: 0;
+    width: 100%;
+    height: 0%;
+    background-color: #fff;
+    z-index: 999999;
+    opacity: 0;
+    visibility: hidden;
+    transition: 0.3s;
+    border-radius: 0.9rem 0.9rem 0 0;
+    padding: 1.5rem 1rem 1rem 1rem;
+    overflow-y: auto;
 
+    ${({ $isFilterOpen }) =>
+        $isFilterOpen &&
+        `
+        height: 92%;
+        opacity: 1;
+        visibility: visible;
+    `};
+`;
+
+const StyledFilterHeader = styled.div`
     display: flex;
-    padding: 0.7rem 1.2rem;
+    align-items: center;
     justify-content: space-between;
-    background-color: ${Styles.colors.systemBackground};
-    border-top: 1px solid ${Styles.colors.natural10};
-    border-bottom: 1px solid ${Styles.colors.natural10};
-
-    span {
-        color: ${Styles.colors.brandBlue};
-        font-size: ${Styles.font.size.fontsize14};
+    h4 {
+        color: ${Styles.colors.natural90};
+        font-size: ${Styles.font.size.fontsize18};
         font-weight: ${Styles.font.weight.medium};
     }
-    ul {
-        position: relative;
-        display: flex;
-        color: ${Styles.colors.natural80};
-        font-size: ${Styles.font.size.fontsize14};
-        font-weight: ${Styles.font.weight.regular};
-        gap: 0.5rem;
-        li {
-            & :first-child:after {
-                content: "";
-                width: 1rem;
-                height: 1rem;
-                border-radius: 50%;
-            }
-            img {
-                width: 0.8rem;
-            }
-        }
+    img {
+        width: 1.2rem;
+        height: 1.2rem;
     }
+    margin-bottom: 2.5rem;
+`;
+
+const StyledFilterBody = styled.div`
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+    margin-bottom: 4rem;
 `;
