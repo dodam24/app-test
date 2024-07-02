@@ -4,7 +4,6 @@ import DynamicModal from "@/components/modal/DynamicModal";
 import ConfirmationModal from "@/components/modal/ui/ConfirmationModal";
 import InquiryTextField from "../component/InquiryTextField";
 import useModal from "@/hooks/useModal";
-import LargeTitle from "../component/LargeTitle";
 import FixedButton from "@/components/button/FixedButton";
 
 // 임시 데이터
@@ -20,7 +19,7 @@ const InquiryRegistration = () => {
                 <p>{userInfo.email}</p>
             </StyledEmailInformation>
             <StyledInquiryContent>
-                <LargeTitle title="문의 내용" />
+                <h3>문의 내용</h3>
                 <InquiryTextField maxLength={50} placeholder="제목을 입력해 주세요." />
                 <InquiryTextField maxLength={2000} placeholder="내용을 입력해 주세요." isTextArea />
                 <p className="message">
@@ -60,6 +59,7 @@ const StyledEmailInformation = styled.div`
         font-size: ${Styles.font.size.fontsize14};
         font-weight: ${Styles.font.weight.regular};
     }
+
     p {
         color: ${Styles.colors.natural90};
         font-size: ${Styles.font.size.fontsize18};
@@ -69,6 +69,13 @@ const StyledEmailInformation = styled.div`
 const StyledInquiryContent = styled.div`
     width: 100%;
     margin: 2rem 0 1.8rem 0;
+
+    h3 {
+        color: ${Styles.colors.natural90};
+        font-size: ${Styles.font.size.fontsize18};
+        font-weight: ${Styles.font.weight.medium};
+        line-height: 1.4;
+    }
 
     .message {
         padding: 0.5rem 0 1.8rem 0;

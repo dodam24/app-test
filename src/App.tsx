@@ -14,15 +14,14 @@ import StaffCheck from "@/pages/auth/register/option/StaffCheck";
 
 import More from "@/pages/more";
 import Faq from "@/pages/more/faq";
-import FaqDetails from "@/pages/more/faq/[id]/index";
+import FaqDetails from "@/pages/more/faq/[id]";
 import Notice from "@/pages/more/notice";
-import NoticeDetails from "@/pages/more/notice/[id]/index";
+import NoticeDetails from "@/pages/more/notice/[id]";
 import Inquiry from "@/pages/more/inquiry";
 import Alarm from "@/pages/alarm";
 import Setting from "@/pages/setting";
-// 직원용: 출퇴근 등록 및 근무 내역 (temp)
-import Attendance from "@/pages/employees_c/attendance";
-import AttendanceList from "@/pages/employees_c/attendanceList";
+import Attendance from "@/pages/employee/attendance";
+import AttendanceList from "@/pages/employee/attendanceList";
 
 import Loan from "@/pages/loan";
 import LoanItemInfo from "@/pages/loan/LoanItemInfo";
@@ -49,7 +48,7 @@ import Terms from "@/pages/setting/terms";
 import TermsDetail from "@/pages/setting/terms/[id]";
 import EditPhone from "@/pages/setting/me/phone";
 import EditEmail from "@/pages/setting/me/email";
-import Withdraw from "@/pages/setting/me/withdraw";
+import Delete from "@/pages/setting/me/delete";
 import ManageStaffRegister from "@/pages/manage/staffRegister";
 import StaffApproval from "@/pages/manage/staffRegister/StaffApproval";
 import StaffManageInfo from "@/pages/manage/staffRegister/StaffManageInfo";
@@ -68,7 +67,7 @@ function App() {
                 <Route path="/setting/me" element={<Me />} />
                 <Route path="/setting/me/phone" element={<EditPhone />} />
                 <Route path="/setting/me/email" element={<EditEmail />} />
-                <Route path="/setting/me/withdraw" element={<Withdraw />} />
+                <Route path="/setting/me/delete" element={<Delete />} />
 
                 <Route path="/setting/change_password" element={<ChangePassword />} />
                 <Route path="/setting/terms" element={<Terms />} />
@@ -114,16 +113,14 @@ function App() {
                 <Route path="/manage/payment/register" element={<ManagePaymentRegister />} />
 
                 <Route path={"*"} element={<NotFound />} />
-                {/* 도담 작업사항 */}
                 <Route path="/more" element={<More />} />
                 <Route path="/more/faq" element={<Faq />} />
                 <Route path="/more/faq/:id" element={<FaqDetails />} />
                 <Route path="/more/notice" element={<Notice />} />
                 <Route path="/more/notice/:id" element={<NoticeDetails />} />
                 <Route path="/more/inquiry" element={<Inquiry />} />
-                {/* 직원용: 출/퇴근 등록 및 근무내역 (temp) */}
-                <Route path="/employees_c/attendance" element={<Attendance />} />
-                <Route path="/employees_c/attendanceList" element={<AttendanceList />} />
+                <Route path="/employee/attendance" element={<Attendance />} />
+                <Route path="/employee/attendanceList" element={<AttendanceList />} />
 
                 <Route path="/payment" element={<Payment />} />
                 <Route path="/payment/:id" element={<PaymentDetail />} />
