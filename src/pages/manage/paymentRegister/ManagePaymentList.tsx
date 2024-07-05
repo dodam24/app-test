@@ -68,10 +68,12 @@ const StyledPaymentItemTop = styled.div`
     flex-direction: column;
     padding: 1rem 1rem 0.5rem;
     gap: 0.5rem;
+    word-break: break-all;
     div {
         display: flex;
         justify-content: space-between;
         align-items: center;
+        gap: 2.4rem;
         h3 {
             color: ${Styles.colors.natural90};
             font-size: ${Styles.font.size.fontsize15};
@@ -85,16 +87,19 @@ const StyledPaymentItemTop = styled.div`
             padding: 0.15rem 0.4rem;
             border: 1px solid ${Styles.colors.primary100};
             border-radius: 0.4rem;
+            min-width: fit-content;
         }
         h4 {
             color: ${Styles.colors.natural60};
             font-size: ${Styles.font.size.fontsize14};
             font-weight: ${Styles.font.weight.regular};
+            min-width: fit-content;
         }
         p {
             color: ${Styles.colors.natural80};
             font-size: ${Styles.font.size.fontsize14};
             font-weight: ${Styles.font.weight.regular};
+            text-align: right;
         }
     }
 `;

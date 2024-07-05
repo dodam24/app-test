@@ -1,35 +1,73 @@
 import { useState } from "react";
 import styled from "styled-components";
-
 import { Styles } from "@/style/Styles";
-
 import { CheckedOff, CheckedOn } from "@/pages/auth/register/_images/register_img";
 
-const ConsentComponent = () => {
-    const [checkboxStates, setCheckboxStates] = useState([
-        {
-            label: "이용약관에 동의합니다. (필수)",
-            checked: false,
-            detailLink: "#",
-            id: "consent1",
-        },
-        {
-            label: "개인정보 수집 및 이용에 동의합니다. (필수)",
-            checked: false,
-            detailLink: "#",
-            id: "consent2",
-        },
-        {
-            label: "만 14세 이상입니다. (필수)",
-            checked: false,
-            detailLink: "",
-            id: "consent3",
-        },
-    ]);
+interface ConsentComponentProps {
+    Loan?: boolean;
+}
 
-    const handleCheckboxChange = (index: number) => {
-        const newCheckboxStates = [...checkboxStates];
-        newCheckboxStates[index].checked = !newCheckboxStates[index].checked;
+const ConsentComponent = ({ Loan }: ConsentComponentProps) => {
+    const initialCheckboxStates = Loan
+        ? [
+              {
+                  label: "이용약관에 동의합니다. (필수)",
+                  checked: false,
+                  detailLink: "#",
+                  id: "1",
+              },
+              {
+                  label: "개인정보 수집 및 이용에 동의합니다. (필수)",
+                  checked: false,
+                  detailLink: "#",
+                  id: "2",
+              },
+              {
+                  label: "개인(신용) 정보 수집·이용·제공 동의 (필수)",
+                  checked: false,
+                  detailLink: "#",
+                  id: "3",
+              },
+              {
+                  label: "상품서비스 안내수단에 동의 (필수)",
+                  checked: false,
+                  detailLink: "",
+                  id: "4",
+              },
+              {
+                  label: "보증보험사 약관 동의 (필수)",
+                  checked: false,
+                  detailLink: "",
+                  id: "5",
+              },
+          ]
+        : [
+              {
+                  label: "이용약관에 동의합니다. (필수)",
+                  checked: false,
+                  detailLink: "#",
+                  id: "1",
+              },
+              {
+                  label: "개인정보 수집 및 이용에 동의합니다. (필수)",
+                  checked: false,
+                  detailLink: "#",
+                  id: "2",
+              },
+              {
+                  label: "만 14세 이상입니다. (필수)",
+                  checked: false,
+                  detailLink: "",
+                  id: "3",
+              },
+          ];
+
+    const [checkboxStates, setCheckboxStates] = useState(initialCheckboxStates);
+
+    const handleCheckboxChange = (id: string) => {
+        const newCheckboxStates = checkboxStates.map((checkbox) =>
+            checkbox.id === id ? { ...checkbox, checked: !checkbox.checked } : checkbox,
+        );
         setCheckboxStates(newCheckboxStates);
     };
 
@@ -51,21 +89,20 @@ const ConsentComponent = () => {
                         id="consentAll"
                         type="checkbox"
                         checked={checkboxStates.every((checkbox) => checkbox.checked)}
-                        onChange={() => toggleAllCheckboxes()}
-                        onClick={toggleAllCheckboxes}
+                        onChange={toggleAllCheckboxes}
                     />
                     <label htmlFor="consentAll">모두 동의</label>
                 </ConsentWrapper>
             </div>
             <ConsentContainer>
-                {checkboxStates.map((checkbox, index) => (
+                {checkboxStates.map((checkbox) => (
                     <ConsentList key={checkbox.id}>
                         <ConsentWrapper>
                             <input
                                 id={checkbox.id}
                                 type="checkbox"
                                 checked={checkbox.checked}
-                                onChange={() => handleCheckboxChange(index)}
+                                onChange={() => handleCheckboxChange(checkbox.id)}
                             />
                             <label htmlFor={checkbox.id}>{checkbox.label}</label>
                         </ConsentWrapper>
@@ -82,7 +119,6 @@ const ConsentComponent = () => {
 };
 
 const CommonContent = styled.div`
-    margin-top: 2rem;
     div {
         display: flex;
         align-items: flex-start;
@@ -109,6 +145,7 @@ const ConsentWrapper = styled.label`
         background-size: 1rem 1rem;
         appearance: none;
         margin: 0;
+        min-width: 1rem;
 
         &:checked {
             background: url(${CheckedOn}) no-repeat center;
@@ -122,6 +159,7 @@ const ConsentWrapper = styled.label`
         font-weight: ${Styles.font.weight.regular};
     }
 `;
+
 const ConsentContainer = styled.ul`
     width: 100%;
     display: flex;
@@ -129,11 +167,11 @@ const ConsentContainer = styled.ul`
     align-items: center;
     justify-content: center;
     gap: 0.65rem;
-    height: 6.15rem;
     border-radius: 0.4rem;
     background-color: ${Styles.colors.systemBackground};
-    margin: 0.4rem 0 1.9rem;
-    padding: 0 0.8rem;
+    margin: 0.4rem 0 0;
+    padding: 0.85rem 0.8rem;
+    word-break: break-all;
 `;
 
 const ConsentList = styled.li`
@@ -141,13 +179,17 @@ const ConsentList = styled.li`
     display: flex;
     align-items: center;
     justify-content: space-between;
+    gap: 1.2rem;
 
     a {
         color: ${Styles.colors.natural60};
         font-size: ${Styles.font.size.fontsize12};
         font-weight: ${Styles.font.weight.regular};
         line-height: 140%;
+        text-decoration: underline;
         text-underline-position: under;
+        min-width: fit-content;
     }
 `;
+
 export default ConsentComponent;

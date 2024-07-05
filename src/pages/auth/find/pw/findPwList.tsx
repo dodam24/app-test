@@ -1,4 +1,4 @@
-import { useState, ChangeEvent } from "react";
+import { useState, ChangeEvent, FormEvent } from "react";
 import styled from "styled-components";
 
 import AppLayout from "@/components/layout/AppLayout";
@@ -7,12 +7,22 @@ import FixedButton from "@/components/button/FixedButton";
 import OptionInput from "@/components/input/OptionInput";
 import { validatePassword } from "@/utils/inputVerify";
 
-import { Styles } from "@/style/Styles";
+import AppBaseWrapper from "@/components/layout/AppBaseWrapper";
+import DynamicModal from "@/components/modal/DynamicModal";
+import ConfirmationModal from "@/components/modal/ui/ConfirmationModal";
+import useModal from "@/hooks/useModal";
 
 const FindPwList = () => {
+    const { isOpen, openModal, closeModal } = useModal();
+
+    const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
+        e.preventDefault();
+        openModal();
+    };
+
     const [value, setValue] = useState({
         password: "",
-        passwordverify: "",
+        passwordVerify: "",
         passwordValid: false,
         passwordMatch: false,
         verifyMatch: false,
@@ -39,7 +49,7 @@ const FindPwList = () => {
             setValue((prevState) => ({
                 ...prevState,
                 passwordValid: isPasswordValid,
-                passwordMatch: isPasswordValid && prevState.passwordverify === inputValue,
+                passwordMatch: isPasswordValid && prevState.passwordVerify === inputValue,
                 error: {
                     ...prevState.error,
                     passwordError: isPasswordValid
@@ -47,7 +57,7 @@ const FindPwList = () => {
                         : "8~20자리 영문+숫자+특수문자 모두 포함하여 입력해주세요.",
                 },
             }));
-        } else if (name === "passwordverify") {
+        } else if (name === "passwordVerify") {
             setValue((prevState) => ({
                 ...prevState,
                 verifyMatch: prevState.password === inputValue,
@@ -62,13 +72,8 @@ const FindPwList = () => {
 
     return (
         <AppLayout props={{ header: <AppBackHeader title="비밀번호 재설정" /> }}>
-            <StyledFindPwListWrapper>
-                <h3>
-                    김소소님의 아이디는
-                    <br />
-                    ‘soso1234’ 이에요.
-                </h3>
-                <StyledInputContainer>
+            <AppBaseWrapper title={`김소소님의 아이디는\n‘soso1234’ 이에요.`}>
+                <StyledInputContainer onSubmit={(e) => handleSubmit(e)}>
                     <OptionInput
                         type="password"
                         name="password"
@@ -90,8 +95,8 @@ const FindPwList = () => {
                     />
                     <OptionInput
                         type="password"
-                        name="passwordverify"
-                        value={value.passwordverify}
+                        name="passwordVerify"
+                        value={value.passwordVerify}
                         onChange={handle}
                         placeholder="비밀번호를 한번 더 입력해 주세요."
                         maxLength={20}
@@ -106,31 +111,26 @@ const FindPwList = () => {
                             },
                         }}
                     />
+                    <FixedButton type="submit">확인</FixedButton>
                 </StyledInputContainer>
-                <FixedButton>확인</FixedButton>
-            </StyledFindPwListWrapper>
+                <DynamicModal open={isOpen} close={closeModal}>
+                    <ConfirmationModal
+                        title="설정 완료"
+                        message={"비밀번호 변경이\n 정상적으로 완료되었습니다."}
+                        close={closeModal}
+                        buttonText="로그인 하러 가기"
+                    />
+                </DynamicModal>
+            </AppBaseWrapper>
         </AppLayout>
     );
 };
 
-const StyledFindPwListWrapper = styled.div`
-    width: 100%;
-    padding: 0 1rem 0.6rem;
-    h3 {
-        color: ${Styles.colors.natural90};
-        font-size: ${Styles.font.size.fontsize18};
-        font-weight: ${Styles.font.weight.medium};
-        line-height: 140%;
-        width: 100%;
-        text-align: left;
-        margin: 1rem 0 1.5rem;
-    }
-`;
-
-const StyledInputContainer = styled.div`
+const StyledInputContainer = styled.form`
     display: flex;
     flex-direction: column;
     gap: 0.6rem;
+    margin: 1.5rem 0 0;
 `;
 
 export default FindPwList;

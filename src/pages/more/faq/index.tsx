@@ -5,19 +5,107 @@ import styled from "styled-components";
 import Search from "@/assets/images/icons/icon_search.png";
 import Email from "@/assets/images/icons/icon_email_c.png";
 import Phone from "@/assets/images/icons/icon_phone_c.png";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import FaqListItem from "../component/FaqListItem";
-// import { Link } from "react-router-dom";
+import { Link } from "react-router-dom";
+
+interface FaqList {
+    id: number;
+    title: string;
+    category: "ETC" | "APP" | "SETTLEMENT" | "EMPLOYEE" | "TRANSACTION";
+    message: string;
+}
 
 const Faq = () => {
-    // faqList: FaqListItem에 있는 임시 데이터이므로 추후 삭제
+    const [faqData, setFaqData] = useState<FaqList>({
+        id: 0,
+        title: "",
+        category: "ETC",
+        message: "",
+    });
+
+    useEffect(() => {
+        setFaqData({
+            ...faqData,
+            ...[
+                {
+                    id: "1",
+                    title: "소소상점 설치 및 사용이 가능한 스마트 폰이 따로 있나요?",
+                    category: "APP",
+                    message: "",
+                },
+                {
+                    id: "2",
+                    title: "개인정보 필수 수집·이용 동의를 철회하고 싶어요.",
+                    category: "APP",
+                    message: "",
+                },
+                {
+                    id: "3",
+                    title: "앱 알림이 울리지 않아요.",
+                    category: "APP",
+                    message: "",
+                },
+                {
+                    id: "4",
+                    title: "비밀번호를 바꾸고 싶어요.",
+                    category: "APP",
+                    message: "",
+                },
+                {
+                    id: "5",
+                    title: "2대 이상의 스마트폰에서 동시에 이용할 수 있나요?",
+                    category: "APP",
+                    message: "",
+                },
+                {
+                    id: "6",
+                    title: "휴대폰 번호를 바꿨는데 회원정보를 변경할 수 있나요?",
+                    category: "APP",
+                    message: "",
+                },
+            ],
+        });
+    }, [faqData]);
+
+    // 임시 데이터
     const faqList = [
-        { id: 1, title: "소소상점 설치 및 사용이 가능한 스마트 폰이 따로 있나요?" },
-        { id: 2, title: "개인정보 필수 수집·이용 동의를 철회하고 싶어요." },
-        { id: 3, title: "앱 알림이 울리지 않아요." },
-        { id: 4, title: "비밀번호를 바꾸고 싶어요." },
-        { id: 5, title: "2대 이상의 스마트폰에서 동시에 이용할 수 있나요?" },
-        { id: 6, title: "휴대폰 번호를 바꿨는데 회원정보를 변경할 수 있나요?" },
+        {
+            id: "1",
+            title: "소소상점 설치 및 사용이 가능한 스마트 폰이 따로 있나요?",
+            category: "APP",
+            message: "",
+        },
+        {
+            id: "2",
+            title: "개인정보 필수 수집·이용 동의를 철회하고 싶어요.",
+            category: "APP",
+            message: "",
+        },
+        {
+            id: "3",
+            title: "앱 알림이 울리지 않아요.",
+            category: "APP",
+            message: "",
+        },
+        {
+            id: "4",
+            title: "비밀번호를 바꾸고 싶어요.",
+            category: "APP",
+            message: "",
+        },
+        {
+            id: "5",
+            title: "2대 이상의 스마트폰에서 동시에 이용할 수 있나요?",
+            category: "APP",
+            message: "",
+        },
+        {
+            id: "6",
+            title: "휴대폰 번호를 바꿨는데 회원정보를 변경할 수 있나요?",
+            category: "APP",
+            message: "",
+        },
     ];
 
     // 탭 메뉴 (category)
@@ -60,8 +148,11 @@ const Faq = () => {
                             <span>총 {faqList.length}건</span>
                         </div>
                         <StyledFaqListSection>
-                            <FaqListItem />
-                            {/* <Link to={`/faq/${id}`}></Link> */}
+                            {faqList.map((item) => (
+                                <Link to={`/more/faq/${item.id}`} key={item.id}>
+                                    <FaqListItem />
+                                </Link>
+                            ))}
                         </StyledFaqListSection>
                     </TabButtonContent>
                 </StyledFaqMainSection>
@@ -128,12 +219,10 @@ const SearchTextField = styled.div`
     }
     .btn_search {
         & > img {
-            /* display: flex; */
             width: 1.2rem;
             height: 1.2rem;
             justify-content: center;
             align-items: center;
-            flex-shrink: 0;
         }
     }
 `;

@@ -36,14 +36,17 @@ const MoreCustomerService = () => {
     );
 };
 
-const StyledCustomerServiceContainer = styled.div`
+const StyledCustomerServiceContainer = styled.section`
     display: flex;
+    align-items: center;
+    justify-content: center;
     gap: 0.65rem;
     margin-top: 1.6rem;
-
+    a {
+        flex: 1;
+    }
     .service_item {
         display: flex;
-        flex: 1;
         padding: 0.6rem 2.5rem;
         flex-direction: column;
         justify-content: center;

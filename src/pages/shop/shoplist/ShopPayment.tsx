@@ -7,7 +7,6 @@ import AppLayout from "@/components/layout/AppLayout";
 import OptionInput from "@/components/input/OptionInput";
 import FixedButton from "@/components/button/FixedButton";
 import Button from "@/components/button/Button";
-import ConsentComponent from "@/pages/auth/register/ConsentComponent";
 
 const ShopPayment = () => {
     const [value, setValue] = useState({
@@ -54,7 +53,6 @@ const ShopPayment = () => {
                         placeholder="요청 메시지를 입력해 주세요."
                         label="배송 요청 메시지"
                     />
-                    <ConsentComponent />
                 </StyledInputContainer>
                 <FixedButton>9,900원 결제하기</FixedButton>
             </StyledRealtyWrapper>

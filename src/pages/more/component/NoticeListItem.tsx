@@ -3,17 +3,17 @@ import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import styled from "styled-components";
 
-interface noticeList {
+interface NoticeList {
     page: number;
     size: number;
     sort: "ASC" | "DESC";
     total_pages: number;
     total_count: number;
-    contents: noticeContents[];
+    contents: NoticeContents[];
     message: string;
 }
 
-interface noticeContents {
+interface NoticeContents {
     id: string;
     title: string;
     created_at: string;
@@ -21,7 +21,7 @@ interface noticeContents {
 }
 
 const NoticeListItem = () => {
-    const [noticeData, setNoticeData] = useState<noticeList>({
+    const [noticeData, setNoticeData] = useState<NoticeList>({
         page: 0,
         size: 0,
         sort: "ASC",
@@ -69,7 +69,7 @@ const NoticeListItem = () => {
                 message: "",
             },
         });
-    }, []);
+    }, [noticeData]);
 
     return (
         <ul>

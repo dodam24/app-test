@@ -2,11 +2,12 @@ import styled from "styled-components";
 
 import AppBackHeader from "@/components/header/AppBackHeader";
 import AppLayout from "@/components/layout/AppLayout";
-import EnabledButton from "@/components/button/EnabledButton";
 
 import { Styles } from "@/style/Styles";
 
 import { FoodImg1, StarIcon } from "@/pages/shop/_images/shop";
+import { StyleDoubleFixedBotton } from "@/components/styles/ButtonSytle";
+import FixedButton from "@/components/button/FixedButton";
 
 const ShopInfo = () => {
     return (
@@ -36,10 +37,10 @@ const ShopInfo = () => {
                     </div>
                     <em>프리미엄 회원가</em>
                 </StyledShopInfoInner>
-                <EnabledButtonInner>
-                    <EnabledButton className="firstBtn" title="장바구니" />
-                    <EnabledButton className="secondBtn" title="바로구매" />
-                </EnabledButtonInner>
+                <StyledButtonFlex>
+                    <FixedButton className="custom_btn">장바구니</FixedButton>
+                    <FixedButton>바로구매</FixedButton>
+                </StyledButtonFlex>
             </StyledShopInfoWrapper>
         </AppLayout>
     );
@@ -113,29 +114,5 @@ const StyledShopStar = styled.div`
         height: 0.8rem;
     }
 `;
-const EnabledButtonInner = styled.div`
-    display: flex;
-    gap: 0.75rem;
-    width: 100%;
-    position: fixed;
-    bottom: 0.6rem;
-    left: 50%;
-    transform: translateX(-50%);
-    padding: 0 1rem;
-    .firstBtn {
-        width: 50%;
-        position: static;
-        left: initial;
-        transform: translateX(0);
-        background-color: ${Styles.colors.systemWhite};
-        color: ${Styles.colors.primary100};
-        border: 1px solid ${Styles.colors.primary100};
-    }
-    .secondBtn {
-        position: static;
-        width: 50%;
-        right: initial;
-        transform: translateX(0);
-    }
-`;
+const StyledButtonFlex = styled(StyleDoubleFixedBotton)``;
 export default ShopInfo;

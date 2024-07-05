@@ -9,6 +9,7 @@ import { Styles } from "@/style/Styles";
 
 import { Owner, Staff, CheckIcon } from "@/pages/auth/register/_images/register_img";
 import FixedButton from "@/components/button/FixedButton";
+import AppBaseWrapper from "@/components/layout/AppBaseWrapper";
 
 const Register = () => {
     const [selectedOption, setSelectedOption] = useState("");
@@ -28,20 +29,18 @@ const Register = () => {
 
     return (
         <AppLayout props={{ header: <AppBackHeader title="가입유형 선택" /> }}>
-            <StyledRegisterInner>
-                <h3>
-                    소소상점과 함께
-                    <br />더 즐거운 사업을 시작해 볼까요?
-                </h3>
+            <AppBaseWrapper
+                title={`소소상점과 함께\n더 즐거운 사업을 시작해 볼까요?\n가입 유형을 선택해 주세요!`}
+            >
                 <StyledOptionListWrapper>
                     <StyledOptionListItem onClick={() => handleClick("owner")}>
                         <StyledInnerWrapper
                             className={selectedOption === "owner" ? "selected" : ""}
                         >
-                            <StyledTextWithIcon>
+                            <div className="selectIcon">
                                 <p>점주</p>
                                 {selectedOption === "owner" && <img src={CheckIcon} alt="선택됨" />}
-                            </StyledTextWithIcon>
+                            </div>
                             <img src={Owner} alt="점주" className="icon" />
                         </StyledInnerWrapper>
                     </StyledOptionListItem>
@@ -49,10 +48,10 @@ const Register = () => {
                         <StyledInnerWrapper
                             className={selectedOption === "staff" ? "selected" : ""}
                         >
-                            <StyledTextWithIcon>
+                            <div className="selectIcon">
                                 <p>직원</p>
                                 {selectedOption === "staff" && <img src={CheckIcon} alt="선택됨" />}
-                            </StyledTextWithIcon>
+                            </div>
                             <img src={Staff} alt="직원" className="icon" />
                         </StyledInnerWrapper>
                     </StyledOptionListItem>
@@ -61,33 +60,16 @@ const Register = () => {
                 <FixedButton onClick={handleSubmit} disabled={!selectedOption}>
                     회원가입 신청
                 </FixedButton>
-            </StyledRegisterInner>
+            </AppBaseWrapper>
         </AppLayout>
     );
 };
-
-const StyledRegisterInner = styled.div`
-    flex: 1;
-    width: 100%;
-    display: flex;
-    align-items: center;
-    flex-direction: column;
-    padding: 1rem 1rem 0;
-    h3 {
-        color: ${Styles.colors.natural90};
-        font-size: ${Styles.font.size.fontsize18};
-        font-weight: ${Styles.font.weight.medium};
-        line-height: 140%;
-        width: 100%;
-        text-align: left;
-        margin-bottom: 1.5rem;
-    }
-`;
 
 const StyledOptionListWrapper = styled.ul`
     display: flex;
     gap: 0.75rem;
     width: 100%;
+    margin-top: 2.5rem;
 `;
 
 const StyledOptionListItem = styled.li`
@@ -127,17 +109,17 @@ const StyledInnerWrapper = styled.div`
     &.selected .icon {
         mix-blend-mode: normal;
     }
-`;
 
-const StyledTextWithIcon = styled.div`
-    display: flex;
-    justify-content: space-between;
-    width: 100%;
-    align-items: center;
+    .selectIcon {
+        display: flex;
+        justify-content: space-between;
+        width: 100%;
+        align-items: center;
 
-    img {
-        width: 1.2rem;
-        height: 1.2rem;
+        img {
+            width: 1.2rem;
+            height: 1.2rem;
+        }
     }
 `;
 

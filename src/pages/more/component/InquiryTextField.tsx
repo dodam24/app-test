@@ -120,7 +120,6 @@ const StyledTextFieldWrap = styled.div`
             &:focus {
                 border: 0.05rem solid ${Styles.colors.primary100};
             }
-
             &:focus + .close_btn {
                 opacity: 1;
             }

@@ -2,11 +2,13 @@ import styled from "styled-components";
 
 import AppBackHeader from "@/components/header/AppBackHeader";
 import AppLayout from "@/components/layout/AppLayout";
-import EnabledButton from "@/components/button/EnabledButton";
 
 import { Styles } from "@/style/Styles";
 
 import { CardIcon, ChartIcon, WalletIcon } from "@/pages/loan/_images/loanImg";
+import AppBaseWrapper from "@/components/layout/AppBaseWrapper";
+import FixedButton from "@/components/button/FixedButton";
+import { useNavigate } from "react-router-dom";
 
 interface LoanData {
     title: string;
@@ -29,9 +31,14 @@ const dummyLoanData: LoanData[] = [
 ];
 
 const LoanItemInfo = () => {
+    const navigate = useNavigate();
+
+    const handleApplyButtonClick = () => {
+        navigate("/loan/terms");
+    };
     return (
         <AppLayout props={{ header: <AppBackHeader title="대출상품" /> }}>
-            <StyledItemInfoWrapper>
+            <AppBaseWrapper>
                 <StyledInfoInner>
                     <h3>
                         소소상점을 이용하는
@@ -52,27 +59,22 @@ const LoanItemInfo = () => {
                 </StyledInfoInner>
                 <StyledInfoBox>
                     {dummyLoanData.map((item, index) => (
-                        <StyledInfoSection key={index}>
+                        <div className="info_boxItem" key={index}>
                             <img src={item.img} alt={item.title} />
                             <div>
                                 <h4>{item.title}</h4>
                                 <p>{item.description}</p>
                             </div>
-                        </StyledInfoSection>
+                        </div>
                     ))}
                 </StyledInfoBox>
-                <EnabledButton title="대출 신청하기" />
-            </StyledItemInfoWrapper>
+                <FixedButton onClick={handleApplyButtonClick}>대출 신청하기</FixedButton>
+            </AppBaseWrapper>
         </AppLayout>
     );
 };
 
-const StyledItemInfoWrapper = styled.div`
-    width: 100%;
-    padding: 1rem 1rem 0;
-`;
-
-const StyledInfoInner = styled.section`
+const StyledInfoInner = styled.div`
     text-align: center;
     h3 {
         color: ${Styles.colors.natural90};
@@ -123,30 +125,33 @@ const StyledInfoBox = styled.div`
     gap: 1.5rem;
     margin-top: 1.5rem;
     box-shadow: 0px 2px 12px 0px rgba(0, 0, 0, 0.06);
-`;
-const StyledInfoSection = styled.div`
-    display: flex;
-    gap: 0.5rem;
-    align-items: center;
-    img {
-        width: 2rem;
-        height: 2rem;
-    }
-    div {
+    margin-bottom: 4rem;
+    .info_boxItem {
         display: flex;
-        flex-direction: column;
-        align-items: flex-start;
-        gap: 0.2rem;
-        h4 {
-            color: ${Styles.colors.natural90};
-            font-size: ${Styles.font.size.fontsize15};
-            font-weight: ${Styles.font.weight.medium};
+        gap: 0.5rem;
+        align-items: center;
+        img {
+            width: 2rem;
+            height: 2rem;
         }
-        p {
-            color: ${Styles.colors.natural60};
-            font-size: ${Styles.font.size.fontsize14};
-            font-weight: ${Styles.font.weight.regular};
+        div {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+            gap: 0.2rem;
+            h4 {
+                color: ${Styles.colors.natural90};
+                font-size: ${Styles.font.size.fontsize15};
+                font-weight: ${Styles.font.weight.medium};
+            }
+            p {
+                color: ${Styles.colors.natural60};
+                font-size: ${Styles.font.size.fontsize14};
+                font-weight: ${Styles.font.weight.regular};
+                line-height: 0.9rem;
+            }
         }
     }
 `;
+
 export default LoanItemInfo;

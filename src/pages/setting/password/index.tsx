@@ -2,12 +2,12 @@ import styled from "styled-components";
 import AppLayout from "@/components/layout/AppLayout";
 import AppBackHeader from "@/components/header/AppBackHeader";
 import useModal from "@/hooks/useModal";
-import EnabledButton from "@/components/button/EnabledButton";
 import DynamicModal from "@/components/modal/DynamicModal";
 import ConfirmationModal from "@/components/modal/ui/ConfirmationModal";
 import OptionInput from "@/components/input/OptionInput";
 
 import { Styles } from "@/style/Styles";
+import FixedButton from "@/components/button/FixedButton";
 
 const ChangePassword = () => {
     const { isOpen, openModal, closeModal } = useModal();
@@ -74,7 +74,9 @@ const ChangePassword = () => {
                         </div>
                     </div>
                 </div>
-                <EnabledButton type="submit" title="저장" disabled />
+                <FixedButton type="submit" disabled>
+                    저장
+                </FixedButton>
             </StyledChangePasswordContainer>
             <DynamicModal open={isOpen} close={closeModal}>
                 <ConfirmationModal

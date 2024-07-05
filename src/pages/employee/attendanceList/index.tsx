@@ -9,7 +9,6 @@ import { useEffect, useState } from "react";
 import { formatTime, getDayOfWeek, getWorkTime, calcOvertime } from "@/utils/formatDateTime";
 import AccessTime from "@/assets/images/icons/icon_access_time_primary_c.png";
 import AccessTimeError from "@/assets/images/icons/icon_access_time_error_c.png";
-import { currentMonth } from "../../../utils/formatDateTime";
 
 interface AttendanceContents {
     id: string;
@@ -124,11 +123,13 @@ const AttendanceList = () => {
                 message: "",
             },
         });
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
     const [currentMonth, setCurrentMonth] = useState<Date>(new Date());
-    // const [nextMonth, setNextMonth] = useState<Date>(new Date());
+    // const [previousMonth, setPreviousMonth] = useState<Date>(new Date());
     // const [showMore, setShowMore] = useState(false);
+    console.log(setCurrentMonth);
 
     return (
         <AppLayout
@@ -138,48 +139,43 @@ const AttendanceList = () => {
             <AppBaseWrapper
                 title={`${currentMonth.getFullYear()}.${(currentMonth.getMonth() + 1).toString().padStart(2, "0")}`}
             >
-                <>
-                    {data.contents.map((item, index) => {
-                        const { isOvertime } = calcOvertime(item.checked_out_at);
+                {data.contents.map((item, index) => {
+                    const { isOvertime } = calcOvertime(item.checked_out_at);
 
-                        return (
-                            <StyledEmployeeAttendanceList key={index}>
-                                <div className="date">
-                                    <h6>{item.checked_in_at.substring(6, 8)}</h6>
-                                    <span>{getDayOfWeek(item.checked_in_at)}</span>
-                                </div>
-                                <div className="time">
-                                    <div className="check_in">
-                                        <div className="check_time">
-                                            <span>출근</span>
-                                            <p>{formatTime(item.checked_in_at)}</p>
-                                        </div>
-                                        <div className="work_time">
-                                            <img
-                                                src={isOvertime ? AccessTimeError : AccessTime}
-                                                alt={isOvertime ? "초과근무시간" : "근무시간"}
-                                            />
-                                            <span className={isOvertime ? "overtime" : ""}>
-                                                총{" "}
-                                                {getWorkTime(
-                                                    item.checked_in_at,
-                                                    item.checked_out_at,
-                                                )}
-                                                시간{isOvertime && "(초과)"}
-                                            </span>
-                                        </div>
+                    return (
+                        <StyledEmployeeAttendanceList key={index}>
+                            <div className="date">
+                                <h6>{item.checked_in_at.substring(6, 8)}</h6>
+                                <span>{getDayOfWeek(item.checked_in_at)}</span>
+                            </div>
+                            <div className="time">
+                                <div className="check_in">
+                                    <div className="check_time">
+                                        <span>출근</span>
+                                        <p>{formatTime(item.checked_in_at)}</p>
                                     </div>
-                                    <div className="check_out">
-                                        <span>퇴근</span>
-                                        <p className={isOvertime ? "overtime" : ""}>
-                                            {formatTime(item.checked_out_at)}
-                                        </p>
+                                    <div className="work_time">
+                                        <img
+                                            src={isOvertime ? AccessTimeError : AccessTime}
+                                            alt={isOvertime ? "초과근무시간" : "근무시간"}
+                                        />
+                                        <span className={isOvertime ? "overtime" : ""}>
+                                            총{" "}
+                                            {getWorkTime(item.checked_in_at, item.checked_out_at)}
+                                            시간{isOvertime && "(초과)"}
+                                        </span>
                                     </div>
                                 </div>
-                            </StyledEmployeeAttendanceList>
-                        );
-                    })}
-                </>
+                                <div className="check_out">
+                                    <span>퇴근</span>
+                                    <p className={isOvertime ? "overtime" : ""}>
+                                        {formatTime(item.checked_out_at)}
+                                    </p>
+                                </div>
+                            </div>
+                        </StyledEmployeeAttendanceList>
+                    );
+                })}
             </AppBaseWrapper>
             {/* 다음 달에 해당하는 데이터가 있으면 버튼 표시 */}
             <ShowMoreButton />

@@ -4,11 +4,12 @@ import useModal from "@/hooks/useModal";
 
 import AppBackHeader from "@/components/header/AppBackHeader";
 import AppLayout from "@/components/layout/AppLayout";
-import EnabledButton from "@/components/button/EnabledButton";
 import DynamicModal from "@/components/modal/DynamicModal";
 import ConfirmationModal from "@/components/modal/ui/ConfirmationModal";
 
 import { Styles } from "@/style/Styles";
+import { StyleDoubleFixedBotton } from "@/components/styles/ButtonSytle";
+import FixedButton from "@/components/button/FixedButton";
 
 const staffinfoData = [
     {
@@ -50,10 +51,12 @@ const StaffManageInfo = () => {
                     </li>
                 </ul>
             </StyledManageInfoWrapper>
-            <EnabledButtonInner>
-                <EnabledButton className="firstBtn" title="승인 반려" onClick={openModal} />
-                <EnabledButton className="secondBtn" title="승인 시작" />
-            </EnabledButtonInner>
+            <StyledButtonFlex>
+                <FixedButton className="custom_btn" onClick={openModal}>
+                    승인 반려
+                </FixedButton>
+                <FixedButton>승인 시작</FixedButton>
+            </StyledButtonFlex>
             <DynamicModal open={isOpen} close={closeModal}>
                 <ConfirmationModal
                     title="승인 반려"
@@ -79,15 +82,18 @@ const StyledManageInfoWrapper = styled.div`
             display: flex;
             justify-content: space-between;
             padding: 0.8rem 0;
+            gap: 1.2rem;
             h4 {
                 color: ${Styles.colors.natural60};
                 font-size: ${Styles.font.size.fontsize15};
                 font-weight: ${Styles.font.weight.regular};
+                min-width: fit-content;
             }
             span {
                 color: ${Styles.colors.natural80};
                 font-size: ${Styles.font.size.fontsize15};
                 font-weight: ${Styles.font.weight.regular};
+                text-align: right;
             }
             .status_span {
                 color: ${Styles.colors.systemError};
@@ -95,28 +101,5 @@ const StyledManageInfoWrapper = styled.div`
         }
     }
 `;
-const EnabledButtonInner = styled.div`
-    display: flex;
-    gap: 0.75rem;
-    width: 100%;
-    position: fixed;
-    bottom: 0.6rem;
-    left: 50%;
-    transform: translateX(-50%);
-    padding: 0 1rem;
-    .firstBtn {
-        width: 50%;
-        position: static;
-        left: initial;
-        transform: translateX(0);
-        background-color: ${Styles.colors.systemWhite};
-        color: ${Styles.colors.primary100};
-        border: 1px solid ${Styles.colors.primary100};
-    }
-    .secondBtn {
-        position: static;
-        width: 50%;
-        right: initial;
-        transform: translateX(0);
-    }
-`;
+
+const StyledButtonFlex = styled(StyleDoubleFixedBotton)``;

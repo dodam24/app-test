@@ -3,14 +3,14 @@ import Main from "@/pages/main";
 import Login from "@/pages/auth/login";
 import Register from "@/pages/auth/register";
 import NotFound from "@/pages/error";
-import OwnerRegister from "@/pages/auth/register/option/OwnerRegister";
-import StaffRegister from "@/pages/auth/register/option/StaffRegister";
+import OwnerRegister from "@/pages/auth/register/option/register/OwnerRegister";
+import StaffRegister from "@/pages/auth/register/option/register/StaffRegister";
 import FindID from "@/pages/auth/find/id";
 import FindPW from "@/pages/auth/find/pw";
 import FindIdList from "@/pages/auth/find/id/FindIdList";
 import FindPwList from "@/pages/auth/find/pw/FindPwList";
 import PhoneAuth from "@/pages/auth/register/option/PhoneAuth";
-import StaffCheck from "@/pages/auth/register/option/StaffCheck";
+import StaffCheck from "@/pages/auth/register/option/staffCheck/StaffCheck";
 
 import More from "@/pages/more";
 import Faq from "@/pages/more/faq";
@@ -48,7 +48,7 @@ import Terms from "@/pages/setting/terms";
 import TermsDetail from "@/pages/setting/terms/[id]";
 import EditPhone from "@/pages/setting/me/phone";
 import EditEmail from "@/pages/setting/me/email";
-import Delete from "@/pages/setting/me/delete";
+import DeleteAccount from "@/pages/setting/me/deleteAccount";
 import ManageStaffRegister from "@/pages/manage/staffRegister";
 import StaffApproval from "@/pages/manage/staffRegister/StaffApproval";
 import StaffManageInfo from "@/pages/manage/staffRegister/StaffManageInfo";
@@ -67,7 +67,7 @@ function App() {
                 <Route path="/setting/me" element={<Me />} />
                 <Route path="/setting/me/phone" element={<EditPhone />} />
                 <Route path="/setting/me/email" element={<EditEmail />} />
-                <Route path="/setting/me/delete" element={<Delete />} />
+                <Route path="/setting/me/deleteAccount" element={<DeleteAccount />} />
 
                 <Route path="/setting/change_password" element={<ChangePassword />} />
                 <Route path="/setting/terms" element={<Terms />} />

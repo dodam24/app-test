@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { ChangeEvent, FormEvent, useState } from "react";
 import styled from "styled-components";
 
 import { login } from "@/apis/auth/login";
@@ -16,7 +16,7 @@ const LoginInput = () => {
     });
     const [error, setError] = useState<string>("");
 
-    const handle = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const handle = (e: ChangeEvent<HTMLInputElement>) => {
         const { name, value: inputValue } = e.target;
 
         setValue((prev) => ({
@@ -33,7 +33,7 @@ const LoginInput = () => {
         }
     };
 
-    const handleLogin = async (e: React.FormEvent | React.MouseEvent<HTMLButtonElement>) => {
+    const handleLogin = async (e: FormEvent | React.MouseEvent<HTMLButtonElement>) => {
         e.preventDefault();
 
         if (!validatePassword(value.password)) {
@@ -54,7 +54,7 @@ const LoginInput = () => {
     return (
         <StyedLoginInputWrapper>
             <img className="login_logo" src={LoginLogo} alt="로그인 로고" />
-            <FormFieldSet onSubmit={handleLogin}>
+            <StyledInputContainer onSubmit={handleLogin}>
                 <OptionInput
                     type="text"
                     name="username"
@@ -79,7 +79,7 @@ const LoginInput = () => {
                         },
                     }}
                 />
-            </FormFieldSet>
+            </StyledInputContainer>
 
             <Button type="submit" onClick={handleLogin} disabled={!isPasswordValid}>
                 로그인
@@ -100,7 +100,7 @@ const StyedLoginInputWrapper = styled.div`
     }
 `;
 
-const FormFieldSet = styled.fieldset`
+const StyledInputContainer = styled.div`
     display: flex;
     flex-direction: column;
     gap: 0.6rem;

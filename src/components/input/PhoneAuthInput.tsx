@@ -1,32 +1,94 @@
+import React, { ChangeEvent, useState } from "react";
 import Button from "@/components/button/Button";
 import OptionInput from "@/components/input/OptionInput";
 import { Styles } from "@/style/Styles";
-import usePhoneAuth from "@/utils/phoneAuth";
-
+import { useInputHandler } from "@/utils/phoneAuth";
+import { useTimer } from "@/utils/timer";
+import { requestPhoneVerification, requestPhoneVerificationCheck } from "@/apis/auth/callPhone";
 import styled from "styled-components";
 
 interface PhoneAuthInputProps {
-    addValue?: React.Dispatch<
-        React.SetStateAction<{
-            phone: string;
-            paymentDate: string;
-        }>
-    >;
-    showVerificationButton?: boolean;
+    onPhoneChange: (phone: string) => void;
+    onVerificationCodeChange: (verificationCode: string) => void;
 }
 
-const PhoneAuthInput = ({ showVerificationButton = true }: PhoneAuthInputProps) => {
-    const {
-        value,
-        handleInputChange,
-        handleRequestVerification,
-        handleResendVerification,
-        formatTime,
-        getNoticeMessage,
-    } = usePhoneAuth();
+const PhoneAuthInput = ({ onPhoneChange, onVerificationCodeChange }: PhoneAuthInputProps) => {
+    const [value, setValue] = useState({
+        verificationCode: "",
+        showVerificationInput: false,
+        verificationSuccess: false,
+    });
 
-    const formattedTime = formatTime(value.timer.seconds);
-    const noticeMessage = getNoticeMessage();
+    const { values, format, handleInputChange } = useInputHandler({
+        phone: "",
+    });
+
+    const { timer, startTimer, resetTimer, formatTime } = useTimer(180);
+
+    const handleRequestVerification = async () => {
+        try {
+            await requestPhoneVerification(values.phone);
+            setValue({
+                ...value,
+                showVerificationInput: true,
+            });
+            startTimer();
+        } catch (error) {
+            console.error("인증 요청 실패", error);
+        }
+    };
+
+    const handleRequestVerificationCheck = async () => {
+        try {
+            const success = await requestPhoneVerificationCheck(
+                values.phone,
+                value.verificationCode,
+            );
+            if (success) {
+                setValue({
+                    ...value,
+                    verificationSuccess: true,
+                });
+                resetTimer();
+            }
+        } catch (error) {
+            console.error("인증 확인 실패", error);
+        }
+    };
+
+    const handleResendVerification = async () => {
+        try {
+            await requestPhoneVerification(values.phone);
+            resetTimer();
+            startTimer();
+            setValue({
+                ...value,
+                verificationCode: "",
+            });
+        } catch (error) {
+            console.error("재전송 요청 실패", error);
+        }
+    };
+
+    const handleInputChangeVerification = (e: ChangeEvent<HTMLInputElement>) => {
+        setValue({
+            ...value,
+            [e.target.name]: e.target.value,
+        });
+        onVerificationCodeChange(e.target.value);
+    };
+
+    const formattedTime = formatTime(timer.seconds);
+
+    const noticeMessage = value.verificationSuccess
+        ? "인증이 완료되었어요."
+        : timer.seconds > 0
+          ? `3분 이내로 인증번호를 입력해주세요.`
+          : "인증시간이 초과되었습니다.\n재전송 버튼을 눌러 다시 진행해주세요.";
+
+    const handlePhoneChange = (phone: string) => {
+        onPhoneChange(phone);
+    };
 
     return (
         <StyledPhoneAuthWrapper>
@@ -35,11 +97,17 @@ const PhoneAuthInput = ({ showVerificationButton = true }: PhoneAuthInputProps) 
                 type="text"
                 id="phone"
                 name="phone"
-                value={value.phone}
-                onChange={handleInputChange}
+                value={format}
+                onChange={(e) => {
+                    handleInputChange(e, handlePhoneChange);
+                }}
                 placeholder="휴대폰 번호를 입력해주세요."
             >
-                <Button size="sub" onClick={handleRequestVerification}>
+                <Button
+                    size="sub"
+                    onClick={handleRequestVerification}
+                    disabled={values.phone.length < 11}
+                >
                     인증요청
                 </Button>
             </OptionInput>
@@ -49,37 +117,36 @@ const PhoneAuthInput = ({ showVerificationButton = true }: PhoneAuthInputProps) 
                     id="verificationCode"
                     name="verificationCode"
                     value={value.verificationCode}
-                    onChange={handleInputChange}
+                    onChange={handleInputChangeVerification}
                     placeholder="인증번호를 입력해주세요."
                     options={{
                         buttonOption: {
-                            checkedOption: false,
-                            timer: (
-                                <span className="timer">
-                                    {value.timer.seconds > 0 ? (
-                                        formattedTime
-                                    ) : (
-                                        <button
-                                            className="replay_btn"
-                                            onClick={handleResendVerification}
-                                        >
-                                            재전송
-                                        </button>
-                                    )}
-                                </span>
-                            ),
+                            checkedOption: value.verificationSuccess,
+                            timer:
+                                timer.seconds > 0 && !value.verificationSuccess ? (
+                                    <span className="timer">{formattedTime}</span>
+                                ) : timer.seconds <= 0 && !value.verificationSuccess ? (
+                                    <button
+                                        className="replay_btn"
+                                        onClick={handleResendVerification}
+                                    >
+                                        재전송
+                                    </button>
+                                ) : (
+                                    ""
+                                ),
                         },
                         notice: noticeMessage,
                     }}
                 >
-                    {showVerificationButton && <Button size="sub">인증확인</Button>}
+                    <Button size="sub" onClick={handleRequestVerificationCheck}>
+                        인증확인
+                    </Button>
                 </OptionInput>
             )}
         </StyledPhoneAuthWrapper>
     );
 };
-
-export default PhoneAuthInput;
 
 const StyledPhoneAuthWrapper = styled.div`
     display: flex;
@@ -98,3 +165,8 @@ const StyledPhoneAuthWrapper = styled.div`
         width: max-content;
     }
 `;
+// const SuccessMessage = styled.span`
+//     color: ${Styles.colors.primary100};
+// `;
+
+export default PhoneAuthInput;

@@ -5,31 +5,28 @@ import AppLayout from "@/components/layout/AppLayout";
 import InsuranceCheck from "@/pages/insurance/InsuranceCheck";
 
 import { Styles } from "@/style/Styles";
+import AppBaseWrapper from "@/components/layout/AppBaseWrapper";
 
 const Insurance = () => {
     return (
         <AppLayout props={{ header: <AppBackHeader title="보험 서비스" /> }}>
-            <StyledCheckWrapper>
+            <AppBaseWrapper>
                 <StyledCheckTop>
                     <h3>Q</h3>
                     <p>어떤 사업을 하고 계시나요?</p>
                 </StyledCheckTop>
                 <InsuranceCheck />
-            </StyledCheckWrapper>
+            </AppBaseWrapper>
         </AppLayout>
     );
 };
 
-const StyledCheckWrapper = styled.div`
-    width: 100%;
-    padding: 0 1rem;
-`;
 const StyledCheckTop = styled.div`
     display: flex;
     gap: 0.6rem;
     align-items: center;
     justify-content: flex-start;
-    padding: 1rem 0;
+    padding-bottom: 1rem;
     h3 {
         color: ${Styles.colors.primary100};
         font-size: ${Styles.font.size.fontsize18};

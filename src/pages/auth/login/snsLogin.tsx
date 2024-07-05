@@ -3,19 +3,17 @@ import { GoogleIcon, KakaoIcon, NaverIcon } from "@/pages/auth/login/_images/log
 
 const SnsLogin = () => {
     return (
-        <div>
-            <SnsLoginWrapper>
-                <button>
-                    <img src={NaverIcon} alt="간편로그인 네이버" />
-                </button>
-                <button>
-                    <img src={KakaoIcon} alt="간편로그인 카카오" />
-                </button>
-                <button>
-                    <img src={GoogleIcon} alt="간편로그인 구글" />
-                </button>
-            </SnsLoginWrapper>
-        </div>
+        <SnsLoginWrapper>
+            <button>
+                <img src={NaverIcon} alt="간편로그인 네이버" />
+            </button>
+            <button>
+                <img src={KakaoIcon} alt="간편로그인 카카오" />
+            </button>
+            <button>
+                <img src={GoogleIcon} alt="간편로그인 구글" />
+            </button>
+        </SnsLoginWrapper>
     );
 };
 

@@ -6,7 +6,6 @@ import ManagePaymentList from "@/pages/manage/paymentRegister/ManagePaymentList"
 import Button from "@/components/button/Button";
 import OptionInput from "@/components/input/OptionInput";
 import { ChangeEvent, useState } from "react";
-import PhoneAuthInput from "@/components/input/PhoneAuthInput";
 
 const ManagePaymentRegister = () => {
     const [value, setValue] = useState({
@@ -27,14 +26,12 @@ const ManagePaymentRegister = () => {
                     name="paymentDate"
                     value={value.paymentDate}
                     onChange={handle}
-                    placeholder="6자 이상 영문+숫자 포함"
+                    placeholder="지급일을 입력해 주세요."
                     label="지급일"
                 >
                     <Button size="sub">세팅</Button>
                 </OptionInput>
                 <ManagePaymentList />
-                <PhoneAuthInput />
-                {/* 테스트 화면으로 넣어둠 지울거임 */}
             </StyledManagePaymentWrapper>
         </AppLayout>
     );

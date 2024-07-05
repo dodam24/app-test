@@ -4,9 +4,9 @@ import AppBackHeader from "@/components/header/AppBackHeader";
 import AppLayout from "@/components/layout/AppLayout";
 
 import { Styles } from "@/style/Styles";
+import AppBaseWrapper from "@/components/layout/AppBaseWrapper";
 
 const RealtyDepositList = () => {
-    // 임시 데이터
     const depositData = [
         {
             id: 1,
@@ -32,57 +32,40 @@ const RealtyDepositList = () => {
             amount: "200,000",
             scheduledDate: "2023.03.08",
         },
-        // 추가적인 입금 항목을 필요에 따라 추가할 수 있습니다.
     ];
 
     return (
         <AppLayout props={{ header: <AppBackHeader title="입금목록" /> }}>
-            <StyledDepositWrapper>
-                <h2>
-                    항목을 터치하면 입금 상세내역을
-                    <br /> 확인할 수 있습니다.
-                </h2>
+            <AppBaseWrapper title={`항목을 터치하면 입금 상세내역을\n확인할 수 있습니다.`}>
                 <StyledDepositList>
                     {depositData.map((item) => (
                         <StyledDepositItem key={item.id}>
-                            <StyledDepositItemTop>
+                            <div className="top_box">
                                 <div>
                                     <h2>{item.title}</h2>
                                     <h3>{item.status}</h3>
                                 </div>
                                 <p>{item.date}</p>
-                            </StyledDepositItemTop>
-                            <StyledDepositItemBottom>
+                            </div>
+                            <div className="botton_box">
                                 <p>
-                                    <span>입금(예정일)</span> {item.scheduledDate}{" "}
-                                    {/* 고정된 값으로 표시 */}
+                                    <span>입금(예정일)</span> {item.scheduledDate}
                                 </p>
                                 <h4>{item.amount}</h4>
-                            </StyledDepositItemBottom>
+                            </div>
                         </StyledDepositItem>
                     ))}
                 </StyledDepositList>
-            </StyledDepositWrapper>
+            </AppBaseWrapper>
         </AppLayout>
     );
 };
 
-const StyledDepositWrapper = styled.div`
-    width: 100%;
-    padding: 1rem 1rem 0;
-    text-align: center;
-    h2 {
-        text-align: left;
-        color: ${Styles.colors.natural90};
-        font-size: ${Styles.font.size.fontsize18};
-        font-weight: ${Styles.font.weight.medium};
-        margin-bottom: 1.5rem;
-    }
-`;
 const StyledDepositList = styled.ul`
     display: flex;
     flex-direction: column;
     gap: 1.2rem;
+    margin: 1.5rem 0 1.2rem;
 `;
 const StyledDepositItem = styled.li`
     padding: 1rem;
@@ -91,56 +74,57 @@ const StyledDepositItem = styled.li`
     display: flex;
     flex-direction: column;
     gap: 0.6rem;
-`;
-const StyledDepositItemTop = styled.div`
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-    gap: 0.3rem;
-    div {
+
+    .top_box {
         display: flex;
-        flex-direction: row;
+        flex-direction: column;
         justify-content: space-between;
-        h2 {
+        gap: 0.3rem;
+        div {
+            display: flex;
+            flex-direction: row;
+            justify-content: space-between;
+            h2 {
+                color: ${Styles.colors.natural90};
+                font-size: ${Styles.font.size.fontsize15};
+                font-weight: ${Styles.font.weight.medium};
+                margin: 0;
+            }
+            h3 {
+                color: ${Styles.colors.systemError};
+                font-size: ${Styles.font.size.fontsize14};
+                font-weight: ${Styles.font.weight.regular};
+            }
+        }
+        p {
+            color: ${Styles.colors.natural50};
+            font-size: ${Styles.font.size.fontsize13};
+            font-weight: ${Styles.font.weight.regular};
+            text-align: left;
+        }
+    }
+    .botton_box {
+        display: flex;
+        justify-content: space-between;
+        padding: 0.5rem;
+        border-radius: 0.25rem;
+        background-color: ${Styles.colors.systemBackground};
+        align-self: stretch;
+        align-items: center;
+        p {
+            color: ${Styles.colors.natural40};
+            font-size: ${Styles.font.size.fontsize13};
+            font-weight: ${Styles.font.weight.regular};
+            span {
+                color: ${Styles.colors.systemError};
+                text-overflow: ellipsis;
+            }
+        }
+        h4 {
             color: ${Styles.colors.natural90};
             font-size: ${Styles.font.size.fontsize15};
-            font-weight: ${Styles.font.weight.medium};
-            margin: 0;
-        }
-        h3 {
-            color: ${Styles.colors.systemError};
-            font-size: ${Styles.font.size.fontsize14};
             font-weight: ${Styles.font.weight.regular};
         }
-    }
-    p {
-        color: ${Styles.colors.natural50};
-        font-size: ${Styles.font.size.fontsize13};
-        font-weight: ${Styles.font.weight.regular};
-        text-align: left;
-    }
-`;
-const StyledDepositItemBottom = styled.div`
-    display: flex;
-    justify-content: space-between;
-    padding: 0.5rem;
-    border-radius: 0.25rem;
-    background-color: ${Styles.colors.systemBackground};
-    align-self: stretch;
-    align-items: center;
-    p {
-        color: ${Styles.colors.natural40};
-        font-size: ${Styles.font.size.fontsize13};
-        font-weight: ${Styles.font.weight.regular};
-        span {
-            color: ${Styles.colors.systemError};
-            text-overflow: ellipsis;
-        }
-    }
-    h4 {
-        color: ${Styles.colors.natural90};
-        font-size: ${Styles.font.size.fontsize15};
-        font-weight: ${Styles.font.weight.regular};
     }
 `;
 

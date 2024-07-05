@@ -2,11 +2,13 @@ import styled from "styled-components";
 
 import AppBackHeader from "@/components/header/AppBackHeader";
 import AppLayout from "@/components/layout/AppLayout";
-import EnabledButton from "@/components/button/EnabledButton";
 
 import { Styles } from "@/style/Styles";
 
 import { ArrowIcon } from "@/pages/insurance/_images/insurance";
+import FixedButton from "@/components/button/FixedButton";
+import AppBaseWrapper from "@/components/layout/AppBaseWrapper";
+import { useNavigate } from "react-router-dom";
 
 const insuranceData = [
     {
@@ -27,6 +29,24 @@ const insuranceData = [
         company: "동부화재",
         expiryDate: "2024-08-30",
     },
+    {
+        id: 3,
+        title: "건강보험",
+        company: "동부화재",
+        expiryDate: "2024-08-30",
+    },
+    {
+        id: 3,
+        title: "건강보험",
+        company: "동부화재",
+        expiryDate: "2024-08-30",
+    },
+    {
+        id: 3,
+        title: "건강보험",
+        company: "동부화재",
+        expiryDate: "2024-08-30",
+    },
 ];
 
 const calculateDday = (expiryDate: string) => {
@@ -38,52 +58,43 @@ const calculateDday = (expiryDate: string) => {
 };
 
 const InsuranceServiceList = () => {
+    const navigate = useNavigate();
+
+    const handleItemClick = () => {
+        navigate(`/insurance`);
+    };
     return (
         <AppLayout props={{ header: <AppBackHeader title="서류등록" /> }}>
-            <StyledRealtyWrapper>
-                <h2>보험 가입 서비스 확인하기</h2>
-                <StyledServiceContainer>
-                    <StyledServiceInner>
-                        {insuranceData.map((insurance) => (
-                            <StyledServiceItem key={insurance.id}>
-                                <h3>{insurance.title}</h3>
-                                <StyledServiceItemInner>
-                                    <div>
-                                        <h4>{insurance.company}</h4>
-                                        <p>
-                                            보험만료일 : {insurance.expiryDate}{" "}
-                                            <span>({calculateDday(insurance.expiryDate)})</span>
-                                        </p>
-                                    </div>
-                                    <img src={ArrowIcon} alt="" />
-                                </StyledServiceItemInner>
-                            </StyledServiceItem>
-                        ))}
-                    </StyledServiceInner>
-                </StyledServiceContainer>
-            </StyledRealtyWrapper>
-            <EnabledButton title="추가보험 가입하기" />
+            <AppBaseWrapper title={`보험 가입 서비스 확인하기`}>
+                <StyledServiceInner>
+                    {insuranceData.map((insurance) => (
+                        <StyledServiceItem key={insurance.id}>
+                            <h3>{insurance.title}</h3>
+                            <StyledServiceItemInner>
+                                <div>
+                                    <h4>{insurance.company}</h4>
+                                    <p>
+                                        보험만료일 : {insurance.expiryDate}{" "}
+                                        <span>({calculateDday(insurance.expiryDate)})</span>
+                                    </p>
+                                </div>
+                                <img src={ArrowIcon} alt="" />
+                            </StyledServiceItemInner>
+                        </StyledServiceItem>
+                    ))}
+                </StyledServiceInner>
+
+                <FixedButton onClick={handleItemClick}>추가보험 가입하기</FixedButton>
+            </AppBaseWrapper>
         </AppLayout>
     );
 };
-
-const StyledRealtyWrapper = styled.div`
-    width: 100%;
-    padding: 1rem 1rem 0;
-    h2 {
-        color: ${Styles.colors.natural90};
-        font-size: ${Styles.font.size.fontsize18};
-        font-weight: ${Styles.font.weight.medium};
-        margin-bottom: 1rem;
-    }
-`;
-
-const StyledServiceContainer = styled.div``;
 
 const StyledServiceInner = styled.ul`
     display: flex;
     flex-direction: column;
     gap: 0.8rem;
+    margin: 1rem 0 4rem;
 `;
 
 const StyledServiceItem = styled.li`

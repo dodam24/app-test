@@ -2,13 +2,19 @@ import styled from "styled-components";
 
 import AppBackHeader from "@/components/header/AppBackHeader";
 import AppLayout from "@/components/layout/AppLayout";
-import EnabledButton from "@/components/button/EnabledButton";
 
 import { Styles } from "@/style/Styles";
 
 import { PartyIcon } from "@/pages/insurance/_images/insurance";
+import FixedButton from "@/components/button/FixedButton";
+import { useNavigate } from "react-router-dom";
 
 const InsuranceComplete = () => {
+    const navigate = useNavigate();
+
+    const handleItemClick = () => {
+        navigate(`/`);
+    };
     return (
         <AppLayout props={{ header: <AppBackHeader title="대출상품" /> }}>
             <StyledCompleteWrapper>
@@ -19,7 +25,7 @@ const InsuranceComplete = () => {
                     <br /> 상세보기는 마이 메뉴에서 확인하실 수 있습니다.
                 </p>
             </StyledCompleteWrapper>
-            <EnabledButton title="메인으로 가기" />
+            <FixedButton onClick={handleItemClick}>메인으로 가기</FixedButton>
         </AppLayout>
     );
 };

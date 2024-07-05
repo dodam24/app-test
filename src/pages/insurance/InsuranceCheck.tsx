@@ -9,6 +9,8 @@ import {
     CheckIcon,
     ArrowUpWhiteIcon,
 } from "@/pages/insurance/_images/insurance";
+import FixedButton from "@/components/button/FixedButton";
+import { useNavigate } from "react-router-dom";
 
 const data = [
     {
@@ -61,10 +63,16 @@ const InsuranceCheck = () => {
         return selectedItem.summaryId === summaryId && selectedItem.liIndex === liIndex;
     };
 
+    const navigate = useNavigate();
+
+    const handleItemClick = () => {
+        navigate(`/insurance/item`);
+    };
+
     return (
         <StyledCheckListWrapper>
             {data.map((item) => (
-                <div key={item.id}>
+                <ul key={item.id}>
                     <StyledSummary
                         onClick={() => toggleOpen(item.id)}
                         $isOpen={openItems.includes(item.id)}
@@ -94,8 +102,9 @@ const InsuranceCheck = () => {
                             ))}
                         </StyledDetails>
                     )}
-                </div>
+                </ul>
             ))}
+            <FixedButton onClick={handleItemClick}>다음</FixedButton>
         </StyledCheckListWrapper>
     );
 };
@@ -104,7 +113,7 @@ const StyledCheckListWrapper = styled.div`
     width: 100%;
 `;
 
-const StyledSummary = styled.div<{ $isOpen: boolean }>`
+const StyledSummary = styled.li<{ $isOpen: boolean }>`
     display: flex;
     justify-content: space-between;
     align-items: center;

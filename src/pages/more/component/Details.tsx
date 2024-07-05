@@ -33,7 +33,6 @@ const StyledNoticeDetailsTitle = styled.div`
     flex-direction: column;
     padding-bottom: 1.5rem;
     border-bottom: 0.05rem solid ${Styles.colors.natural10};
-    gap: 0.5rem;
 
     h3 {
         color: #000;

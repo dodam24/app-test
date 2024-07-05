@@ -1,4 +1,4 @@
-import styled from "styled-components";
+import styled, { css } from "styled-components";
 import useInput from "@/hooks/useInput";
 import Input from "@/components/input/Input";
 
@@ -21,9 +21,10 @@ interface OptionInputProps extends React.InputHTMLAttributes<HTMLInputElement> {
             errorMessage?: string;
         };
     };
+    disabled?: boolean;
 }
 
-const OptionInput = ({ label, children, options, ...rest }: OptionInputProps) => {
+const OptionInput = ({ label, children, options, disabled, ...rest }: OptionInputProps) => {
     const { type, handleTypeChange, handleDeleteValue } = useInput({
         ...rest,
     });
@@ -34,9 +35,15 @@ const OptionInput = ({ label, children, options, ...rest }: OptionInputProps) =>
             <StyledOptionInputInner>
                 <StyledOptionInputBox
                     $errorStatus={options && options.error && options.error.errorStatus}
+                    $disabled={disabled}
                 >
                     <div>
-                        <StyledOptionInput {...rest} onChange={rest.onChange} type={type} />
+                        <StyledOptionInput
+                            {...rest}
+                            onChange={rest.onChange}
+                            type={type}
+                            disabled={disabled}
+                        />
                         <div>
                             {options &&
                                 options.buttonOption &&
@@ -99,7 +106,7 @@ const StyledOptionInputInner = styled.div`
         margin-top: 0.6rem;
     }
 `;
-const StyledOptionInputBox = styled.div<{ $errorStatus: boolean | undefined }>`
+const StyledOptionInputBox = styled.div<{ $errorStatus: boolean | undefined; $disabled?: boolean }>`
     display: flex;
     align-items: center;
     gap: 0.6rem;
@@ -115,6 +122,11 @@ const StyledOptionInputBox = styled.div<{ $errorStatus: boolean | undefined }>`
                 !props.$errorStatus && `border: 0.05rem solid ${Styles.colors.primary100};`}
         }
         ${(props) => props.$errorStatus && `border: 0.05rem solid ${Styles.colors.systemError};`}
+        ${(props) =>
+            props.$disabled &&
+            css`
+                background: ${Styles.colors.natural10};
+            `}
         & > div {
             display: flex;
             align-items: center;
@@ -127,10 +139,18 @@ const StyledOptionInputBox = styled.div<{ $errorStatus: boolean | undefined }>`
         }
     }
 `;
-const StyledOptionInput = styled(Input)`
+
+const StyledOptionInput = styled(Input)<OptionInputProps>`
     border: none;
     padding: 0;
     &:focus {
         border: none;
     }
+    ${(props) =>
+        props.disabled &&
+        css`
+            background: ${Styles.colors.natural10};
+            color: ${Styles.colors.natural40};
+            pointer-events: none;
+        `}
 `;

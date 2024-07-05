@@ -2,40 +2,39 @@ import styled from "styled-components";
 
 import AppBackHeader from "@/components/header/AppBackHeader";
 import AppLayout from "@/components/layout/AppLayout";
-import EnabledButton from "@/components/button/EnabledButton";
 
 import { Styles } from "@/style/Styles";
+import AppBaseWrapper from "@/components/layout/AppBaseWrapper";
+import FixedButton from "@/components/button/FixedButton";
+import { useNavigate } from "react-router-dom";
+
 const RealtyExamine = () => {
+    const navigate = useNavigate();
+
+    const handleItemClick = () => {
+        navigate(`/realty/payment`);
+    };
     return (
         <AppLayout props={{ header: <AppBackHeader title="서류검토" /> }}>
-            <StyledExaminWrapper>
-                <h2>
-                    서류 등록 완료되었어요.
-                    <br />
-                    결제하기를 통해 임대료를 납입할 수 있어요!
-                </h2>
-                <StyledExaminInner>
-                    <h3>서류 검토</h3>
-                    <p>완료</p>
-                </StyledExaminInner>
-                <button>서류 추가하기</button>
-            </StyledExaminWrapper>
-            <EnabledButton title="결제하기" />
+            <AppBaseWrapper
+                title={`서류 등록이 완료되었어요.\n결제하기를 통해 임대료를 납입할 수 있어요!`}
+            >
+                <StyledExamineContainer>
+                    <StyledExamineInner>
+                        <h3>서류 검토</h3>
+                        <p>완료</p>
+                    </StyledExamineInner>
+                    <button>서류 추가하기</button>
+                </StyledExamineContainer>
+                <FixedButton onClick={handleItemClick}>결제하기</FixedButton>
+            </AppBaseWrapper>
         </AppLayout>
     );
 };
 
-const StyledExaminWrapper = styled.div`
-    width: 100%;
-    padding: 1rem 1rem 0;
+const StyledExamineContainer = styled.div`
     text-align: center;
-    h2 {
-        text-align: left;
-        color: ${Styles.colors.natural90};
-        font-size: ${Styles.font.size.fontsize18};
-        font-weight: ${Styles.font.weight.medium};
-        margin-bottom: 1.5rem;
-    }
+    margin: 1.5rem 0 4rem;
     button {
         color: ${Styles.colors.primary100};
         font-size: ${Styles.font.size.fontsize14};
@@ -49,7 +48,7 @@ const StyledExaminWrapper = styled.div`
     }
 `;
 
-const StyledExaminInner = styled.section`
+const StyledExamineInner = styled.section`
     text-align: center;
     border-radius: 0.4rem;
     background-color: ${Styles.colors.systemBackground};

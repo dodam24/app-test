@@ -1,13 +1,15 @@
-import { useRef, useState } from "react";
+import { ChangeEvent, useRef, useState } from "react";
 import styled from "styled-components";
 
 import AppBackHeader from "@/components/header/AppBackHeader";
 import AppLayout from "@/components/layout/AppLayout";
-import EnabledButton from "@/components/button/EnabledButton";
 
 import { Styles } from "@/style/Styles";
 
 import { PlusIcon, SearchIcon, TrashIcon } from "@/pages/realty/_images/realtyImg";
+import AppBaseWrapper from "@/components/layout/AppBaseWrapper";
+import FixedButton from "@/components/button/FixedButton";
+import { useNavigate } from "react-router-dom";
 
 const Realty = () => {
     const fileInputRefs = useRef<(HTMLInputElement | null)[]>([]);
@@ -17,7 +19,7 @@ const Realty = () => {
         fileInputRefs.current[index]?.click();
     };
 
-    const handleFileChange = (index: number, event: React.ChangeEvent<HTMLInputElement>) => {
+    const handleFileChange = (index: number, event: ChangeEvent<HTMLInputElement>) => {
         const file = event.target.files?.[0];
         if (file) {
             const objectUrl = URL.createObjectURL(file);
@@ -43,14 +45,15 @@ const Realty = () => {
 
     const documents = ["신분증", "임대차 계약서"];
 
+    const navigate = useNavigate();
+
+    const handleItemClick = () => {
+        navigate(`/realty/examine`);
+    };
+
     return (
         <AppLayout props={{ header: <AppBackHeader title="서류등록" /> }}>
-            <StyledRealtyWrapper>
-                <h2>
-                    업로드 버튼을 눌러 <br />
-                    선명한 사진으로 등록해주세요.
-                </h2>
-
+            <AppBaseWrapper title={`업로드 버튼을 눌러\n선명한 사진으로 등록해주세요.`}>
                 {documents.map((doc, index) => (
                     <StyledDocumentContainer key={index}>
                         <p>{doc}</p>
@@ -84,22 +87,12 @@ const Realty = () => {
                         <span>3MB 이하 업로드 가능</span>
                     </StyledDocumentContainer>
                 ))}
-            </StyledRealtyWrapper>
-            <EnabledButton title="서류등록" />
+                <FixedButton onClick={handleItemClick}>서류등록</FixedButton>
+            </AppBaseWrapper>
         </AppLayout>
     );
 };
 
-const StyledRealtyWrapper = styled.div`
-    width: 100%;
-    padding: 1rem 1rem 0;
-    h2 {
-        color: ${Styles.colors.natural90};
-        font-size: ${Styles.font.size.fontsize18};
-        font-weight: ${Styles.font.weight.medium};
-        margin-bottom: 1rem;
-    }
-`;
 const StyledDocumentContainer = styled.div`
     display: flex;
     flex-direction: column;

@@ -1,11 +1,10 @@
 import { useState } from "react";
 import styled from "styled-components";
 
-import EnabledButton from "@/components/button/EnabledButton";
-
 import { Styles } from "@/style/Styles";
 
 import { SearchIcon, ToggleIcon } from "@/pages/auth/register/_images/register_img";
+import FixedButton from "@/components/button/FixedButton";
 
 const StaffOfficeSearch = () => {
     const [showMenu, setShowMenu] = useState(false);
@@ -39,12 +38,13 @@ const StaffOfficeSearch = () => {
                     </span>
                 </StyledSearchInput>
             </StyledSearchInner>
-            <EnabledButton title="입력" />
+            <FixedButton>입력</FixedButton>
         </StyledStaffCheckWrapper>
     );
 };
 
 const StyledStaffCheckWrapper = styled.div`
+    margin-top: 1.5rem;
     width: 100%;
 `;
 const StyledSearchInner = styled.div`

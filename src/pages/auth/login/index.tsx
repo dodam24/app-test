@@ -19,8 +19,8 @@ const Login = () => {
                         <label>자동로그인</label>
                     </SaveIdWrapper>
                     <FindOptionsWrapper>
-                        <a href="">아이디 찾기</a>
-                        <a href="">비밀번호 찾기</a>
+                        <Link to={"/find/id"}>아이디 찾기</Link>
+                        <Link to={"/find/pw"}>비밀번호 찾기</Link>
                     </FindOptionsWrapper>
                 </FormFieldOption>
                 <DividerText>또는 간편로그인</DividerText>

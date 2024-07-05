@@ -22,7 +22,7 @@ const AppMenus = [
         disableIcon: "src/assets/images/icons/icon_checkout_off_c.png",
     },
     {
-        to: "/attendancelist",
+        to: "/employees_c/attendancelist",
         name: "근무내역",
         enableIcon: "src/assets/images/icons/icon_attendance_list_on_c.png",
         disableIcon: "src/assets/images/icons/icon_attendance_list_off_c.png",

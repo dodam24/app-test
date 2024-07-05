@@ -35,7 +35,7 @@ const StaffApproval = () => {
     const $isEmpty = staffData.length === 0;
 
     return (
-        <AppLayout props={{ header: <AppBackHeader title="대출상품" /> }}>
+        <AppLayout props={{ header: <AppBackHeader title="승인대기목록" /> }}>
             <StyledApprovalWrapper>
                 {$isEmpty ? (
                     <StyledNoneList>
@@ -52,14 +52,14 @@ const StaffApproval = () => {
                         <StyledApprovalInner>
                             {staffData.map((staff) => (
                                 <li key={staff.id}>
-                                    <StyledApprovalTop>
+                                    <div className="top">
                                         <h3>{staff.name}</h3>
                                         <p>{staff.status}</p>
-                                    </StyledApprovalTop>
-                                    <StyledApprovalBottom>
+                                    </div>
+                                    <div className="bottom">
                                         <span>{staff.date}</span>
                                         <span>{staff.time}</span>
-                                    </StyledApprovalBottom>
+                                    </div>
                                 </li>
                             ))}
                         </StyledApprovalInner>
@@ -114,43 +114,44 @@ const StyledApprovalInner = styled.ul`
         gap: 0.3rem;
         border-radius: 0.4rem;
         border: 1px solid ${Styles.colors.natural00};
-    }
-`;
+        word-break: break-all;
+        .top {
+            display: flex;
+            justify-content: space-between;
+            gap: 1.2rem;
+            h3 {
+                color: ${Styles.colors.natural90};
+                font-size: ${Styles.font.size.fontsize15};
+                font-weight: ${Styles.font.weight.medium};
+            }
+            p {
+                color: ${Styles.colors.systemError};
+                font-size: ${Styles.font.size.fontsize14};
+                font-weight: ${Styles.font.weight.regular};
+                min-width: fit-content;
+            }
+        }
+        .bottom {
+            display: flex;
+            align-items: center;
 
-const StyledApprovalTop = styled.div`
-    display: flex;
-    justify-content: space-between;
-    h3 {
-        color: ${Styles.colors.natural90};
-        font-size: ${Styles.font.size.fontsize15};
-        font-weight: ${Styles.font.weight.medium};
-    }
-    p {
-        color: ${Styles.colors.systemError};
-        font-size: ${Styles.font.size.fontsize14};
-        font-weight: ${Styles.font.weight.regular};
-    }
-`;
+            span {
+                position: relative;
+                color: ${Styles.colors.natural50};
+                font-size: ${Styles.font.size.fontsize13};
+                font-weight: ${Styles.font.weight.regular};
+                margin-right: 0.8rem;
+            }
 
-const StyledApprovalBottom = styled.div`
-    display: flex;
-    align-items: center;
-
-    span {
-        position: relative;
-        color: ${Styles.colors.natural50};
-        font-size: ${Styles.font.size.fontsize13};
-        font-weight: ${Styles.font.weight.regular};
-        margin-right: 0.8rem;
-    }
-
-    span:not(:last-child)::after {
-        content: "";
-        position: absolute;
-        width: 0.05rem;
-        height: 80%;
-        background-color: ${Styles.colors.natural00};
-        right: -0.4rem;
-        top: 10%;
+            span:not(:last-child)::after {
+                content: "";
+                position: absolute;
+                width: 0.05rem;
+                height: 80%;
+                background-color: ${Styles.colors.natural00};
+                right: -0.4rem;
+                top: 10%;
+            }
+        }
     }
 `;

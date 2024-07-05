@@ -4,7 +4,7 @@ import { Styles } from "@/style/Styles";
 import styled, { createGlobalStyle } from "styled-components";
 import Timer from "@/assets/images/icons/icon_attendance_timer_c.png";
 import FixedButton from "@/components/button/FixedButton";
-import DigitalClockBasic from "@/pages/employee/component/TimePicker";
+import TimePicker from "@/pages/employee/component/TimePicker";
 
 const Attendance = () => {
     return (
@@ -18,7 +18,7 @@ const Attendance = () => {
                     <p className="message">오늘도 화이팅 하세요! :)</p>
                 </div>
             </StyledAttendanceDisplay>
-            <DigitalClockBasic />
+            <StyledTimePicker />
             <StyledAttendanceTimer>
                 <p className="timer_option">※ 선택가능범위 : 현재시각 ± 10분</p>
             </StyledAttendanceTimer>
@@ -26,6 +26,8 @@ const Attendance = () => {
         </AppLayout>
     );
 };
+
+const StyledTimePicker = styled(TimePicker)``;
 
 const StyledAttendanceBody = createGlobalStyle`
     body {
@@ -40,12 +42,13 @@ const StyledAttendanceDisplay = styled.section`
     border-radius: 0 0 0.9rem 0.9rem;
     background: ${Styles.colors.primary100};
     padding: 1rem;
+
     img {
         width: 5.4rem;
         height: 5.9rem;
         flex-shrink: 0;
-        /* background: url({Attendance}) lightgray -31.368px -25.514px / 157.353% 144.595% no-repeat; */
     }
+
     .display_content {
         width: 100%;
         display: flex;
@@ -81,11 +84,11 @@ const StyledAttendanceTimer = styled.section`
     flex-direction: column;
     margin: 2.2rem 1rem 1.8rem 1rem;
     gap: 7rem;
-    /* .timer_main {
-        text-align: center;
-        background: linear-gradient(180deg, rgba(255, 255, 255, 0) 80.9%, #fff 96.63%);
-    } */
+
     .timer_option {
+        display: flex;
+        position: fixed;
+        bottom: 5.02rem;
         color: ${Styles.colors.natural50};
         font-size: ${Styles.font.size.fontsize13};
         font-weight: ${Styles.font.weight.regular};

@@ -2,7 +2,11 @@ import { Styles } from "@/style/Styles";
 import { styled } from "styled-components";
 import MoreCustomerService from "./MoreCustomerService";
 
-const MoreUser = () => {
+interface MoreUserProps {
+    openModal: () => void;
+}
+
+const MoreUser = ({ openModal }: MoreUserProps) => {
     return (
         <StyledCustomerInfoContainer>
             <div className="user_info">
@@ -10,14 +14,14 @@ const MoreUser = () => {
                     <span>basic 회원</span>
                     <strong>홍길동님</strong>
                 </div>
-                <button>로그아웃</button>
+                <button onClick={openModal}>로그아웃</button>
             </div>
             <MoreCustomerService />
         </StyledCustomerInfoContainer>
     );
 };
 
-const StyledCustomerInfoContainer = styled.div`
+const StyledCustomerInfoContainer = styled.section`
     padding: 2.2rem 1rem 1.6rem 1rem;
     .user_info {
         display: flex;
