@@ -1,4 +1,5 @@
 import styled from "styled-components";
+import { ChangeEvent, MouseEvent, useState } from "react";
 
 import AppLayout from "@/components/layout/AppLayout";
 import AppBackHeader from "@/components/header/AppBackHeader";
@@ -7,20 +8,44 @@ import { Styles } from "@/style/Styles";
 import AppBaseWrapper from "@/components/layout/AppBaseWrapper";
 
 import FixedButton from "@/components/button/FixedButton";
-import { StyleDoubleFixedBotton } from "@/components/styles/ButtonSytle";
+import { StyleDoubleFixedButton } from "@/components/styles/ButtonSytle";
 import { StyledInputRadioWrapper } from "@/components/styles/InputStyle";
+import { useNavigate } from "react-router-dom";
 
 const FindIdList = () => {
-    // 임시 데이터 예시
     const idList = [
         { id: "user1", registrationDate: "2023-01-01" },
         { id: "user2", registrationDate: "2023-02-01" },
         { id: "user3", registrationDate: "2023-03-01" },
     ];
-    // 아이디의 마지막 두 자리를 **로 표시
+
     const maskId = (id: string) => {
         if (id.length <= 2) return "**";
         return id.slice(0, -2) + "**";
+    };
+
+    const [selectedId, setSelectedId] = useState<string>("");
+
+    const handleInputChange = (e: ChangeEvent<HTMLInputElement>) => {
+        setSelectedId(e.target.value);
+    };
+
+    const handleItemClick = (id: string) => {
+        setSelectedId(id);
+    };
+
+    const handleDoubleClick = (e: MouseEvent<HTMLLIElement>) => {
+        e.preventDefault();
+    };
+
+    const navigate = useNavigate();
+
+    const handlePwClick = () => {
+        navigate("/find/pw");
+    };
+
+    const handleLoginClick = () => {
+        navigate("/login");
     };
 
     return (
@@ -28,10 +53,23 @@ const FindIdList = () => {
             <AppBaseWrapper title={`고객님의 정보와 일치하는\n아이디 목록을 보여드릴게요.`}>
                 <StyledIdList>
                     {idList.map((item, index) => (
-                        <li key={index}>
+                        <li
+                            key={index}
+                            onClick={() => handleItemClick(item.id)}
+                            onDoubleClick={handleDoubleClick}
+                        >
                             <StyledRadioContainer>
-                                <input type="radio" name="idList" />
-                                <p>{maskId(item.id)}</p>
+                                <input
+                                    type="radio"
+                                    name="idList"
+                                    value={item.id} // 여기 추가
+                                    checked={selectedId === item.id}
+                                    onChange={(e) => {
+                                        handleInputChange(e);
+                                        handleItemClick(item.id); // 여기 추가
+                                    }}
+                                />
+                                <span>{maskId(item.id)}</span>
                             </StyledRadioContainer>
                             <span className="registrationDate">가입일 {item.registrationDate}</span>
                         </li>
@@ -39,8 +77,10 @@ const FindIdList = () => {
                 </StyledIdList>
 
                 <StyledButtonFlex>
-                    <FixedButton className="custom_btn">비밀번호 찾기</FixedButton>
-                    <FixedButton>로그인</FixedButton>
+                    <FixedButton className="custom_btn" onClick={handlePwClick}>
+                        비밀번호 찾기
+                    </FixedButton>
+                    <FixedButton onClick={handleLoginClick}>로그인</FixedButton>
                 </StyledButtonFlex>
             </AppBaseWrapper>
         </AppLayout>
@@ -48,7 +88,6 @@ const FindIdList = () => {
 };
 
 const StyledIdList = styled.ul`
-    list-style-type: none;
     padding: 1.2rem 0.8rem;
     border-radius: 0.4rem;
     border: 1px solid ${Styles.colors.natural10};
@@ -64,6 +103,7 @@ const StyledIdList = styled.ul`
         align-items: center;
         font-size: ${Styles.font.size.fontsize14};
         font-weight: ${Styles.font.weight.regular};
+        user-select: none;
 
         span {
             color: ${Styles.colors.natural40};
@@ -76,10 +116,10 @@ const StyledRadioContainer = styled(StyledInputRadioWrapper)`
     display: flex;
     align-items: center;
     gap: 0.3rem;
-    p {
+    span {
         color: ${Styles.colors.natural60};
     }
 `;
-const StyledButtonFlex = styled(StyleDoubleFixedBotton)``;
+const StyledButtonFlex = styled(StyleDoubleFixedButton)``;
 
 export default FindIdList;

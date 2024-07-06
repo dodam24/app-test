@@ -39,18 +39,6 @@ const PaymentListItem = ({ payment }: PaymentProps) => {
                     {transFormAmount(payment.amount)}
                 </strong>
             </div>
-            <div className={`infoContainer`}>
-                <div className="info">
-                    <div className="logo">{payment.payment_provider_type}</div>
-                    <div>
-                        <h3>{payment.payment_provider_type}</h3>
-                        <span className="time">{transFormTime(payment.transaction_at)}</span>
-                    </div>
-                </div>
-                <strong className={payment.amount > 0 ? "" : "minus"}>
-                    {transFormAmount(payment.amount)}
-                </strong>
-            </div>
         </StyledPaymentListItem>
     );
 };

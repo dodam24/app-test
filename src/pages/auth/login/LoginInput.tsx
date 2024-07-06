@@ -3,6 +3,7 @@ import styled from "styled-components";
 
 import { login } from "@/apis/auth/login";
 import { validatePassword } from "@/utils/inputVerify";
+import { validateId } from "@/utils/inputVerify";
 
 import OptionInput from "@/components/input/OptionInput";
 import Button from "@/components/button/Button";
@@ -30,11 +31,18 @@ const LoginInput = () => {
             } else {
                 setError("");
             }
+        } else if (name === "username") {
+            !validateId(inputValue);
         }
     };
 
     const handleLogin = async (e: FormEvent | React.MouseEvent<HTMLButtonElement>) => {
         e.preventDefault();
+
+        if (!validateId(value.username)) {
+            setError("아이디는 영문자와 숫자를 포함하여 6자 이상이어야 합니다.");
+            return;
+        }
 
         if (!validatePassword(value.password)) {
             setError("8~20자리 영문+숫자+특수문자 모두 포함하여 입력해주세요.");
@@ -50,6 +58,7 @@ const LoginInput = () => {
     };
 
     const isPasswordValid = validatePassword(value.password);
+    const isUsernameValid = validateId(value.username);
 
     return (
         <StyedLoginInputWrapper>
@@ -81,7 +90,11 @@ const LoginInput = () => {
                 />
             </StyledInputContainer>
 
-            <Button type="submit" onClick={handleLogin} disabled={!isPasswordValid}>
+            <Button
+                type="submit"
+                onClick={handleLogin}
+                disabled={!isPasswordValid || !isUsernameValid}
+            >
                 로그인
             </Button>
         </StyedLoginInputWrapper>
@@ -100,7 +113,8 @@ const StyedLoginInputWrapper = styled.div`
     }
 `;
 
-const StyledInputContainer = styled.div`
+const StyledInputContainer = styled.form`
+    // form 요소로 수정
     display: flex;
     flex-direction: column;
     gap: 0.6rem;

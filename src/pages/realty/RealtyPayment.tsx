@@ -9,14 +9,17 @@ import { Styles } from "@/style/Styles";
 import AppBaseWrapper from "@/components/layout/AppBaseWrapper";
 import FixedButton from "@/components/button/FixedButton";
 import { useNavigate } from "react-router-dom";
-import { StyledBaseInputWrapper, StyledInputRadioWrapper } from "@/components/styles/InputStyle";
+import {
+    StyledBaseInputWrapper,
+    StyledLabelRadioInputWrapper,
+} from "@/components/styles/InputStyle";
 
 const RealtyPayment = () => {
     const [value, setValue] = useState({
         username: "",
         name: "",
         amount: "",
-        fee_rate: "",
+        fee_rate: "1.5",
     });
 
     const handle = (e: ChangeEvent<HTMLInputElement>) => {
@@ -25,7 +28,6 @@ const RealtyPayment = () => {
             [e.target.name]: e.target.value,
         });
     };
-    const idList = [{ title: "임대료" }, { title: "관리비" }, { title: "수리비" }];
     const navigate = useNavigate();
 
     const handleItemClick = () => {
@@ -42,6 +44,7 @@ const RealtyPayment = () => {
                         onChange={handle}
                         placeholder="예) 소소상점"
                         label="아이디"
+                        id="username"
                     />
                     <OptionInput
                         type="text"
@@ -50,18 +53,25 @@ const RealtyPayment = () => {
                         onChange={handle}
                         placeholder="예) 김소소"
                         label="결제자명"
+                        id="name"
                     />
-                    <StyledSelectButton>
+                    <StyledSelectRadio>
                         <label>결제항목 선택</label>
-                        <StyledPaymentSelect>
-                            {idList.map((item, index) => (
-                                <li key={index}>
-                                    <input type="radio" name="idList" />
-                                    <p>{item.title}</p>
-                                </li>
-                            ))}
-                        </StyledPaymentSelect>
-                    </StyledSelectButton>
+                        <div className="select_radio">
+                            <label>
+                                <input type="radio" name="insurance" />
+                                임대료
+                            </label>
+                            <label>
+                                <input type="radio" name="insurance" />
+                                관리비
+                            </label>
+                            <label>
+                                <input type="radio" name="insurance" />
+                                수리비
+                            </label>
+                        </div>
+                    </StyledSelectRadio>
                     <OptionInput
                         type="text"
                         name="amount"
@@ -69,14 +79,16 @@ const RealtyPayment = () => {
                         onChange={handle}
                         placeholder="금액을 입력해주세요."
                         label="결제액"
+                        id="amount"
                     />
                     <OptionInput
                         type="text"
                         name="fee_rate"
                         value={value.fee_rate}
                         onChange={handle}
-                        placeholder="1.5"
                         label="수수료"
+                        disabled
+                        id="fee_rate"
                     />
 
                     <StyledBottomText>
@@ -93,31 +105,6 @@ const RealtyPayment = () => {
 
 const StyledInputContainer = styled(StyledBaseInputWrapper)``;
 
-const StyledSelectButton = styled.div`
-    margin-bottom: 1.2rem;
-    label {
-        color: ${Styles.colors.natural80};
-        font-size: ${Styles.font.size.fontsize14};
-        font-weight: ${Styles.font.weight.regular};
-    }
-`;
-const StyledPaymentSelect = styled(StyledInputRadioWrapper)`
-    margin-top: 0.4rem;
-    display: flex;
-    gap: 1rem;
-    li {
-        display: flex;
-        align-items: center;
-        gap: 0.3rem;
-        p {
-            color: ${Styles.colors.natural40};
-            font-size: ${Styles.font.size.fontsize14};
-            font-weight: ${Styles.font.weight.regular};
-            margin: 0;
-        }
-    }
-`;
-
 const StyledBottomText = styled.div`
     position: fixed;
     bottom: 4.7rem;
@@ -132,3 +119,4 @@ const StyledBottomText = styled.div`
     }
 `;
 export default RealtyPayment;
+const StyledSelectRadio = styled(StyledLabelRadioInputWrapper)``;

@@ -5,55 +5,66 @@ import AppLayout from "@/components/layout/AppLayout";
 
 import { Styles } from "@/style/Styles";
 import AppBaseWrapper from "@/components/layout/AppBaseWrapper";
+import { Link } from "react-router-dom";
+
+interface RealtyData {
+    id: number;
+    title: string;
+    status: string;
+    date: string;
+    amount: string;
+    scheduledDate: string;
+}
+const depositData: RealtyData[] = [
+    {
+        id: 1,
+        title: "임대료",
+        status: "입금대기",
+        date: "2023.03.01 09:58:34",
+        amount: "500,000",
+        scheduledDate: "2023.03.05",
+    },
+    {
+        id: 2,
+        title: "관리비",
+        status: "입금완료",
+        date: "2023.03.02 14:20:45",
+        amount: "300,000",
+        scheduledDate: "2023.03.10",
+    },
+    {
+        id: 3,
+        title: "수리비",
+        status: "입금대기",
+        date: "2023.03.03 11:30:22",
+        amount: "200,000",
+        scheduledDate: "2023.03.08",
+    },
+];
 
 const RealtyDepositList = () => {
-    const depositData = [
-        {
-            id: 1,
-            title: "임대료",
-            status: "입금대기",
-            date: "2023.03.01 09:58:34",
-            amount: "500,000",
-            scheduledDate: "2023.03.05",
-        },
-        {
-            id: 2,
-            title: "관리비",
-            status: "입금완료",
-            date: "2023.03.02 14:20:45",
-            amount: "300,000",
-            scheduledDate: "2023.03.10",
-        },
-        {
-            id: 3,
-            title: "수리비",
-            status: "입금대기",
-            date: "2023.03.03 11:30:22",
-            amount: "200,000",
-            scheduledDate: "2023.03.08",
-        },
-    ];
-
     return (
         <AppLayout props={{ header: <AppBackHeader title="입금목록" /> }}>
             <AppBaseWrapper title={`항목을 터치하면 입금 상세내역을\n확인할 수 있습니다.`}>
                 <StyledDepositList>
                     {depositData.map((item) => (
-                        <StyledDepositItem key={item.id}>
-                            <div className="top_box">
-                                <div>
-                                    <h2>{item.title}</h2>
-                                    <h3>{item.status}</h3>
+                        <Link to={`/realty/deposit/info/${item.id}`} key={item.id}>
+                            <StyledDepositItem>
+                                <div className="top_box">
+                                    <div>
+                                        <h2>{item.title}</h2>
+                                        <h3>{item.status}</h3>
+                                    </div>
+                                    <p>{item.date}</p>
                                 </div>
-                                <p>{item.date}</p>
-                            </div>
-                            <div className="botton_box">
-                                <p>
-                                    <span>입금(예정일)</span> {item.scheduledDate}
-                                </p>
-                                <h4>{item.amount}</h4>
-                            </div>
-                        </StyledDepositItem>
+                                <div className="botton_box">
+                                    <p>
+                                        <span>입금(예정일)</span> {item.scheduledDate}
+                                    </p>
+                                    <h4>{item.amount}</h4>
+                                </div>
+                            </StyledDepositItem>
+                        </Link>
                     ))}
                 </StyledDepositList>
             </AppBaseWrapper>

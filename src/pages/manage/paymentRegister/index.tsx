@@ -6,6 +6,7 @@ import ManagePaymentList from "@/pages/manage/paymentRegister/ManagePaymentList"
 import Button from "@/components/button/Button";
 import OptionInput from "@/components/input/OptionInput";
 import { ChangeEvent, useState } from "react";
+import FixedButton from "@/components/button/FixedButton";
 
 const ManagePaymentRegister = () => {
     const [value, setValue] = useState({
@@ -32,6 +33,7 @@ const ManagePaymentRegister = () => {
                     <Button size="sub">세팅</Button>
                 </OptionInput>
                 <ManagePaymentList />
+                <FixedButton>일괄지급 등록</FixedButton>
             </StyledManagePaymentWrapper>
         </AppLayout>
     );
@@ -39,8 +41,7 @@ const ManagePaymentRegister = () => {
 
 export default ManagePaymentRegister;
 
-const StyledManagePaymentWrapper = styled.div`
+const StyledManagePaymentWrapper = styled.form`
     width: 100%;
-    height: calc(100vh - 2.4rem);
     padding: 1.5rem 1rem 0;
 `;

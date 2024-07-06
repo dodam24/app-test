@@ -2103,10 +2103,10 @@ react-is@^16.7.0:
   resolved "https://registry.yarnpkg.com/react-is/-/react-is-16.13.1.tgz#789729a4dc36de2999dc156dd6c1d9c18cea56a4"
   integrity sha512-24e6ynE2H+OKt4kqsOvNd8kBpV65zoxbA4BVsEOB3ARVWQki/DHzaUoC5KuON/BiccDaCCTZBuOcfZs70kR8bQ==
 
-react-mobile-datepicker-ts@^1.0.6:
-  version "1.0.6"
-  resolved "https://registry.yarnpkg.com/react-mobile-datepicker-ts/-/react-mobile-datepicker-ts-1.0.6.tgz#f7a4e285106371ff421f1b81af076e70d088c86e"
-  integrity sha512-v2QeVVJ9BDAlRs7yBzUG+vW6d/6oUYhfJiDtPl5ZswfLdOtdDZIXo8oizL7qcDT9x7hzqWxE9n7wYfNI8WtduQ==
+react-mobile-datepicker-ts@1.0.0:
+  version "1.0.0"
+  resolved "https://registry.yarnpkg.com/react-mobile-datepicker-ts/-/react-mobile-datepicker-ts-1.0.0.tgz#36c1a1f9ff3ed0b7558d046892de6c6b27600bac"
+  integrity sha512-tGPOJ3i3iXqe5RQ1d3heYL2P22Mkt2ApCz6dyRX1C5E/RGD2vuUJHtfmz/pO+/JfMv0O98kAt7zga9rfFfpWsg==
 
 react-mobile-datepicker@^4.0.2:
   version "4.0.2"

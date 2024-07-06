@@ -17,12 +17,28 @@ const FindPW = () => {
     const [value, setValue] = useState({
         name: "",
         username: "",
+        cellphone_number: "",
+        verificationCode: "",
     });
 
     const handle = (e: ChangeEvent<HTMLInputElement>) => {
         setValue({
             ...value,
             [e.target.name]: e.target.value,
+        });
+    };
+
+    const handlePhoneChange = (phone: string) => {
+        setValue({
+            ...value,
+            cellphone_number: phone,
+        });
+    };
+
+    const handleVerificationCodeChange = (code: string) => {
+        setValue({
+            ...value,
+            verificationCode: code,
         });
     };
 
@@ -38,6 +54,7 @@ const FindPW = () => {
                     <OptionInput
                         type="text"
                         name="username"
+                        id="username"
                         value={value.username}
                         onChange={handle}
                         placeholder="예) soso1234"
@@ -46,12 +63,16 @@ const FindPW = () => {
                     <OptionInput
                         type="text"
                         name="name"
+                        id="name"
                         value={value.name}
                         onChange={handle}
                         placeholder="예) 김소소"
                         label="이름"
                     />
-                    <PhoneAuthInput />
+                    <PhoneAuthInput
+                        onPhoneChange={handlePhoneChange}
+                        onVerificationCodeChange={handleVerificationCodeChange}
+                    />
                     <FixedButton type="submit">다음</FixedButton>
                 </StyledInputWrapper>
             </AppBaseWrapper>

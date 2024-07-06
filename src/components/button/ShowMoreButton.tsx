@@ -2,15 +2,15 @@ import ArrowDown from "@/assets/images/icons/icon_arrow_down_white_c.png";
 import { Styles } from "@/style/Styles";
 import styled from "styled-components";
 
-// interface ShowMoreButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
-//     title: string;
-//     onClick: (e:) => void;
-// }
+interface ShowMoreButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
+    title: string;
+    onClick: (e: React.MouseEvent<HTMLButtonElement>) => void;
+}
 
-const ShowMoreButton = () => {
+const ShowMoreButton = ({ title, onClick, ...props }: ShowMoreButtonProps) => {
     return (
-        <StyledShowMoreButton>
-            <h5>한달 더보기</h5>
+        <StyledShowMoreButton onClick={onClick} {...props}>
+            <h5>{title}</h5>
             <img src={ArrowDown} alt="아래 화살표" />
         </StyledShowMoreButton>
     );

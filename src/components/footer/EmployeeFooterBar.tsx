@@ -2,6 +2,7 @@ import { NavLink } from "react-router-dom";
 import { Styles } from "@/style/Styles";
 import styled from "styled-components";
 
+// 홈(직원 메인) 연동 필요
 const AppMenus = [
     {
         to: "/employee",
@@ -10,19 +11,19 @@ const AppMenus = [
         disableIcon: "src/assets/images/icons/icon_home_off.png",
     },
     {
-        to: "/checkin",
+        to: "/employee/checkin",
         name: "출근등록",
         enableIcon: "src/assets/images/icons/icon_checkin_on_c.png",
         disableIcon: "src/assets/images/icons/icon_checkin_off_c.png",
     },
     {
-        to: "/checkout",
+        to: "/employee/checkout",
         name: "퇴근등록",
         enableIcon: "src/assets/images/icons/icon_checkout_on_c.png",
         disableIcon: "src/assets/images/icons/icon_checkout_off_c.png",
     },
     {
-        to: "/employees_c/attendancelist",
+        to: "/employee/attendancelist",
         name: "근무내역",
         enableIcon: "src/assets/images/icons/icon_attendance_list_on_c.png",
         disableIcon: "src/assets/images/icons/icon_attendance_list_off_c.png",

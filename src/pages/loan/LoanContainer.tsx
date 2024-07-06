@@ -60,7 +60,7 @@ const LoanContainer = () => {
     const navigate = useNavigate();
 
     const handleItemClick = (id: number) => {
-        navigate(`/loan/info`);
+        navigate(`/loan/info/${id}`);
         console.log(`Loan Item Clicked: ${id}`);
     };
 

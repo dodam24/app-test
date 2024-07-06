@@ -5,65 +5,50 @@ import AppLayout from "@/components/layout/AppLayout";
 
 import { Styles } from "@/style/Styles";
 
-import { CardIcon, ChartIcon, WalletIcon } from "@/pages/loan/_images/loanImg";
 import AppBaseWrapper from "@/components/layout/AppBaseWrapper";
 import FixedButton from "@/components/button/FixedButton";
-import { useNavigate } from "react-router-dom";
-
-interface LoanData {
-    title: string;
-    description: string;
-    img: string;
-}
-
-const dummyLoanData: LoanData[] = [
-    {
-        img: ChartIcon,
-        title: "대출 설명",
-        description:
-            "소소상점을 이용하는 소상공인의 PG / VAN / 배달플랫폼 매출데이터를 바탕으로 매출을 분석하여 대출액 측정 후 한도와 기간을 설정하여 대출진행",
-    },
-    {
-        img: CardIcon,
-        title: "대출 상환 방식",
-        description: "원리금 균등상환방식 (단기) 매출채권 담보를 통해 일납하는 방식",
-    },
-];
+import { useNavigate, useParams } from "react-router-dom";
+import dummyLoanData from "@/pages/loan/_data/loanData";
 
 const LoanItemInfo = () => {
+    const { id } = useParams<{ id: string }>();
     const navigate = useNavigate();
+
+    const loanData = dummyLoanData.find((loan) => loan.id === Number(id));
+
+    if (!loanData) {
+        return <div>존재하지 않는 대출 상품입니다.</div>;
+    }
 
     const handleApplyButtonClick = () => {
         navigate("/loan/terms");
     };
+
     return (
         <AppLayout props={{ header: <AppBackHeader title="대출상품" /> }}>
             <AppBaseWrapper>
                 <StyledInfoInner>
-                    <h3>
-                        소소상점을 이용하는
-                        <br /> 소상공인들을 위한 소상공인론
-                    </h3>
-                    <img src={WalletIcon} alt="" />
+                    <h3>{loanData.title}</h3>
+                    <img src={loanData.img} alt="" />
 
                     <ul>
                         <li>
                             <h3>금리</h3>
-                            <span>14~15%</span>
+                            <span>{loanData.interestRate} </span>
                         </li>
                         <li>
                             <h3>한도</h3>
-                            <span>300만원~1천만원</span>
+                            <span>{loanData.limit} </span>
                         </li>
                     </ul>
                 </StyledInfoInner>
                 <StyledInfoBox>
-                    {dummyLoanData.map((item, index) => (
+                    {loanData.details.map((detail, index) => (
                         <div className="info_boxItem" key={index}>
-                            <img src={item.img} alt={item.title} />
+                            <img src={detail.img} alt={detail.title} />
                             <div>
-                                <h4>{item.title}</h4>
-                                <p>{item.description}</p>
+                                <h4>{detail.title}</h4>
+                                <p>{detail.description}</p>
                             </div>
                         </div>
                     ))}
@@ -80,6 +65,7 @@ const StyledInfoInner = styled.div`
         color: ${Styles.colors.natural90};
         font-size: ${Styles.font.size.fontsize24};
         font-weight: ${Styles.font.weight.medium};
+        white-space: pre-wrap;
     }
     img {
         margin: 2rem 0;

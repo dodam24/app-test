@@ -41,6 +41,28 @@ export const StyledInputRadioWrapper = styled.div`
     }
 `;
 
+export const StyledLabelRadioInputWrapper = styled(StyledInputRadioWrapper)`
+    label {
+        color: ${Styles.colors.natural80};
+        font-size: ${Styles.font.size.fontsize14};
+        font-weight: ${Styles.font.weight.regular};
+    }
+    .select_radio {
+        display: flex;
+        gap: 1rem;
+
+        label {
+            display: flex;
+            align-items: center;
+            gap: 0.3rem;
+            margin-top: 0.4rem;
+            color: ${Styles.colors.natural40};
+            font-size: ${Styles.font.size.fontsize14};
+            font-weight: ${Styles.font.weight.regular};
+        }
+    }
+`;
+
 export const StyledEmailWrapper = styled.div`
     display: grid;
     grid-template-columns: 1fr 24px 1fr;

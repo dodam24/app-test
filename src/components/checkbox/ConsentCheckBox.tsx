@@ -119,6 +119,7 @@ const ConsentComponent = ({ Loan }: ConsentComponentProps) => {
 };
 
 const CommonContent = styled.div`
+    margin-top: 0.8rem;
     div {
         display: flex;
         align-items: flex-start;

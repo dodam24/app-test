@@ -1,7 +1,7 @@
 import styled from "styled-components";
 import { Styles } from "@/style/Styles";
 
-export const StyleDoubleFixedBotton = styled.div`
+export const StyleDoubleFixedButton = styled.div`
     width: 100%;
     display: flex;
     gap: 0.75rem;
@@ -13,6 +13,9 @@ export const StyleDoubleFixedBotton = styled.div`
     div {
         position: static;
         padding: 0;
+    }
+    a {
+        width: 100%;
     }
     .custom_btn {
         background-color: ${Styles.colors.systemWhite};

@@ -17,6 +17,28 @@ export const StyledTimePicker = createGlobalStyle`
     .datepicker .datepicker-content {
         padding: 2.2rem 1rem;;
     }
+    .datepicker-content {
+        position: relative;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        background-color: inherit;
+        padding: 0.5rem;
+    }
+    .datepicker-content > div {
+        flex: 1;
+        position: relative;
+    }
+    .datepicker-content > div:not(:last-child)::after {
+        content: ":";
+        position: absolute;
+        right: 0;
+        top: 50%;
+        transform: translateY(-50%);
+        font-size: 1rem;
+        color:rgb(59, 59, 59);
+        background-color: inherit;
+    }
     .datepicker-navbar {
         display: none;
     }

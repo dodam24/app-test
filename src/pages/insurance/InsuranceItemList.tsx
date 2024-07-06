@@ -1,5 +1,6 @@
 import React from "react";
 import styled from "styled-components";
+import { useNavigate } from "react-router-dom"; // useNavigate 추가
 
 import AppBackHeader from "@/components/header/AppBackHeader";
 import AppLayout from "@/components/layout/AppLayout";
@@ -46,6 +47,12 @@ const insuranceData = [
 ];
 
 const InsuranceItemList = () => {
+    const navigate = useNavigate();
+
+    const handleItemClick = (id: number) => {
+        navigate(`/insurance/info/${id}`);
+    };
+
     return (
         <AppLayout props={{ header: <AppBackHeader title="대출상품" /> }}>
             <StyledItemListWrapper>
@@ -54,7 +61,7 @@ const InsuranceItemList = () => {
                     <StyledItemListContainer key={item.id}>
                         <h3>{item.title}</h3>
                         <ul>
-                            <li>
+                            <li onClick={() => handleItemClick(item.id)}>
                                 <StyledItemInner>
                                     <img className="main_icon" src={item.mainIcon} alt="" />
                                     <div>
@@ -108,6 +115,7 @@ const StyledItemListContainer = styled.div`
             display: flex;
             justify-content: space-between;
             align-items: center;
+            cursor: pointer;
             img {
                 width: 1.2rem;
                 height: 1.2rem;

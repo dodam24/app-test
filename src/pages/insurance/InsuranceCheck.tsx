@@ -1,8 +1,6 @@
-import { useState } from "react";
+import React, { useState, useRef, ReactNode } from "react";
 import styled from "styled-components";
-
 import { Styles } from "@/style/Styles";
-
 import {
     ArrowDownIcon,
     CheckedIcon,
@@ -11,6 +9,11 @@ import {
 } from "@/pages/insurance/_images/insurance";
 import FixedButton from "@/components/button/FixedButton";
 import { useNavigate } from "react-router-dom";
+
+type AccordionDetailsProps = {
+    isOpen: boolean;
+    children: ReactNode;
+};
 
 const data = [
     {
@@ -36,7 +39,7 @@ const data = [
     { id: 5, title: "여행", details: ["여행", "여행"] },
 ];
 
-const InsuranceCheck = () => {
+const InsuranceCheck: React.FC = () => {
     const [openItems, setOpenItems] = useState<number[]>([]);
     const [selectedItem, setSelectedItem] = useState<{
         summaryId: number | "";
@@ -83,29 +86,35 @@ const InsuranceCheck = () => {
                             alt="toggle icon"
                         />
                     </StyledSummary>
-                    {openItems.includes(item.id) && (
-                        <StyledDetails>
-                            {item.details.map((detail, index) => (
-                                <StyledListItem
-                                    key={index}
-                                    onClick={() => toggleSelect(item.id, index)}
-                                    $isSelected={isItemSelected(item.id, index)}
-                                >
-                                    <span>{detail}</span>
-                                    <img
-                                        src={
-                                            isItemSelected(item.id, index) ? CheckedIcon : CheckIcon
-                                        }
-                                        alt="check icon"
-                                    />
-                                </StyledListItem>
-                            ))}
-                        </StyledDetails>
-                    )}
+                    <AccordionDetails isOpen={openItems.includes(item.id)}>
+                        {item.details.map((detail, index) => (
+                            <StyledListItem
+                                key={index}
+                                onClick={() => toggleSelect(item.id, index)}
+                                $isSelected={isItemSelected(item.id, index)}
+                            >
+                                <span>{detail}</span>
+                                <img
+                                    src={isItemSelected(item.id, index) ? CheckedIcon : CheckIcon}
+                                    alt="check icon"
+                                />
+                            </StyledListItem>
+                        ))}
+                    </AccordionDetails>
                 </ul>
             ))}
             <FixedButton onClick={handleItemClick}>다음</FixedButton>
         </StyledCheckListWrapper>
+    );
+};
+
+const AccordionDetails = ({ isOpen, children }: AccordionDetailsProps) => {
+    const contentRef = useRef<HTMLDivElement>(null);
+
+    return (
+        <StyledDetails ref={contentRef} $isOpen={isOpen}>
+            <div>{children}</div>
+        </StyledDetails>
     );
 };
 
@@ -119,7 +128,7 @@ const StyledSummary = styled.li<{ $isOpen: boolean }>`
     align-items: center;
     cursor: pointer;
     padding: 0.55rem 0.8rem;
-    margin-bottom: ${({ $isOpen }) => ($isOpen ? "" : "0.5rem")};
+
     border: 1px solid ${Styles.colors.natural00};
     border-radius: 0.4rem;
     background-color: ${({ $isOpen }) =>
@@ -138,14 +147,20 @@ const StyledSummary = styled.li<{ $isOpen: boolean }>`
     }
 `;
 
-const StyledDetails = styled.ul`
-    padding: 1rem 0.8rem;
-    background-color: ${Styles.colors.systemBackground};
-    border-radius: 0.4rem;
-    display: flex;
-    flex-direction: column;
-    gap: 0.5rem;
+const StyledDetails = styled.div<{ $isOpen: boolean }>`
+    overflow: hidden;
+    max-height: ${({ $isOpen }) => ($isOpen ? "1000px" : "0")};
+    transition: max-height 0.3s ease;
     margin-bottom: 0.5rem;
+
+    div {
+        padding: 1rem 0.8rem;
+        background-color: ${Styles.colors.systemBackground};
+        border-radius: 0.4rem;
+        display: flex;
+        flex-direction: column;
+        gap: 0.5rem;
+    }
 `;
 
 const StyledListItem = styled.li<{ $isSelected: boolean }>`

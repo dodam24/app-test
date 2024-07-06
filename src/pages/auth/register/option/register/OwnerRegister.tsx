@@ -14,6 +14,10 @@ import { StyledBaseInputWrapper, StyledEmailWrapper } from "@/components/styles/
 import { validatePassword, validateId } from "@/utils/inputVerify";
 import { registerIdverify } from "@/apis/auth/register";
 import ConsentCheckBox from "@/components/checkbox/ConsentCheckBox";
+import useModal from "@/hooks/useModal";
+import DynamicModal from "@/components/modal/DynamicModal";
+import ConfirmationModal from "@/components/modal/ui/ConfirmationModal";
+import { useNavigate } from "react-router-dom";
 
 const OwnerRegister = () => {
     const [value, setValue] = useState({
@@ -24,7 +28,7 @@ const OwnerRegister = () => {
         cellphone_number: "",
         verificationCode: "",
         email_id: "",
-        emailDomain: "",
+        selectDomain: "",
         company_id: "",
         user_type: "owner",
         passwordMatch: false,
@@ -34,6 +38,8 @@ const OwnerRegister = () => {
         showDeleteOption: false,
     });
 
+    const [error, setError] = useState<string>("");
+
     const handle = (e: ChangeEvent<HTMLInputElement>) => {
         const { name, value: inputValue } = e.target;
 
@@ -42,6 +48,16 @@ const OwnerRegister = () => {
                 ...prevState,
                 [name]: inputValue,
             };
+
+            if (name === "password") {
+                if (!validatePassword(inputValue)) {
+                    setError("비밀번호는 8~20자리 영문+숫자+특수문자 포함이어야 합니다.");
+                } else {
+                    setError("");
+                }
+            } else if (name === "username") {
+                !validateId(inputValue);
+            }
 
             if (name === "password") {
                 const isPasswordValid = validatePassword(inputValue);
@@ -100,7 +116,7 @@ const OwnerRegister = () => {
         setValue((prevState) => ({
             ...prevState,
             email_id: value.email_id,
-            emailDomain: domain,
+            selectDomain: domain,
         }));
 
         console.log("Updated email:", updatedEmail);
@@ -109,6 +125,13 @@ const OwnerRegister = () => {
     const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
         event.preventDefault();
         console.log(value);
+    };
+    //모달 함수
+    const { isOpen, openModal, closeModal } = useModal();
+    const navigate = useNavigate();
+    const confirmHandler = () => {
+        closeModal();
+        navigate("/login");
     };
 
     return (
@@ -122,6 +145,7 @@ const OwnerRegister = () => {
                         onChange={handle}
                         placeholder="6자 이상 영문+숫자 포함"
                         label="아이디"
+                        id="username"
                         options={{
                             buttonOption: {
                                 checkedOption: value.idChecked,
@@ -140,6 +164,7 @@ const OwnerRegister = () => {
                     <OptionInput
                         type="password"
                         name="password"
+                        id="password"
                         value={value.password}
                         onChange={handle}
                         placeholder="8~20자리 영문+숫자+특수문자 포함"
@@ -150,11 +175,16 @@ const OwnerRegister = () => {
                                 passwordOption: true,
                                 checkedOption: validatePassword(value.password),
                             },
+                            error: {
+                                errorStatus: !!error,
+                                errorMessage: error,
+                            },
                         }}
                     />
                     <OptionInput
                         type="password"
                         name="passwordVerify"
+                        id="passwordVerify"
                         value={value.passwordVerify}
                         onChange={handle}
                         placeholder="비밀번호를 한번 더 입력해 주세요."
@@ -170,6 +200,7 @@ const OwnerRegister = () => {
                     <OptionInput
                         type="text"
                         name="name"
+                        id="name"
                         value={value.name}
                         onChange={handle}
                         placeholder="예) 김소소"
@@ -189,6 +220,7 @@ const OwnerRegister = () => {
                         <OptionInput
                             type="text"
                             name="email_id"
+                            id="email_id"
                             value={value.email_id}
                             onChange={handle}
                             placeholder="이메일 아이디"
@@ -205,11 +237,13 @@ const OwnerRegister = () => {
                                 "직접입력",
                             ]}
                             onSelect={handleSelectDomain}
+                            placeholder="선택하세요"
                         />
                     </StyledEmailContainer>
                     <OptionInput
                         type="text"
                         name="company_id"
+                        id="company_id"
                         value={value.company_id}
                         onChange={handle}
                         placeholder="영업점 ID를 입력해 주세요."
@@ -222,7 +256,17 @@ const OwnerRegister = () => {
                     />
 
                     <ConsentCheckBox />
-                    <FixedButton type="submit">회원가입 신청</FixedButton>
+                    <FixedButton type="submit" onClick={openModal}>
+                        회원가입 신청
+                    </FixedButton>
+                    <DynamicModal open={isOpen} close={closeModal}>
+                        <ConfirmationModal
+                            title="회원가입 완료"
+                            message={`회원가입이 완료되었습니다.\n로그인 페이지로 이동합니다.`}
+                            buttonText="확인"
+                            close={confirmHandler}
+                        />
+                    </DynamicModal>
                 </Form>
             </AppBaseWrapper>
         </AppLayout>

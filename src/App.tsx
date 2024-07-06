@@ -55,6 +55,16 @@ import StaffManageInfo from "@/pages/manage/staffRegister/StaffManageInfo";
 import ManagePaymentRegister from "@/pages/manage/paymentRegister";
 import Payment from "@/pages/payment";
 import PaymentDetail from "@/pages/payment/[id]";
+import CheckIn from "@/pages/employee/checkin";
+import CheckOut from "@/pages/employee/checkout";
+import Configuration from "@/pages/employee/configuration";
+import StaffManageInput from "@/pages/manage/staffRegister/StaffManageInput";
+import StaffApprovalInput from "@/pages/manage/staffRegister/StaffApprovalInput";
+import StaffInfoChangeInput from "@/pages/manage/staffRegister/StaffInfoChangeInput";
+import RealtyDepositInfo from "@/pages/realty/RealtyDepositInfo";
+import InsuranceServiceInfo from "@/pages/insurance/InsuranceServiceInfo";
+import ManagePaymentInfo from "@/pages/manage/paymentRegister/ManagePaymentInfo";
+import EmployeeMain from "./pages/employee/employeeMain/index";
 
 function App() {
     return (
@@ -87,7 +97,7 @@ function App() {
                 <Route path="/find/pw/list" element={<FindPwList />} />
 
                 <Route path="/loan" element={<Loan />} />
-                <Route path="/loan/info" element={<LoanItemInfo />} />
+                <Route path="/loan/info/:id" element={<LoanItemInfo />} />
                 <Route path="/loan/terms" element={<LoanTerms />} />
                 <Route path="/loan/complete" element={<LoanComplete />} />
 
@@ -95,12 +105,14 @@ function App() {
                 <Route path="/realty/examine" element={<RealtyExamine />} />
                 <Route path="/realty/payment" element={<RealtyPayment />} />
                 <Route path="/realty/deposit" element={<RealtyDepositList />} />
+                <Route path="/realty/deposit/info/:id" element={<RealtyDepositInfo />} />
 
                 <Route path="/insurance" element={<Insurance />} />
                 <Route path="/insurance/item" element={<InsuranceItemList />} />
-                <Route path="/insurance/info" element={<InsuranceItemInfo />} />
+                <Route path="/insurance/info/:id" element={<InsuranceItemInfo />} />
                 <Route path="/insurance/complete" element={<InsuranceComplete />} />
                 <Route path="/insurance/service" element={<InsuranceServiceList />} />
+                <Route path="/insurance/service/info/:id" element={<InsuranceServiceInfo />} />
 
                 <Route path="/shop" element={<Shop />} />
                 <Route path="/shop/list" element={<ShopList />} />
@@ -109,8 +121,12 @@ function App() {
 
                 <Route path="/manage/staff/register" element={<ManageStaffRegister />} />
                 <Route path="/manage/staff/approval" element={<StaffApproval />} />
-                <Route path="/manage/staff/info" element={<StaffManageInfo />} />
+                <Route path="/manage/staff/approval/input" element={<StaffApprovalInput />} />
+                <Route path="/manage/staff/change" element={<StaffInfoChangeInput />} />
+                <Route path="/manage/staff/info/:id" element={<StaffManageInfo />} />
+                <Route path="/manage/staff/input" element={<StaffManageInput />} />
                 <Route path="/manage/payment/register" element={<ManagePaymentRegister />} />
+                <Route path="/manage/payment/info/:id" element={<ManagePaymentInfo />} />
 
                 <Route path={"*"} element={<NotFound />} />
                 <Route path="/more" element={<More />} />
@@ -120,8 +136,11 @@ function App() {
                 <Route path="/more/notice/:id" element={<NoticeDetails />} />
                 <Route path="/more/inquiry" element={<Inquiry />} />
                 <Route path="/employee/attendance" element={<Attendance />} />
+                <Route path="/employee/checkin" element={<CheckIn />} />
+                <Route path="/employee/checkout" element={<CheckOut />} />
                 <Route path="/employee/attendanceList" element={<AttendanceList />} />
-
+                <Route path="/employee/configuration" element={<Configuration />} />
+                <Route path="/employee/employeeMain" element={<EmployeeMain />} />
                 <Route path="/payment" element={<Payment />} />
                 <Route path="/payment/:id" element={<PaymentDetail />} />
             </Routes>

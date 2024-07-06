@@ -21,15 +21,11 @@ const StaffOfficeList = () => {
     return (
         <StyledOfficeListWrapper>
             <div className="index">
-                <div>
-                    <h5>ID</h5>
-                </div>
-                <div>
-                    <h5>상호명</h5>
-                </div>
-                <div>
-                    <h5>대표자</h5>
-                </div>
+                <h5>ID</h5>
+
+                <h5>상호명</h5>
+
+                <h5>대표자</h5>
             </div>
             <ul className="list_info">
                 {officeList.map((office) => (
@@ -77,7 +73,6 @@ const StyledOfficeListWrapper = styled.div`
         min-width: 100%;
         padding: 0;
         margin: 0;
-        list-style: none;
         li {
             display: flex;
             justify-content: space-around;

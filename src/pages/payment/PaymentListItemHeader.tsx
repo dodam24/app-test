@@ -1,17 +1,8 @@
 import useScroll from "@/hooks/useScroll";
 import { Styles } from "@/style/Styles";
+import { formatDateWithYoil } from "@/utils/formatDateTime";
 import { useRef } from "react";
 import styled from "styled-components";
-
-const yoilList = [
-    { day: 0, yoli: "일" },
-    { day: 1, yoli: "월" },
-    { day: 2, yoli: "화" },
-    { day: 3, yoli: "수" },
-    { day: 4, yoli: "목" },
-    { day: 5, yoli: "금" },
-    { day: 6, yoli: "토" },
-];
 
 const PaymentListItemHeader = ({
     transaction_at,
@@ -24,20 +15,13 @@ const PaymentListItemHeader = ({
 
     const containerRef = useRef<HTMLDivElement>(null);
 
-    const transFormDate = (date: string): string => {
-        const getDate = new Date(date);
-        const fullDate = getDate.toLocaleDateString();
-        const yoli = yoilList.find((yoli) => yoli.day === getDate.getDay())?.yoli;
-        return `${fullDate}(${yoli})`;
-    };
-
     if (index === 0) {
         return (
             <StyledPaymentListItemHeaderContainer
                 ref={containerRef}
                 className={`${containerRef?.current && containerRef?.current?.getBoundingClientRect().top <= 130 && scrollY >= 130 ? "fixed" : ""}`}
             >
-                <p>{transFormDate(transaction_at)}</p>
+                <p>{formatDateWithYoil(transaction_at)}</p>
             </StyledPaymentListItemHeaderContainer>
         );
     }
@@ -46,10 +30,10 @@ const PaymentListItemHeader = ({
         return (
             <>
                 <StyledPaymentListItemHeaderContainer className="fixed">
-                    <p>{transFormDate(transaction_at)}</p>
+                    <p>{formatDateWithYoil(transaction_at)}</p>
                 </StyledPaymentListItemHeaderContainer>
                 <StyledPaymentListItemHeaderContainer ref={containerRef}>
-                    <p>{transFormDate(transaction_at)}</p>
+                    <p>{formatDateWithYoil(transaction_at)}</p>
                 </StyledPaymentListItemHeaderContainer>
             </>
         );
@@ -60,7 +44,7 @@ const PaymentListItemHeader = ({
             ref={containerRef}
             className={`${containerRef?.current && containerRef?.current?.getBoundingClientRect().top <= 130 && scrollY >= 130 ? "fixed" : ""}`}
         >
-            <p>{transFormDate(transaction_at)}</p>
+            <p>{formatDateWithYoil(transaction_at)}</p>
         </StyledPaymentListItemHeaderContainer>
     );
 };
@@ -80,7 +64,7 @@ const StyledPaymentListItemHeaderContainer = styled.div`
         align-items: flex-end;
         height: 8.8rem;
         background-color: ${Styles.colors.systemWhite};
-        z-index: 1;
+        z-index: 10;
     }
 
     p {

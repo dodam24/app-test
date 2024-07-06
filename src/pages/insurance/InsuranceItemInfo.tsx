@@ -1,10 +1,8 @@
-import { useState } from "react";
+import { useState, useRef } from "react";
 import styled from "styled-components";
 import AppBackHeader from "@/components/header/AppBackHeader";
 import AppLayout from "@/components/layout/AppLayout";
-
 import { Styles } from "@/style/Styles";
-
 import { ArrowDownIcon, ArrowUpIcon, FireBuildingIcon } from "@/pages/insurance/_images/insurance";
 import AppBaseWrapper from "@/components/layout/AppBaseWrapper";
 import { useNavigate } from "react-router-dom";
@@ -21,13 +19,6 @@ const data = [
 ];
 
 const InsuranceItemInfo = () => {
-    const [openItems, setOpenItems] = useState<number[]>([]);
-
-    const toggleOpen = (id: number) => {
-        setOpenItems((prev) =>
-            prev.includes(id) ? prev.filter((item) => item !== id) : [...prev, id],
-        );
-    };
     const navigate = useNavigate();
 
     const handleItemClick = () => {
@@ -50,25 +41,36 @@ const InsuranceItemInfo = () => {
                     </div>
 
                     {data.map((item) => (
-                        <ul key={item.id}>
-                            <StyledSummary onClick={() => toggleOpen(item.id)}>
-                                <span>{item.title}</span>
-                                <img
-                                    src={openItems.includes(item.id) ? ArrowUpIcon : ArrowDownIcon}
-                                    alt="toggle icon"
-                                />
-                            </StyledSummary>
-                            {openItems.includes(item.id) && (
-                                <StyledDetails>
-                                    <p>{item.details}</p>
-                                </StyledDetails>
-                            )}
-                        </ul>
+                        <AccordionItem key={item.id} title={item.title} details={item.details} />
                     ))}
                 </StyledInfoWrapper>
                 <FixedButton onClick={handleItemClick}>가입하기</FixedButton>
             </AppBaseWrapper>
         </AppLayout>
+    );
+};
+
+const AccordionItem = ({ title, details }: { title: string; details: string }) => {
+    const [isOpen, setIsOpen] = useState(false);
+    const contentRef = useRef<HTMLDivElement>(null);
+
+    const toggleOpen = () => {
+        setIsOpen(!isOpen);
+    };
+
+    return (
+        <StyledAccordionItem>
+            <StyledSummary onClick={toggleOpen}>
+                <span>{title}</span>
+                <img src={isOpen ? ArrowUpIcon : ArrowDownIcon} alt="toggle icon" />
+            </StyledSummary>
+            <StyledDetails
+                ref={contentRef}
+                style={{ height: isOpen ? `${contentRef.current?.scrollHeight}px` : "0" }}
+            >
+                <p>{details}</p>
+            </StyledDetails>
+        </StyledAccordionItem>
     );
 };
 
@@ -105,13 +107,18 @@ const StyledInfoWrapper = styled.div`
     }
 `;
 
-const StyledSummary = styled.li`
+const StyledAccordionItem = styled.div`
+    padding: 0.5rem 0;
+    border-bottom: 1px solid ${Styles.colors.natural10};
+`;
+
+const StyledSummary = styled.div`
     display: flex;
     justify-content: space-between;
     align-items: center;
     cursor: pointer;
     padding: 1rem 0;
-    border-bottom: 1px solid ${Styles.colors.natural10};
+    list-style: none;
 
     span {
         color: ${Styles.colors.natural90};
@@ -127,14 +134,18 @@ const StyledSummary = styled.li`
 `;
 
 const StyledDetails = styled.div`
-    padding: 1.5rem 1rem;
+    overflow: hidden;
+    transition: height 0.3s ease;
     background-color: ${Styles.colors.systemBackground};
+    border-radius: 0.4rem;
 
     p {
+        padding: 1.5rem 1rem;
         color: ${Styles.colors.natural60};
         font-size: ${Styles.font.size.fontsize14};
         font-weight: ${Styles.font.weight.regular};
         text-align: left;
+        margin: 0;
     }
 `;
 

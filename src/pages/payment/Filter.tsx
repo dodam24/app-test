@@ -1,117 +1,129 @@
 import styled from "styled-components";
-import FilterClose from "@/assets/images/icons/icon_close.png";
-import { Styles } from "@/style/Styles";
 import ConditionOfDate from "@/components/filter/ConditionOfDate";
 import ConditionOfStaffType from "@/components/filter/ConditionOfStaffType";
 import ConditionOfStatus from "@/components/filter/ConditionOfStatus";
 import ConditionOfOrderBy from "@/components/filter/ConditionOfOrderBy";
 import ConditionOfAmount from "@/components/filter/ConditionOfAmount";
-import Button from "@/components/button/Button";
+import { RequestList } from "@/pages/payment/PaymentContainer";
+import { Dispatch, SetStateAction } from "react";
+import { FilterOptionsState } from "@/pages/payment/FilterContainer";
+import FixedButton from "@/components/button/FixedButton";
+import OverlayLayout from "@/components/layout/OverlayLayout";
+import ConditionOfCategory from "@/components/filter/ConditionOfCategory";
 
 interface FilterProps {
-    isFilterOpen: boolean;
-    setIsFilterOpen: React.Dispatch<React.SetStateAction<boolean>>;
-    filterHeaderTitle: string;
+    request: RequestList;
+    setRequest: Dispatch<SetStateAction<RequestList>>;
+    initRequest: RequestList;
+    setInitRequest: Dispatch<SetStateAction<RequestList>>;
+    filterOptions: FilterOptionsState;
+    setFilterOptions: Dispatch<SetStateAction<FilterOptionsState>>;
+    initFilterOptions: FilterOptionsState;
+    setInitFilterOptions: Dispatch<SetStateAction<FilterOptionsState>>;
+    isShow: boolean;
+    setIsShow: Dispatch<SetStateAction<boolean>>;
+    isUseConditionOfDate?: boolean;
+    isUseConditionOfStaffType?: boolean;
+    isUseConditionOfStatus?: boolean;
+    isUseConditionOfCategory?: boolean;
+    isUseConditionOfOrderBy?: boolean;
+    isUseConditionOfAmount?: boolean;
 }
 
-const Filter = ({ isFilterOpen, setIsFilterOpen, filterHeaderTitle }: FilterProps) => {
+const Filter = ({
+    request,
+    setRequest,
+    initRequest,
+    setInitRequest,
+    filterOptions,
+    setFilterOptions,
+    initFilterOptions,
+    setInitFilterOptions,
+    isShow,
+    setIsShow,
+    isUseConditionOfDate,
+    isUseConditionOfStaffType,
+    isUseConditionOfStatus,
+    isUseConditionOfCategory,
+    isUseConditionOfOrderBy,
+    isUseConditionOfAmount,
+}: FilterProps) => {
     const handleFilterInactive = () => {
-        setIsFilterOpen(false);
+        setFilterOptions({ ...initFilterOptions, isActive: false });
+        setRequest({ ...request, ...initRequest });
+        initFilterOptions.filterDate === "직접설정" ? setIsShow(true) : setIsShow(false);
     };
 
-    if (isFilterOpen) {
-        setTimeout(() => {
-            document.body.style.overflow = "hidden";
-        }, 100);
-    } else {
-        document.body.style.overflow = "unset";
-    }
+    const handleSelect = () => {
+        setFilterOptions({ ...filterOptions, isActive: false });
+        setInitFilterOptions({ ...initFilterOptions, ...filterOptions });
+        setInitRequest({ ...initRequest, ...request });
+    };
 
     return (
-        <StyledFilterWrap $isFilterOpen={isFilterOpen}>
-            <StyledFilterContainer $isFilterOpen={isFilterOpen}>
-                <StyledFilterHeader>
-                    <h4>{filterHeaderTitle}</h4>
-                    <img src={FilterClose} alt="필터" onClick={handleFilterInactive} />
-                </StyledFilterHeader>
-                <StyledFilterBody>
-                    <ConditionOfDate />
-                    <ConditionOfStaffType />
-                    <ConditionOfStatus />
-                    <ConditionOfOrderBy />
-                    <ConditionOfAmount />
-                </StyledFilterBody>
-                <Button>조회</Button>
-            </StyledFilterContainer>
-        </StyledFilterWrap>
+        <OverlayLayout
+            height={92}
+            hideOverlay={handleFilterInactive}
+            isActive={filterOptions.isActive}
+            isHeader={true}
+            overlayHeaderTitle="조회조건설정"
+        >
+            <StyledFilterBody>
+                {isUseConditionOfDate && (
+                    <ConditionOfDate
+                        filterOptions={filterOptions}
+                        setFilterOptions={setFilterOptions}
+                        request={request}
+                        setRequest={setRequest}
+                        isShow={isShow}
+                        setIsShow={setIsShow}
+                    />
+                )}
+                {isUseConditionOfStaffType && (
+                    <ConditionOfStaffType
+                        filterOptions={filterOptions}
+                        setFilterOptions={setFilterOptions}
+                        request={request}
+                        setRequest={setRequest}
+                    />
+                )}
+                {isUseConditionOfStatus && (
+                    <ConditionOfStatus
+                        filterOptions={filterOptions}
+                        setFilterOptions={setFilterOptions}
+                        request={request}
+                        setRequest={setRequest}
+                    />
+                )}
+                {isUseConditionOfCategory && (
+                    <ConditionOfCategory
+                        filterOptions={filterOptions}
+                        setFilterOptions={setFilterOptions}
+                        request={request}
+                        setRequest={setRequest}
+                    />
+                )}
+                {isUseConditionOfOrderBy && (
+                    <ConditionOfOrderBy
+                        filterOptions={filterOptions}
+                        setFilterOptions={setFilterOptions}
+                        request={request}
+                        setRequest={setRequest}
+                    />
+                )}
+                {isUseConditionOfAmount && (
+                    <ConditionOfAmount request={request} setRequest={setRequest} />
+                )}
+            </StyledFilterBody>
+            <FixedButton onClick={handleSelect}>조회</FixedButton>
+        </OverlayLayout>
     );
 };
 
 export default Filter;
 
-const StyledFilterWrap = styled.div<{ $isFilterOpen: boolean }>`
-    position: fixed;
-    left: 0;
-    bottom: 0;
-    width: 100%;
-    height: 100%;
-    z-index: 99999;
-    opacity: 0;
-    visibility: hidden;
-    transition: 0.3s;
-    background-color: rgba(0, 0, 0, 0.2);
-
-    ${({ $isFilterOpen }) =>
-        $isFilterOpen &&
-        `
-        opacity: 1;
-        visibility: visible;
-    `};
-`;
-
-const StyledFilterContainer = styled.div<{ $isFilterOpen: boolean }>`
-    position: inherit;
-    left: 0;
-    bottom: 0;
-    width: 100%;
-    height: 0%;
-    background-color: #fff;
-    z-index: 999999;
-    opacity: 0;
-    visibility: hidden;
-    transition: 0.3s;
-    border-radius: 0.9rem 0.9rem 0 0;
-    padding: 1.5rem 1rem 1rem 1rem;
-    overflow-y: auto;
-
-    ${({ $isFilterOpen }) =>
-        $isFilterOpen &&
-        `
-        height: 92%;
-        opacity: 1;
-        visibility: visible;
-    `};
-`;
-
-const StyledFilterHeader = styled.div`
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    h4 {
-        color: ${Styles.colors.natural90};
-        font-size: ${Styles.font.size.fontsize18};
-        font-weight: ${Styles.font.weight.medium};
-    }
-    img {
-        width: 1.2rem;
-        height: 1.2rem;
-    }
-    margin-bottom: 2.5rem;
-`;
-
 const StyledFilterBody = styled.div`
     display: flex;
     flex-direction: column;
     gap: 2rem;
-    margin-bottom: 4rem;
 `;

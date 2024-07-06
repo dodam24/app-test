@@ -1,4 +1,4 @@
-import { ChangeEvent, useState } from "react";
+import { ChangeEvent, MouseEvent, useState } from "react";
 
 import AppBackHeader from "@/components/header/AppBackHeader";
 import AppLayout from "@/components/layout/AppLayout";
@@ -9,7 +9,6 @@ import { StyledInputRadioWrapper } from "@/components/styles/InputStyle";
 import AppBaseWrapper from "@/components/layout/AppBaseWrapper";
 import FixedButton from "@/components/button/FixedButton";
 
-// 로그인 데이터 타입 정의
 interface Login {
     id: string;
     title: string;
@@ -17,7 +16,10 @@ interface Login {
 
 const LoginSelect = () => {
     const ownerLogin: Login[] = [
-        { id: "abcd1234", title: "화락바베큐 청라점" },
+        {
+            id: "abcd1234",
+            title: "화락바베큐 청라점",
+        },
         { id: "efg567", title: "화락바베큐 청담점" },
     ];
     const staffLogin: Login[] = [
@@ -25,10 +27,18 @@ const LoginSelect = () => {
         { id: "lmno234", title: "교촌치킨 청담점" },
     ];
 
-    const [selectedId, setSelectedId] = useState<string | null>(null);
+    const [selectedId, setSelectedId] = useState<string>("");
 
     const handleInputChange = (e: ChangeEvent<HTMLInputElement>) => {
         setSelectedId(e.target.value);
+    };
+
+    const handleItemClick = (id: string) => {
+        setSelectedId(id);
+    };
+
+    const handleDoubleClick = (e: MouseEvent<HTMLLIElement>) => {
+        e.preventDefault();
     };
 
     const renderLoginList = (logins: Login[], option: string, tag: string) => (
@@ -36,19 +46,18 @@ const LoginSelect = () => {
             <h3>{option}</h3>
             <div className="contract">
                 <div className="index">
-                    <div>
-                        <h5 className="index_select">선택</h5>
-                    </div>
-                    <div>
-                        <h5 className="index_id">ID</h5>
-                    </div>
-                    <div>
-                        <h5>{tag}</h5>
-                    </div>
+                    <h5 className="index_select">선택</h5>
+                    <h5 className="index_id">ID</h5>
+                    <h5>{tag}</h5>
                 </div>
                 <StyledListInner as="ul" className="list_info">
                     {logins.map((login) => (
-                        <li key={login.id} className={selectedId === login.id ? "selected" : ""}>
+                        <li
+                            key={login.id}
+                            className={selectedId === login.id ? "selected" : ""}
+                            onClick={() => handleItemClick(login.id)}
+                            onDoubleClick={handleDoubleClick}
+                        >
                             <span className="radio">
                                 <input
                                     type="radio"
@@ -107,8 +116,8 @@ const StyledDataListContainer = styled.div`
         border-top: 0.05rem solid ${Styles.colors.natural40};
         border-bottom: 0.05rem solid ${Styles.colors.natural40};
         .index {
-            display: flex;
-            justify-content: space-around;
+            display: grid;
+            grid-template-columns: 1fr 3fr 3fr;
             padding: 0.8rem 0;
             border-bottom: 0.05rem solid ${Styles.colors.natural10};
             text-align: center;
@@ -116,20 +125,6 @@ const StyledDataListContainer = styled.div`
                 font-size: ${Styles.font.size.fontsize13};
                 font-weight: ${Styles.font.weight.regular};
                 color: ${Styles.colors.natural60};
-            }
-            div {
-                display: flex;
-                justify-content: center;
-                align-items: center;
-                &:nth-child(1) {
-                    flex: 1;
-                }
-                &:nth-child(2) {
-                    flex: 2;
-                }
-                &:nth-child(3) {
-                    flex: 3;
-                }
             }
         }
     }
@@ -141,29 +136,21 @@ const StyledListInner = styled(StyledInputRadioWrapper)`
     min-width: 100%;
     padding: 0;
     margin: 0;
-    list-style: none;
     li {
-        display: flex;
+        display: grid;
+        grid-template-columns: 1fr 2fr 3fr;
         justify-content: space-around;
         border-bottom: 0.05rem solid ${Styles.colors.natural10};
         padding: 0.8rem 0.325rem;
         text-align: center;
         gap: 1.2rem;
         word-break: break-all;
+        user-select: none;
         span {
             font-size: ${Styles.font.size.fontsize14};
             font-weight: ${Styles.font.weight.medium};
             color: ${Styles.colors.natural80};
             overflow: hidden;
-            &:nth-child(1) {
-                flex: 1;
-            }
-            &:nth-child(2) {
-                flex: 2;
-            }
-            &:nth-child(3) {
-                flex: 3;
-            }
         }
         &.selected {
             span {
@@ -175,6 +162,13 @@ const StyledListInner = styled(StyledInputRadioWrapper)`
         }
         input {
             margin: 0 auto;
+        }
+        .title {
+            overflow: hidden;
+            display: -webkit-box;
+            -webkit-line-clamp: 2ㅇ;
+            -webkit-box-orient: vertical;
+            word-wrap: break-word;
         }
     }
 `;

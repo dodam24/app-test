@@ -41,9 +41,9 @@ const FindID = () => {
     };
 
     const navigate = useNavigate();
+
     const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
         event.preventDefault();
-        console.log(value);
         navigate("/find/id/list");
     };
 
@@ -58,6 +58,7 @@ const FindID = () => {
                     <OptionInput
                         type="text"
                         name="name"
+                        id="name"
                         value={value.name}
                         onChange={handleInputChange}
                         placeholder="예) 김소소"

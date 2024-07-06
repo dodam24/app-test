@@ -89,7 +89,7 @@ const StyledShopTagList = styled.ul`
     display: grid;
     grid-template-columns: repeat(4, 1fr);
     gap: 1rem 0;
-    list-style: none;
+
     padding: 0;
     margin: 0;
     li {

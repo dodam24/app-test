@@ -35,18 +35,6 @@ const insuranceData = [
         company: "동부화재",
         expiryDate: "2024-08-30",
     },
-    {
-        id: 3,
-        title: "건강보험",
-        company: "동부화재",
-        expiryDate: "2024-08-30",
-    },
-    {
-        id: 3,
-        title: "건강보험",
-        company: "동부화재",
-        expiryDate: "2024-08-30",
-    },
 ];
 
 const calculateDday = (expiryDate: string) => {
@@ -63,18 +51,25 @@ const InsuranceServiceList = () => {
     const handleItemClick = () => {
         navigate(`/insurance`);
     };
+
+    const handleListClick = (id: number) => {
+        navigate(`/insurance/service/info/${id}`);
+    };
     return (
         <AppLayout props={{ header: <AppBackHeader title="서류등록" /> }}>
             <AppBaseWrapper title={`보험 가입 서비스 확인하기`}>
                 <StyledServiceInner>
                     {insuranceData.map((insurance) => (
-                        <StyledServiceItem key={insurance.id}>
+                        <StyledServiceItem
+                            key={insurance.id}
+                            onClick={() => handleListClick(insurance.id)}
+                        >
                             <h3>{insurance.title}</h3>
                             <StyledServiceItemInner>
                                 <div>
                                     <h4>{insurance.company}</h4>
                                     <p>
-                                        보험만료일 : {insurance.expiryDate}{" "}
+                                        보험만료일 : {insurance.expiryDate}
                                         <span>({calculateDday(insurance.expiryDate)})</span>
                                     </p>
                                 </div>

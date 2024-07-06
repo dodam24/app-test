@@ -1,50 +1,33 @@
 import styled from "styled-components";
 import { Styles } from "@/style/Styles";
-
-const paymentListData = [
-    {
-        id: 1,
-        name: "홍길동",
-        paymentType: "월급",
-        expectedPayment: "2,000,000원",
-        actualPayment: "2,000,000원",
-        startDate: "2023.02.01",
-        endDate: "2023.02.28",
-    },
-    {
-        id: 2,
-        name: "이순신",
-        paymentType: "시급",
-        expectedPayment: "926,000원",
-        actualPayment: "926,000원",
-        startDate: "2023.02.01",
-        endDate: "2023.02.28",
-    },
-];
+import { paymentListData } from "@/pages/manage/paymentRegister/_data/ManagePaymetData";
+import { Link } from "react-router-dom";
 
 const ManagePaymentList = () => {
     return (
         <StyledPaymentListWrapper>
             {paymentListData.map((payment) => (
                 <li key={payment.id}>
-                    <StyledPaymentItemTop>
-                        <div>
-                            <h3>{payment.name}</h3>
-                            <span>{payment.paymentType}</span>
-                        </div>
-                        <div>
-                            <h4>예상급여</h4>
-                            <p>{payment.expectedPayment}</p>
-                        </div>
-                        <div>
-                            <h4>지급급여</h4>
-                            <p>{payment.actualPayment}</p>
-                        </div>
-                    </StyledPaymentItemTop>
-                    <StyledPaymentItemBottom>
-                        <p>근무기간</p>
-                        <p>{`${payment.startDate} ~ ${payment.endDate}`}</p>
-                    </StyledPaymentItemBottom>
+                    <Link to={`/manage/payment/info/${payment.id}`}>
+                        <StyledPaymentItemTop>
+                            <div>
+                                <h3>{payment.name}</h3>
+                                <span>{payment.paymentType}</span>
+                            </div>
+                            <div>
+                                <h4>예상급여</h4>
+                                <p>{payment.expectedPayment}</p>
+                            </div>
+                            <div>
+                                <h4>지급급여</h4>
+                                <p>{payment.actualPayment}</p>
+                            </div>
+                        </StyledPaymentItemTop>
+                        <StyledPaymentItemBottom>
+                            <p>근무기간</p>
+                            <p>{`${payment.startDate} ~ ${payment.endDate}`}</p>
+                        </StyledPaymentItemBottom>
+                    </Link>
                 </li>
             ))}
         </StyledPaymentListWrapper>
@@ -63,6 +46,7 @@ const StyledPaymentListWrapper = styled.ul`
         border: 1px solid ${Styles.colors.natural10};
     }
 `;
+
 const StyledPaymentItemTop = styled.div`
     display: flex;
     flex-direction: column;
@@ -103,6 +87,7 @@ const StyledPaymentItemTop = styled.div`
         }
     }
 `;
+
 const StyledPaymentItemBottom = styled.div`
     display: flex;
     justify-content: space-between;

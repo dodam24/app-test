@@ -15,6 +15,10 @@ import AppBaseWrapper from "@/components/layout/AppBaseWrapper";
 import { StyledBaseInputWrapper } from "@/components/styles/InputStyle";
 import PhoneAuthInput from "@/components/input/PhoneAuthInput";
 import ConsentCheckBox from "@/components/checkbox/ConsentCheckBox";
+import DynamicModal from "@/components/modal/DynamicModal";
+import ConfirmationModal from "@/components/modal/ui/ConfirmationModal";
+import useModal from "@/hooks/useModal";
+import { useNavigate } from "react-router-dom";
 
 const StaffRegister = () => {
     const [value, setValue] = useState({
@@ -34,7 +38,7 @@ const StaffRegister = () => {
         idChecked: false,
         nameValid: false,
     });
-
+    const [error, setError] = useState<string>("");
     const handle = (e: ChangeEvent<HTMLInputElement>) => {
         const { name, value: inputValue } = e.target;
 
@@ -43,6 +47,15 @@ const StaffRegister = () => {
                 ...prevState,
                 [name]: inputValue,
             };
+            if (name === "password") {
+                if (!validatePassword(inputValue)) {
+                    setError("비밀번호는 8~20자리 영문+숫자+특수문자 포함이어야 합니다.");
+                } else {
+                    setError("");
+                }
+            } else if (name === "username") {
+                !validateId(inputValue);
+            }
 
             if (name === "password") {
                 const isPasswordValid = validatePassword(inputValue);
@@ -98,6 +111,13 @@ const StaffRegister = () => {
     const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
         event.preventDefault();
     };
+    //모달 함수
+    const { isOpen, openModal, closeModal } = useModal();
+    const navigate = useNavigate();
+    const confirmHandler = () => {
+        closeModal();
+        navigate("/login");
+    };
 
     return (
         <AppLayout props={{ header: <AppBackHeader title="회원가입" /> }}>
@@ -110,6 +130,7 @@ const StaffRegister = () => {
                         onChange={handle}
                         placeholder="6자 이상 영문+숫자 포함"
                         label="아이디"
+                        id="username"
                         options={{
                             buttonOption: {
                                 checkedOption: value.idChecked,
@@ -128,6 +149,7 @@ const StaffRegister = () => {
                     <OptionInput
                         type="password"
                         name="password"
+                        id="password"
                         value={value.password}
                         onChange={handle}
                         placeholder="8~20자리 영문+숫자+특수문자 포함"
@@ -138,11 +160,16 @@ const StaffRegister = () => {
                                 passwordOption: true,
                                 checkedOption: validatePassword(value.password),
                             },
+                            error: {
+                                errorStatus: !!error,
+                                errorMessage: error,
+                            },
                         }}
                     />
                     <OptionInput
                         type="password"
                         name="passwordVerify"
+                        id="passwordVerify"
                         value={value.passwordVerify}
                         onChange={handle}
                         placeholder="비밀번호를 한번 더 입력해 주세요."
@@ -158,6 +185,7 @@ const StaffRegister = () => {
                     <OptionInput
                         type="text"
                         name="name"
+                        id="name"
                         value={value.name}
                         onChange={handle}
                         placeholder="예) 김소소"
@@ -176,6 +204,7 @@ const StaffRegister = () => {
                     <OptionInput
                         type="text"
                         name="account_bank_code"
+                        id="account_bank_code"
                         value={value.account_bank_code}
                         onChange={handle}
                         placeholder="선택하세요."
@@ -184,6 +213,7 @@ const StaffRegister = () => {
                     <OptionInput
                         type="text"
                         name="account_holder"
+                        id="account_holder"
                         value={value.account_holder}
                         onChange={handle}
                         placeholder="계좌주를 입력해 주세요."
@@ -192,6 +222,7 @@ const StaffRegister = () => {
                     <OptionInput
                         type="text"
                         name="account_number"
+                        id="account_number"
                         value={value.account_number}
                         onChange={handle}
                         placeholder="계좌번호를 입력해 주세요."
@@ -199,7 +230,17 @@ const StaffRegister = () => {
                     />
 
                     <ConsentCheckBox />
-                    <FixedButton type="submit">회원가입 신청</FixedButton>
+                    <FixedButton type="submit" onClick={openModal}>
+                        회원가입 신청
+                    </FixedButton>
+                    <DynamicModal open={isOpen} close={closeModal}>
+                        <ConfirmationModal
+                            title="회원가입 완료"
+                            message={`회원가입이 완료되었습니다.\n로그인 페이지로 이동합니다.`}
+                            buttonText="확인"
+                            close={confirmHandler}
+                        />
+                    </DynamicModal>
                 </Form>
             </AppBaseWrapper>
         </AppLayout>

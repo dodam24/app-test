@@ -27,158 +27,164 @@ interface AttendanceList {
     contents: AttendanceContents[];
     message: string;
 }
+const sampleData: AttendanceContents[] = [
+    {
+        id: "1",
+        employee_id: "1",
+        checked_in_at: "20230724090000",
+        checked_out_at: "20230724180000",
+        work_time: 8,
+    },
+    {
+        id: "2",
+        employee_id: "2",
+        checked_in_at: "20230723090000",
+        checked_out_at: "20230723180000",
+        work_time: 8,
+    },
+    {
+        id: "3",
+        employee_id: "3",
+        checked_in_at: "20230722090000",
+        checked_out_at: "20230722260000",
+        work_time: 16,
+    },
+    {
+        id: "4",
+        employee_id: "4",
+        checked_in_at: "20230721090000",
+        checked_out_at: "20230721180000",
+        work_time: 8,
+    },
+    {
+        id: "5",
+        employee_id: "5",
+        checked_in_at: "20230720090000",
+        checked_out_at: "20230720180000",
+        work_time: 8,
+    },
+    {
+        id: "6",
+        employee_id: "6",
+        checked_in_at: "20230619090000",
+        checked_out_at: "20230619180000",
+        work_time: 8,
+    },
+    {
+        id: "7",
+        employee_id: "7",
+        checked_in_at: "20230618090000",
+        checked_out_at: "20230618180000",
+        work_time: 8,
+    },
+    {
+        id: "8",
+        employee_id: "8",
+        checked_in_at: "20230517090000",
+        checked_out_at: "20230517260000",
+        work_time: 16,
+    },
+    {
+        id: "9",
+        employee_id: "9",
+        checked_in_at: "20230516090000",
+        checked_out_at: "20230516260000",
+        work_time: 16,
+    },
+    {
+        id: "10",
+        employee_id: "10",
+        checked_in_at: "20230515090000",
+        checked_out_at: "20230515180000",
+        work_time: 16,
+    },
+];
 
 const AttendanceList = () => {
-    const [data, setData] = useState<AttendanceList>({
-        page: 0,
-        size: 0,
-        sort: "ASC",
-        total_pages: 0,
-        total_count: 0,
-        contents: [],
-        message: "",
-    });
+    const [data, setData] = useState<AttendanceContents[][]>([]);
+    const [currentMonth, setCurrentMonth] = useState(new Date());
+
+    const loadMoreData = () => {
+        const previousMonth = new Date(currentMonth);
+        previousMonth.setMonth(previousMonth.getMonth() - 1);
+        setCurrentMonth(previousMonth);
+
+        const previousMonthData = sampleData.filter((item) => {
+            const itemMonth = parseInt(item.checked_in_at.substring(4, 6), 10);
+            return itemMonth === previousMonth.getMonth() + 1;
+        });
+        setData((prevData) => [...prevData, previousMonthData]);
+    };
 
     useEffect(() => {
-        setData({
-            ...data,
-            ...{
-                page: 0,
-                size: 0,
-                sort: "ASC",
-                total_pages: 0,
-                total_count: 0,
-                contents: [
-                    {
-                        id: "1",
-                        employee_id: "1",
-                        checked_in_at: "20230724090000",
-                        checked_out_at: "20230724180000",
-                        work_time: 8,
-                    },
-                    {
-                        id: "2",
-                        employee_id: "2",
-                        checked_in_at: "20230723090000",
-                        checked_out_at: "20230723180000",
-                        work_time: 8,
-                    },
-                    {
-                        id: "3",
-                        employee_id: "3",
-                        checked_in_at: "20230722090000",
-                        checked_out_at: "20230722260000",
-                        work_time: 16,
-                    },
-                    {
-                        id: "4",
-                        employee_id: "4",
-                        checked_in_at: "20230721090000",
-                        checked_out_at: "20230721180000",
-                        work_time: 8,
-                    },
-                    {
-                        id: "5",
-                        employee_id: "5",
-                        checked_in_at: "20230720090000",
-                        checked_out_at: "20230720180000",
-                        work_time: 8,
-                    },
-                    {
-                        id: "6",
-                        employee_id: "6",
-                        checked_in_at: "20230719090000",
-                        checked_out_at: "20230719180000",
-                        work_time: 8,
-                    },
-                    {
-                        id: "7",
-                        employee_id: "7",
-                        checked_in_at: "20230818090000",
-                        checked_out_at: "20230818180000",
-                        work_time: 8,
-                    },
-                    {
-                        id: "8",
-                        employee_id: "8",
-                        checked_in_at: "20230817090000",
-                        checked_out_at: "20230817260000",
-                        work_time: 16,
-                    },
-                    {
-                        id: "9",
-                        employee_id: "9",
-                        checked_in_at: "20230816090000",
-                        checked_out_at: "20230816260000",
-                        work_time: 16,
-                    },
-                    {
-                        id: "10",
-                        employee_id: "10",
-                        checked_in_at: "20230815090000",
-                        checked_out_at: "20230815180000",
-                        work_time: 16,
-                    },
-                ],
-                message: "",
-            },
+        const initialData = sampleData.filter((item) => {
+            const itemMonth = parseInt(item.checked_in_at.substring(4, 6), 10);
+            return itemMonth === currentMonth.getMonth() + 1;
         });
+        setData([initialData]);
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
-
-    const [currentMonth, setCurrentMonth] = useState<Date>(new Date());
-    // const [previousMonth, setPreviousMonth] = useState<Date>(new Date());
-    // const [showMore, setShowMore] = useState(false);
-    console.log(setCurrentMonth);
 
     return (
         <AppLayout
             props={{ header: <AppBackHeader title="근무내역" />, footer: <EmployeeFooterBar /> }}
         >
             <StyledAttendanceBody />
-            <AppBaseWrapper
-                title={`${currentMonth.getFullYear()}.${(currentMonth.getMonth() + 1).toString().padStart(2, "0")}`}
-            >
-                {data.contents.map((item, index) => {
-                    const { isOvertime } = calcOvertime(item.checked_out_at);
-
-                    return (
-                        <StyledEmployeeAttendanceList key={index}>
-                            <div className="date">
-                                <h6>{item.checked_in_at.substring(6, 8)}</h6>
-                                <span>{getDayOfWeek(item.checked_in_at)}</span>
-                            </div>
-                            <div className="time">
-                                <div className="check_in">
-                                    <div className="check_time">
-                                        <span>출근</span>
-                                        <p>{formatTime(item.checked_in_at)}</p>
+            {data.map((monthData, index) => {
+                const monthTitle = new Date(
+                    currentMonth.getFullYear(),
+                    currentMonth.getMonth() - index,
+                    1,
+                );
+                return (
+                    <AppBaseWrapper
+                        key={index}
+                        title={`${monthTitle.getFullYear()}.${(monthTitle.getMonth() + 1).toString().padStart(2, "0")}`}
+                    >
+                        {monthData.map((item, index) => {
+                            const { isOvertime } = calcOvertime(item.checked_out_at);
+                            return (
+                                <StyledEmployeeAttendanceList key={index}>
+                                    <div className="date">
+                                        <h6>{item.checked_in_at.substring(6, 8)}</h6>
+                                        <span>{getDayOfWeek(item.checked_in_at)}</span>
                                     </div>
-                                    <div className="work_time">
-                                        <img
-                                            src={isOvertime ? AccessTimeError : AccessTime}
-                                            alt={isOvertime ? "초과근무시간" : "근무시간"}
-                                        />
-                                        <span className={isOvertime ? "overtime" : ""}>
-                                            총{" "}
-                                            {getWorkTime(item.checked_in_at, item.checked_out_at)}
-                                            시간{isOvertime && "(초과)"}
-                                        </span>
+                                    <div className="time">
+                                        <div className="check_in">
+                                            <div className="check_time">
+                                                <span>출근</span>
+                                                <p>{formatTime(item.checked_in_at)}</p>
+                                            </div>
+                                            <div className="work_time">
+                                                <img
+                                                    src={isOvertime ? AccessTimeError : AccessTime}
+                                                    alt={isOvertime ? "초과근무시간" : "근무시간"}
+                                                />
+                                                <span className={isOvertime ? "overtime" : ""}>
+                                                    총{" "}
+                                                    {getWorkTime(
+                                                        item.checked_in_at,
+                                                        item.checked_out_at,
+                                                    )}
+                                                    시간{isOvertime && "(초과)"}
+                                                </span>
+                                            </div>
+                                        </div>
+                                        <div className="check_out">
+                                            <span>퇴근</span>
+                                            <p className={isOvertime ? "overtime" : ""}>
+                                                {formatTime(item.checked_out_at)}
+                                            </p>
+                                        </div>
                                     </div>
-                                </div>
-                                <div className="check_out">
-                                    <span>퇴근</span>
-                                    <p className={isOvertime ? "overtime" : ""}>
-                                        {formatTime(item.checked_out_at)}
-                                    </p>
-                                </div>
-                            </div>
-                        </StyledEmployeeAttendanceList>
-                    );
-                })}
-            </AppBaseWrapper>
-            {/* 다음 달에 해당하는 데이터가 있으면 버튼 표시 */}
-            <ShowMoreButton />
+                                </StyledEmployeeAttendanceList>
+                            );
+                        })}
+                    </AppBaseWrapper>
+                );
+            })}
+            {/* 더보기 버튼 나타낼 때 조건 설정 */}
+            <ShowMoreButton title="한달 더보기" onClick={loadMoreData} />
         </AppLayout>
     );
 };

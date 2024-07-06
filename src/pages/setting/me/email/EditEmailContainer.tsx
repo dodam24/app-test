@@ -4,6 +4,14 @@ import { useState } from "react";
 import styled from "styled-components";
 
 const EditEmailContainer = () => {
+    // 이메일 유효성 검사
+    const emailRegEx =
+        /^[A-Za-z0-9]([-_.]?[A-Za-z0-9])*@[A-Za-z0-9]([-_.]?[A-Za-z0-9])*\.[A-Za-z]{2,3}$/i;
+
+    const emailCheck = (email: string) => {
+        return emailRegEx.test(email);
+    };
+
     const [email, setEmail] = useState("");
     const [options, setOptions] = useState({
         buttonOption: { checkedOption: false },
@@ -14,7 +22,7 @@ const EditEmailContainer = () => {
         setEmail(newEmail);
 
         // 임시 (이메일 형식에 맞으면 checkedOption, 아니면 errorStatus. 활성화되면 deleteOption)
-        if (newEmail.includes("@") && newEmail.includes(".")) {
+        if (emailCheck(newEmail)) {
             setOptions({
                 buttonOption: { checkedOption: true },
                 error: { errorStatus: false, errorMessage: "" },
@@ -51,7 +59,7 @@ const EditEmailContainer = () => {
 export default EditEmailContainer;
 
 const StyledEditEmailContainer = styled.section`
-    padding: 1rem 1rem;
+    padding: 1rem;
     & > h2 {
         color: ${Styles.colors.natural90};
         font-size: ${Styles.font.size.fontsize18};

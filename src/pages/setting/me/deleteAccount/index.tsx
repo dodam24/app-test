@@ -254,7 +254,7 @@ const StyledSelectBox = styled.div`
 `;
 
 const StyledOverlay = styled.div<{ $isModalOpen: boolean }>`
-    display: ${({ $isModalOpen }) => ($isModalOpen ? "block" : "none")};
+    /* display: ${({ $isModalOpen }) => ($isModalOpen ? "block" : "none")}; */
     position: fixed;
     top: 0;
     left: 0;
@@ -263,7 +263,9 @@ const StyledOverlay = styled.div<{ $isModalOpen: boolean }>`
     background: rgba(0, 0, 0, 0.2);
     z-index: 9999;
     transition: opacity 0.3s ease-in-out;
+    opacity: 0;
     opacity: ${({ $isModalOpen }) => ($isModalOpen ? "1" : "0")};
+    visibility: ${({ $isModalOpen }) => ($isModalOpen ? "visible" : "hidden")};
 `;
 const StyledSelectModal = styled.div<{ $isModalOpen: boolean }>`
     display: flex;
@@ -278,8 +280,8 @@ const StyledSelectModal = styled.div<{ $isModalOpen: boolean }>`
     overflow: hidden;
     background-color: ${Styles.colors.systemWhite};
     transition:
-        bottom 0.3s ease-in-out,
-        opacity 0.3s ease-in-out;
+        bottom 0.3s,
+        opacity 0.3s;
     opacity: ${({ $isModalOpen }) => ($isModalOpen ? "1" : "0")};
 
     h3 {

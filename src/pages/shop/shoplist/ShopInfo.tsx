@@ -6,7 +6,7 @@ import AppLayout from "@/components/layout/AppLayout";
 import { Styles } from "@/style/Styles";
 
 import { FoodImg1, StarIcon } from "@/pages/shop/_images/shop";
-import { StyleDoubleFixedBotton } from "@/components/styles/ButtonSytle";
+import { StyleDoubleFixedButton } from "@/components/styles/ButtonSytle";
 import FixedButton from "@/components/button/FixedButton";
 
 const ShopInfo = () => {
@@ -114,5 +114,5 @@ const StyledShopStar = styled.div`
         height: 0.8rem;
     }
 `;
-const StyledButtonFlex = styled(StyleDoubleFixedBotton)``;
+const StyledButtonFlex = styled(StyleDoubleFixedButton)``;
 export default ShopInfo;

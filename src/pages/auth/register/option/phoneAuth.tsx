@@ -10,6 +10,10 @@ import AppBaseWrapper from "@/components/layout/AppBaseWrapper";
 import { StyledBaseInputWrapper } from "@/components/styles/InputStyle";
 import PhoneAuthInput from "@/components/input/PhoneAuthInput";
 import ConsentCheckBox from "@/components/checkbox/ConsentCheckBox";
+import DynamicModal from "@/components/modal/DynamicModal";
+import ConfirmationModal from "@/components/modal/ui/ConfirmationModal";
+import useModal from "@/hooks/useModal";
+import { useNavigate } from "react-router-dom";
 
 const PhoneAuth = () => {
     const [value, setValue] = useState({
@@ -42,6 +46,15 @@ const PhoneAuth = () => {
 
     const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
         event.preventDefault();
+        openModal();
+    };
+
+    // 모달 함수
+    const { isOpen, openModal, closeModal } = useModal();
+    const navigate = useNavigate();
+    const confirmHandler = () => {
+        closeModal();
+        navigate("/register/staff");
     };
 
     return (
@@ -69,7 +82,17 @@ const PhoneAuth = () => {
                         onVerificationCodeChange={handleVerificationCodeChange}
                     />
                     <ConsentCheckBox />
-                    <FixedButton type="submit">확인</FixedButton>
+                    <FixedButton type="submit" disabled={!value.verificationCode}>
+                        확인
+                    </FixedButton>
+                    <DynamicModal open={isOpen} close={closeModal}>
+                        <ConfirmationModal
+                            title="인증 완료"
+                            message={`본인인증 성공했습니다.`}
+                            buttonText="확인"
+                            close={confirmHandler}
+                        />
+                    </DynamicModal>
                 </StyledInputContainer>
             </AppBaseWrapper>
         </AppLayout>
@@ -77,4 +100,5 @@ const PhoneAuth = () => {
 };
 
 const StyledInputContainer = styled(StyledBaseInputWrapper)``;
+
 export default PhoneAuth;

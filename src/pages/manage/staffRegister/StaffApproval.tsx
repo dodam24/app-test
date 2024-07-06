@@ -6,6 +6,7 @@ import AppLayout from "@/components/layout/AppLayout";
 import { Styles } from "@/style/Styles";
 
 import { NonIcon } from "@/pages/manage/_images/manageImg";
+import { Link } from "react-router-dom";
 
 const staffData = [
     {
@@ -43,7 +44,7 @@ const StaffApproval = () => {
                         <p>승인대기 직원이 없습니다.</p>
                     </StyledNoneList>
                 ) : (
-                    <>
+                    <div>
                         <h2>
                             항목을 터치하면 직원가입 승인을
                             <br />
@@ -52,18 +53,20 @@ const StaffApproval = () => {
                         <StyledApprovalInner>
                             {staffData.map((staff) => (
                                 <li key={staff.id}>
-                                    <div className="top">
-                                        <h3>{staff.name}</h3>
-                                        <p>{staff.status}</p>
-                                    </div>
-                                    <div className="bottom">
-                                        <span>{staff.date}</span>
-                                        <span>{staff.time}</span>
-                                    </div>
+                                    <Link to={`/manage/staff/info/${staff.id}`}>
+                                        <div className="top">
+                                            <h3>{staff.name}</h3>
+                                            <p>{staff.status}</p>
+                                        </div>
+                                        <div className="bottom">
+                                            <span>{staff.date}</span>
+                                            <span>{staff.time}</span>
+                                        </div>
+                                    </Link>
                                 </li>
                             ))}
                         </StyledApprovalInner>
-                    </>
+                    </div>
                 )}
             </StyledApprovalWrapper>
         </AppLayout>
@@ -75,7 +78,6 @@ export default StaffApproval;
 const StyledApprovalWrapper = styled.div`
     width: 100%;
     padding: 1rem 1rem 0;
-    height: calc(100vh - 2.4rem);
     h2 {
         color: ${Styles.colors.natural90};
         font-size: ${Styles.font.size.fontsize18};

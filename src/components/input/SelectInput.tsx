@@ -1,23 +1,43 @@
-import { useState, useEffect, ChangeEvent, MouseEvent } from "react";
+import {
+    useState,
+    useEffect,
+    ChangeEvent,
+    MouseEvent,
+    InputHTMLAttributes,
+    MouseEventHandler,
+} from "react";
 import styled from "styled-components";
 import { Styles } from "@/style/Styles";
 import { ToggleIcon, CheckIcon } from "@/pages/auth/register/_images/register_img";
 
-interface Props {
+interface Props extends Omit<InputHTMLAttributes<HTMLInputElement>, "onSelect"> {
+    label?: string;
     options: string[];
     onSelect: (domain: string) => void;
 }
 
-const SelectInput = ({ options, onSelect }: Props) => {
-    const [emailDomain, setEmailDomain] = useState("");
-    const [isEmailInputEnabled, setIsEmailInputEnabled] = useState(false);
-    const [isDropdownVisible, setIsDropdownVisible] = useState(false);
-    const [selectedOption, setSelectedOption] = useState<string | null>(null);
+interface ValueState {
+    selectDomain: string;
+    isSelectInputEnabled: boolean;
+    isDropdownVisible: boolean;
+    selectedOption: string | "";
+}
+
+const SelectInput = ({ label, options, onSelect, ...rest }: Props) => {
+    const [value, setValue] = useState<ValueState>({
+        selectDomain: "",
+        isSelectInputEnabled: false,
+        isDropdownVisible: false,
+        selectedOption: "",
+    });
 
     useEffect(() => {
         const handleClickOutside = (event: Event) => {
             if (event.target instanceof Element && !event.target.closest(".select-dropdown")) {
-                setIsDropdownVisible(false);
+                setValue((prev) => ({
+                    ...prev,
+                    isDropdownVisible: false,
+                }));
             }
         };
 
@@ -29,70 +49,102 @@ const SelectInput = ({ options, onSelect }: Props) => {
         };
     }, []);
 
-    const handleEmailOptionClick = (e: MouseEvent<HTMLLIElement>) => {
-        const value = e.currentTarget.getAttribute("data-value") || "";
-        if (value === "직접입력") {
-            setIsEmailInputEnabled(true);
-            setEmailDomain("");
+    const handleSelectOptionClick: MouseEventHandler<HTMLLIElement> = (e) => {
+        const selectedValue = e.currentTarget.getAttribute("data-value") || "";
+        if (selectedValue === "직접입력") {
+            setValue((prev) => ({
+                ...prev,
+                isSelectInputEnabled: true,
+                selectDomain: "",
+                selectedOption: "",
+            }));
             onSelect("");
         } else {
-            setIsEmailInputEnabled(false);
-            setEmailDomain(value);
-            onSelect(value);
+            setValue((prev) => ({
+                ...prev,
+                isSelectInputEnabled: false,
+                selectDomain: selectedValue,
+                selectedOption: selectedValue,
+            }));
+            onSelect(selectedValue);
         }
-        setSelectedOption(value);
-        setIsDropdownVisible(false);
+        setValue((prev) => ({
+            ...prev,
+            isDropdownVisible: false,
+        }));
     };
 
     const handleEmailInputChange = (e: ChangeEvent<HTMLInputElement>) => {
-        const { value } = e.target;
-        setEmailDomain(value);
-        onSelect(value);
+        const { value: selectDomain } = e.target;
+        setValue((prev) => ({
+            ...prev,
+            selectDomain,
+        }));
+        onSelect(selectDomain);
     };
 
     const handleInputClick = (e: MouseEvent<HTMLInputElement>) => {
-        if (!isEmailInputEnabled) {
-            e.stopPropagation();
+        if (!value.isSelectInputEnabled) {
+            e.preventDefault();
         }
     };
 
     const handleIconClick = () => {
-        setIsDropdownVisible((prev) => !prev);
+        setValue((prev) => ({
+            ...prev,
+            isDropdownVisible: !prev.isDropdownVisible,
+        }));
     };
 
     return (
-        <StyledSelectInner className="select-dropdown">
-            <input
-                className="email_modal_input"
-                type="text"
-                placeholder="선택하세요."
-                value={emailDomain}
-                onChange={handleEmailInputChange}
-                onClick={handleInputClick}
-                disabled={!isEmailInputEnabled}
-            />
-            <span onClick={handleIconClick}>
-                <img src={ToggleIcon} alt="이메일 토글" />
-            </span>
-            {isDropdownVisible && (
-                <ul>
-                    {options.map((domain) => (
-                        <li key={domain} data-value={domain} onClick={handleEmailOptionClick}>
-                            {domain}
-                            {selectedOption === domain && <img src={CheckIcon} alt="체크 표시" />}
-                        </li>
-                    ))}
-                </ul>
-            )}
-        </StyledSelectInner>
+        <StyledSelectWrapper>
+            {label && <label>{label}</label>}
+            <StyledSelectInner className="select-dropdown">
+                <input
+                    value={value.selectDomain}
+                    onChange={handleEmailInputChange}
+                    onClick={handleInputClick}
+                    disabled={!value.isSelectInputEnabled}
+                    {...rest}
+                />
+                <span onClick={handleIconClick}>
+                    <img src={ToggleIcon} alt="이메일 토글" />
+                </span>
+                {value.isDropdownVisible && (
+                    <ul>
+                        {options.map((domain) => (
+                            <li
+                                key={domain}
+                                data-value={domain}
+                                onClick={handleSelectOptionClick}
+                                className={value.selectedOption === domain ? "selected" : ""}
+                            >
+                                {domain}
+                                {value.selectedOption === domain && (
+                                    <img src={CheckIcon} alt="체크 표시" />
+                                )}
+                            </li>
+                        ))}
+                    </ul>
+                )}
+            </StyledSelectInner>
+        </StyledSelectWrapper>
     );
 };
 
+const StyledSelectWrapper = styled.div`
+    label {
+        color: ${Styles.colors.natural80};
+        font-size: ${Styles.font.size.fontsize14};
+        font-weight: ${Styles.font.weight.regular};
+    }
+`;
 const StyledSelectInner = styled.div`
     position: relative;
     width: 100%;
     background-color: ${Styles.colors.systemBackground};
     border-radius: 0.4rem;
+    margin-top: 0.4rem;
     input {
         width: 100%;
         height: 2.3rem;
@@ -123,6 +175,7 @@ const StyledSelectInner = styled.div`
         display: flex;
         justify-content: end;
         align-items: center;
+        width: 100%;
 
         img {
             width: 1.2rem;
@@ -147,15 +200,21 @@ const StyledSelectInner = styled.div`
         li {
             padding: 0.75rem 0.8rem;
             width: 9.1rem;
+            height: 2.4rem;
             background-color: ${Styles.colors.systemWhite};
             color: ${Styles.colors.natural80};
             font-size: ${Styles.font.size.fontsize15};
             font-weight: ${Styles.font.weight.regular};
-            border-bottom: 1px solid var(--Natural-N10, #e8e8e9);
+            border-bottom: 1px solid ${Styles.colors.natural10};
             cursor: pointer;
             display: flex;
             justify-content: space-between;
             align-items: center;
+
+            &.selected {
+                background-color: ${Styles.colors.systemBackground};
+            }
+
             &:hover {
                 background: ${Styles.colors.systemBackground};
             }

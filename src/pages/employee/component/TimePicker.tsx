@@ -6,6 +6,10 @@ const TimePicker = () => {
     const [time, setTime] = useState<Date>(new Date());
     const [isOpen, setIsOpen] = useState<boolean>(true);
 
+    const now = new Date();
+    const minTime = new Date(now.getTime() - 10 * 60000);
+    const maxTime = new Date(now.getTime() + 10 * 60000);
+
     const handleSelect = (e: TouchEvent, nextTime: typeof time) => {
         e.stopPropagation();
         setTime(nextTime);
@@ -19,6 +23,8 @@ const TimePicker = () => {
             theme="ios"
             showHeader={false}
             isPopup={false}
+            min={minTime}
+            max={maxTime}
             dateConfig={[
                 {
                     type: "hour",

@@ -5,16 +5,28 @@ import styled, { createGlobalStyle } from "styled-components";
 import Timer from "@/assets/images/icons/icon_attendance_timer_c.png";
 import FixedButton from "@/components/button/FixedButton";
 import TimePicker from "@/pages/employee/component/TimePicker";
+import { useEffect, useState } from "react";
+import { formatDateWithDay, formatTime } from "@/utils/formatDateTime";
 
 const Attendance = () => {
+    const [date, setDate] = useState(new Date());
+
+    useEffect(() => {
+        const intervalId = setInterval(() => {
+            setDate(new Date());
+        }, 1000);
+
+        return () => clearInterval(intervalId);
+    }, []);
+
     return (
         <AppLayout props={{ header: <AppBackHeader title="출근등록" /> }}>
             <StyledAttendanceBody />
             <StyledAttendanceDisplay>
                 <img src={Timer} alt="출퇴근등록" />
                 <div className="display_content">
-                    <span className="date">2023.02.23 (목)</span>
-                    <h3 className="time">09 : 02 : 46</h3>
+                    <span className="date">{formatDateWithDay(date)}</span>
+                    <h3 className="time">{formatTime(date, true)}</h3>
                     <p className="message">오늘도 화이팅 하세요! :)</p>
                 </div>
             </StyledAttendanceDisplay>

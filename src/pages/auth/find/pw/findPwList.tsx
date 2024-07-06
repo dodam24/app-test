@@ -11,10 +11,9 @@ import AppBaseWrapper from "@/components/layout/AppBaseWrapper";
 import DynamicModal from "@/components/modal/DynamicModal";
 import ConfirmationModal from "@/components/modal/ui/ConfirmationModal";
 import useModal from "@/hooks/useModal";
+import { useNavigate } from "react-router-dom";
 
 const FindPwList = () => {
-    const { isOpen, openModal, closeModal } = useModal();
-
     const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
         e.preventDefault();
         openModal();
@@ -69,6 +68,13 @@ const FindPwList = () => {
             }));
         }
     };
+    //모달 함수
+    const { isOpen, openModal, closeModal } = useModal();
+    const navigate = useNavigate();
+    const confirmHandler = () => {
+        closeModal();
+        navigate("/login");
+    };
 
     return (
         <AppLayout props={{ header: <AppBackHeader title="비밀번호 재설정" /> }}>
@@ -117,7 +123,7 @@ const FindPwList = () => {
                     <ConfirmationModal
                         title="설정 완료"
                         message={"비밀번호 변경이\n 정상적으로 완료되었습니다."}
-                        close={closeModal}
+                        close={confirmHandler}
                         buttonText="로그인 하러 가기"
                     />
                 </DynamicModal>

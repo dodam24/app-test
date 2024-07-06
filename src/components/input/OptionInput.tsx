@@ -3,7 +3,15 @@ import useInput from "@/hooks/useInput";
 import Input from "@/components/input/Input";
 
 import { Styles } from "@/style/Styles";
-import { Check, Delete, Eye } from "@/components/input/_images/OptionImages";
+import {
+    Check,
+    Delete,
+    Eye,
+    EyeClose,
+    EyeError,
+    EyeCloseError,
+} from "@/components/input/_images/OptionImages";
+import { useState } from "react";
 
 interface OptionInputProps extends React.InputHTMLAttributes<HTMLInputElement> {
     label?: string;
@@ -28,6 +36,12 @@ const OptionInput = ({ label, children, options, disabled, ...rest }: OptionInpu
     const { type, handleTypeChange, handleDeleteValue } = useInput({
         ...rest,
     });
+    const [isPasswordVisible, setIsPasswordVisible] = useState(false);
+
+    const togglePasswordVisibility = () => {
+        setIsPasswordVisible((prev) => !prev);
+        handleTypeChange();
+    };
 
     return (
         <StyledOptionInputContainer>
@@ -54,8 +68,19 @@ const OptionInput = ({ label, children, options, disabled, ...rest }: OptionInpu
                                 type &&
                                 options.buttonOption &&
                                 options.buttonOption.passwordOption && (
-                                    <button type="button" onClick={handleTypeChange}>
-                                        <img src={Eye} alt="비밀번호 보기" />
+                                    <button type="button" onClick={togglePasswordVisibility}>
+                                        <img
+                                            src={
+                                                options.error && options.error.errorStatus
+                                                    ? isPasswordVisible
+                                                        ? EyeError
+                                                        : EyeCloseError
+                                                    : isPasswordVisible
+                                                      ? Eye
+                                                      : EyeClose
+                                            }
+                                            alt="비밀번호 보기"
+                                        />
                                     </button>
                                 )}
                             {options &&

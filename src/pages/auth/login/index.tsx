@@ -48,7 +48,7 @@ const ReservationWrapper = styled.section`
     }
 `;
 
-const Form = styled.form`
+const Form = styled.div`
     width: 100%;
     padding: 0 1rem;
 `;

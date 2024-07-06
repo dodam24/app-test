@@ -2,45 +2,133 @@ import { Styles } from "@/style/Styles";
 import styled from "styled-components";
 import FilterIcon from "@/assets/images/icons/icon_filter.png";
 import useScroll from "@/hooks/useScroll";
-import { useState } from "react";
+import { Dispatch, SetStateAction, useState } from "react";
 import Filter from "@/pages/payment/Filter";
+import { RequestList } from "@/pages/payment/PaymentContainer";
 
-const FilterContainer = () => {
-    const [isFilterOpen, setIsFilterOpen] = useState(false);
+export interface FilterOptionsState {
+    isActive: boolean;
+    filterDate?: string;
+    filterStatus?: string;
+    filterOrderBy?: string;
+    filterCategory?: string;
+    filterStaffType?: string;
+}
+
+interface FilterContainerProps {
+    totalCount: number;
+    request: RequestList;
+    setRequest: Dispatch<SetStateAction<RequestList>>;
+    initRequest: RequestList;
+    setInitRequest: Dispatch<SetStateAction<RequestList>>;
+    isUseConditionOfDate?: boolean;
+    isUseConditionOfStaffType?: boolean;
+    isUseConditionOfStatus?: boolean;
+    isUseConditionOfCategory?: boolean;
+    isUseConditionOfOrderBy?: boolean;
+    isUseConditionOfAmount?: boolean;
+}
+
+const FilterContainer = ({
+    totalCount,
+    request,
+    setRequest,
+    initRequest,
+    setInitRequest,
+    isUseConditionOfDate,
+    isUseConditionOfStaffType,
+    isUseConditionOfStatus,
+    isUseConditionOfCategory,
+    isUseConditionOfOrderBy,
+    isUseConditionOfAmount,
+}: FilterContainerProps) => {
+    const [isShow, setIsShow] = useState(false);
+    const [filterOptions, setFilterOptions] = useState<FilterOptionsState>({
+        isActive: false,
+        filterDate: "1개월",
+        filterStatus: "전체",
+        filterOrderBy: "최신순",
+        filterCategory: "전체",
+        filterStaffType: "전체",
+    });
+    const [initFilterOptions, setInitFilterOptions] = useState<FilterOptionsState>({
+        isActive: false,
+        filterDate: "1개월",
+        filterStatus: "전체",
+        filterOrderBy: "최신순",
+        filterCategory: "전체",
+        filterStaffType: "전체",
+    });
     const { scrollY } = useScroll();
 
     const handleFilterActive = () => {
-        setIsFilterOpen(true);
+        setFilterOptions({ ...filterOptions, isActive: true });
     };
 
     return (
-        <>
-            <StyledFilterWrap className={`${scrollY >= 130 ? "fixed" : ""}`}>
-                <StyledFilterContainer className={`${scrollY >= 130 ? "fixed" : ""}`}>
-                    <span>총 34건</span>
-                    <ul>
-                        <li>1개월</li>
-                        <li>・</li>
-                        <li>전체</li>
-                        <li>・</li>
-                        <li>최신순</li>
-                        <li>
-                            <img
-                                src={FilterIcon}
-                                alt="필터"
-                                className="icon"
-                                onClick={handleFilterActive}
-                            />
-                        </li>
-                    </ul>
-                </StyledFilterContainer>
-                <Filter
-                    isFilterOpen={isFilterOpen}
-                    setIsFilterOpen={setIsFilterOpen}
-                    filterHeaderTitle={"조회조건설정"}
-                />
-            </StyledFilterWrap>
-        </>
+        <StyledFilterWrap className={`${scrollY >= 130 ? "fixed" : ""}`}>
+            <StyledFilterContainer className={`${scrollY >= 130 ? "fixed" : ""}`}>
+                <span>총 {totalCount}건</span>
+                <ul>
+                    {isUseConditionOfDate && filterOptions.filterDate && (
+                        <>
+                            <li>{filterOptions.filterDate}</li>
+                            <li>・</li>
+                        </>
+                    )}
+                    {isUseConditionOfStaffType && filterOptions.filterStaffType && (
+                        <>
+                            <li>{filterOptions.filterStaffType}</li>
+                            <li>・</li>
+                        </>
+                    )}
+                    {isUseConditionOfStatus && filterOptions.filterStatus && (
+                        <>
+                            <li>{filterOptions.filterStatus}</li>
+                            <li>・</li>
+                        </>
+                    )}
+                    {isUseConditionOfCategory && filterOptions.filterCategory && (
+                        <>
+                            <li>{filterOptions.filterCategory}</li>
+                            <li>・</li>
+                        </>
+                    )}
+                    {isUseConditionOfOrderBy && filterOptions.filterOrderBy && (
+                        <>
+                            <li>{filterOptions.filterOrderBy}</li>
+                            <li>・</li>
+                        </>
+                    )}
+                    <li>
+                        <img
+                            src={FilterIcon}
+                            alt="필터"
+                            className="icon"
+                            onClick={handleFilterActive}
+                        />
+                    </li>
+                </ul>
+            </StyledFilterContainer>
+            <Filter
+                request={request}
+                setRequest={setRequest}
+                initRequest={initRequest}
+                setInitRequest={setInitRequest}
+                filterOptions={filterOptions}
+                setFilterOptions={setFilterOptions}
+                initFilterOptions={initFilterOptions}
+                setInitFilterOptions={setInitFilterOptions}
+                isShow={isShow}
+                setIsShow={setIsShow}
+                isUseConditionOfDate={isUseConditionOfDate}
+                isUseConditionOfStaffType={isUseConditionOfStaffType}
+                isUseConditionOfStatus={isUseConditionOfStatus}
+                isUseConditionOfCategory={isUseConditionOfCategory}
+                isUseConditionOfOrderBy={isUseConditionOfOrderBy}
+                isUseConditionOfAmount={isUseConditionOfAmount}
+            />
+        </StyledFilterWrap>
     );
 };
 
@@ -95,6 +183,10 @@ const StyledFilterContainer = styled.div`
 
             &:last-child {
                 padding-left: 0.2rem;
+            }
+
+            &:nth-last-child(2) {
+                display: none;
             }
 
             img {
