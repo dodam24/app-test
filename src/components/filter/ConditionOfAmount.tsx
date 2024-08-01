@@ -71,5 +71,9 @@ const StyledConditionContainer = styled.div`
         color: ${Styles.colors.natural40};
         font-size: ${Styles.font.size.fontsize14};
         font-weight: ${Styles.font.weight.medium};
+
+        & > div {
+            width: 100%;
+        }
     }
 `;

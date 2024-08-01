@@ -1,11 +1,12 @@
+import { Link } from "react-router-dom";
 import styled from "styled-components";
-import { Link } from "react-router-dom"; // react-router-dom에서 Link 가져오기
+
 import AppLayout from "@/components/layout/AppLayout";
 import AppBackHeader from "@/components/header/AppBackHeader";
+import AppBaseWrapper from "@/components/layout/AppBaseWrapper";
 
 import { Styles } from "@/style/Styles";
 import { DocBagIcon, DocIcon } from "@/pages/manage/_images/manageImg";
-import AppBaseWrapper from "@/components/layout/AppBaseWrapper";
 
 const ManageStaffRegister = () => {
     return (

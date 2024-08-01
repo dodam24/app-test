@@ -1,36 +1,22 @@
-import { useState } from "react";
 import styled from "styled-components";
+
+import { SearchIcon } from "@/pages/auth/register/_images/register_img";
+import ButtonMenu from "@/pages/shop/_component/ButtonMenu";
+import FixedButton from "@/components/button/FixedButton";
 
 import { Styles } from "@/style/Styles";
 
-import { SearchIcon, ToggleIcon } from "@/pages/auth/register/_images/register_img";
-import FixedButton from "@/components/button/FixedButton";
-
 const StaffOfficeSearch = () => {
-    const [showMenu, setShowMenu] = useState(false);
-
-    const toggleMenu = () => {
-        setShowMenu(!showMenu);
-    };
+    const menuOptions = [
+        { id: 1, title: "ID" },
+        { id: 2, title: "상호명" },
+        { id: 3, title: "대표자" },
+    ];
 
     return (
         <StyledStaffCheckWrapper>
             <StyledSearchInner>
-                <StyledButtonItem>
-                    <StyledButtonMenu>
-                        <button onClick={toggleMenu}>전체</button>
-                        {showMenu && (
-                            <ul>
-                                <li>ID</li>
-                                <li>상호명</li>
-                                <li>대표자</li>
-                            </ul>
-                        )}
-                    </StyledButtonMenu>
-                    <span onClick={toggleMenu}>
-                        <img src={ToggleIcon} alt="" />
-                    </span>
-                </StyledButtonItem>
+                <ButtonMenu options={menuOptions} title="전체" width="24%" />
                 <StyledSearchInput>
                     <input type="text" placeholder="가맹점을 입력하세요." />
                     <span>
@@ -101,37 +87,7 @@ const StyledSearchInner = styled.div`
         }
     }
 `;
-const StyledButtonMenu = styled.div`
-    position: relative;
-    width: 100%;
 
-    ul {
-        /* 임시 설정 */
-        position: absolute;
-        top: 2.7rem;
-        left: 0;
-        width: 100%;
-        color: ${Styles.colors.natural80};
-        font-size: ${Styles.font.size.fontsize15};
-        font-weight: ${Styles.font.weight.regular};
-        background-color: ${Styles.colors.systemBackground};
-        border-radius: 0.4rem;
-        z-index: 1;
-        border: 1px solid ${Styles.colors.natural20};
-
-        li {
-            cursor: pointer;
-            padding: 0.55rem 0.8rem;
-            &:hover {
-                background-color: ${Styles.colors.natural00};
-            }
-        }
-    }
-`;
-const StyledButtonItem = styled.div`
-    width: 24%;
-    position: relative;
-`;
 const StyledSearchInput = styled.div`
     width: 76%;
 `;

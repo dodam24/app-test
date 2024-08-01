@@ -1,79 +1,35 @@
-import { useState, ChangeEvent, FormEvent } from "react";
+import { FormEvent } from "react";
+import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
+import useModal from "@/hooks/useModal";
 
 import AppLayout from "@/components/layout/AppLayout";
 import AppBackHeader from "@/components/header/AppBackHeader";
+import AppBaseWrapper from "@/components/layout/AppBaseWrapper";
 import FixedButton from "@/components/button/FixedButton";
 import OptionInput from "@/components/input/OptionInput";
-import { validatePassword } from "@/utils/inputVerify";
-
-import AppBaseWrapper from "@/components/layout/AppBaseWrapper";
-import DynamicModal from "@/components/modal/DynamicModal";
 import ConfirmationModal from "@/components/modal/ui/ConfirmationModal";
-import useModal from "@/hooks/useModal";
-import { useNavigate } from "react-router-dom";
+import DynamicModal from "@/components/modal/DynamicModal";
+
+import { IFindPwList } from "@/interface/auth/find/find";
+import { useInputHandler } from "@/utils/baseVerify";
 
 const FindPwList = () => {
+    const { values, error, handleInputChange, validations } = useInputHandler<IFindPwList>({
+        password: "",
+        passwordVerify: "",
+    });
     const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
         e.preventDefault();
         openModal();
     };
 
-    const [value, setValue] = useState({
-        password: "",
-        passwordVerify: "",
-        passwordValid: false,
-        passwordMatch: false,
-        verifyMatch: false,
-        error: {
-            passwordError: "",
-            verifyError: "",
-        },
-    });
-
-    const handle = (e: ChangeEvent<HTMLInputElement>) => {
-        const { name, value: inputValue } = e.target;
-
-        setValue((prevState) => ({
-            ...prevState,
-            [name]: inputValue,
-            error: {
-                ...prevState.error,
-                [`${name}Error`]: "",
-            },
-        }));
-
-        if (name === "password") {
-            const isPasswordValid = validatePassword(inputValue);
-            setValue((prevState) => ({
-                ...prevState,
-                passwordValid: isPasswordValid,
-                passwordMatch: isPasswordValid && prevState.passwordVerify === inputValue,
-                error: {
-                    ...prevState.error,
-                    passwordError: isPasswordValid
-                        ? ""
-                        : "8~20자리 영문+숫자+특수문자 모두 포함하여 입력해주세요.",
-                },
-            }));
-        } else if (name === "passwordVerify") {
-            setValue((prevState) => ({
-                ...prevState,
-                verifyMatch: prevState.password === inputValue,
-                error: {
-                    ...prevState.error,
-                    verifyError:
-                        prevState.password === inputValue ? "" : "비밀번호가 일치하지 않습니다.",
-                },
-            }));
-        }
-    };
     //모달 함수
     const { isOpen, openModal, closeModal } = useModal();
     const navigate = useNavigate();
     const confirmHandler = () => {
         closeModal();
-        navigate("/login");
+        navigate("/login", { replace: true });
     };
 
     return (
@@ -83,37 +39,36 @@ const FindPwList = () => {
                     <OptionInput
                         type="password"
                         name="password"
-                        value={value.password}
-                        onChange={handle}
+                        id="password"
+                        value={values.password}
+                        onChange={handleInputChange}
                         placeholder="8~20자리 영문+숫자+특수문자 포함"
                         maxLength={20}
-                        label="새로운 비밀번호"
+                        label="비밀번호"
                         options={{
                             buttonOption: {
                                 passwordOption: true,
-                                checkedOption: value.passwordValid,
+                                checkedOption: validations.passwordValid,
                             },
                             error: {
-                                errorStatus: !!value.error.passwordError,
-                                errorMessage: value.error.passwordError,
+                                errorStatus: !!error,
+                                errorMessage: error,
                             },
                         }}
                     />
                     <OptionInput
                         type="password"
                         name="passwordVerify"
-                        value={value.passwordVerify}
-                        onChange={handle}
+                        id="passwordVerify"
+                        value={values.passwordVerify}
+                        onChange={handleInputChange}
                         placeholder="비밀번호를 한번 더 입력해 주세요."
                         maxLength={20}
+                        label="비밀번호확인"
                         options={{
                             buttonOption: {
                                 passwordOption: true,
-                                checkedOption: value.verifyMatch,
-                            },
-                            error: {
-                                errorStatus: !!value.error.verifyError,
-                                errorMessage: value.error.verifyError,
+                                checkedOption: validations.passwordMatch,
                             },
                         }}
                     />

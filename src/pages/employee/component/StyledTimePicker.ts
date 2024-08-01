@@ -3,10 +3,10 @@ import { createGlobalStyle } from "styled-components";
 
 export const StyledTimePicker = createGlobalStyle`
     .datepicker {
-        position:relative;
+        position: relative;
         font-family: "pretendard";
         font-size: ${Styles.font.size.fontsize15};
-        font-weight:${Styles.font.weight.medium}
+        font-weight: ${Styles.font.weight.medium};
     }
     .datepicker.default {
         background-color: ${Styles.colors.systemWhite};
@@ -15,7 +15,7 @@ export const StyledTimePicker = createGlobalStyle`
         background-color: ${Styles.colors.systemWhite};
     }
     .datepicker .datepicker-content {
-        padding: 2.2rem 1rem;;
+        padding: 2.2rem 1rem;
     }
     .datepicker-content {
         position: relative;
@@ -29,6 +29,7 @@ export const StyledTimePicker = createGlobalStyle`
         flex: 1;
         position: relative;
     }
+    
     .datepicker-content > div:not(:last-child)::after {
         content: ":";
         position: absolute;
@@ -47,12 +48,13 @@ export const StyledTimePicker = createGlobalStyle`
   	}
     .datepicker-wheel {
         background:${Styles.colors.primary20};
-        border-radius: 0.4rem;
+        /* border-radius: 0.4rem; */
     }
     .datepicker .datepicker-viewport {
         height: 5.8rem;
     }
     .datepicker.ios .datepicker-viewport::after {
-  			background: linear-gradient(#ffffff,rgba(245, 245, 245, 0)52%,rgba(245, 245, 245, 0)48%,#ffffff);
+  		background: linear-gradient(#ffffff,rgba(245, 245, 245, 0)52%,rgba(245, 245, 245, 0)48%,#ffffff);
+        pointer-events: none;
   		}
 `;

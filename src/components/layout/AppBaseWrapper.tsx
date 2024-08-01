@@ -17,7 +17,7 @@ const AppBaseWrapper = ({ title, children }: AppBaseWrapperProps) => {
 
 export default AppBaseWrapper;
 
-const StyledAppBaseWrapper = styled.div`
+export const StyledAppBaseWrapper = styled.div`
     width: 100%;
     padding: 1rem 1rem 0;
     h2 {

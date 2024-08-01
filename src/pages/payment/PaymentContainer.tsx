@@ -10,6 +10,7 @@ import { Link } from "react-router-dom";
 import { getPeriodDate, parseDate2 } from "@/utils/formatDateTime";
 import SpeechBubble from "@/components/SpeechBubble";
 import useSpeechBubble from "@/hooks/useSpeechBubble";
+import "swiper/css";
 
 interface PaymentContents {
     id: string;
@@ -195,13 +196,12 @@ const PaymentContainer = () => {
             },
         });
         return () => {};
-        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
     return (
         <div style={{ position: "relative" }}>
-            <StyledTotalPaymentWrap className={`${scrollY >= 130 ? "fixed" : ""}`}>
-                <div>
+            <StyledTotalPaymentWrap>
+                <div className={`${scrollY >= 130 ? "fixed" : ""}`}>
                     <p>결제 총 금액</p>
                     <h2 className={response.total_amount >= 0 ? "" : "minus"}>
                         {response.total_amount.toLocaleString()}원
@@ -211,7 +211,9 @@ const PaymentContainer = () => {
                     </p>
                 </div>
             </StyledTotalPaymentWrap>
+            <StyledFloatingBackground className={`${scrollY >= 160 ? "fixed" : ""}`} />
             <FilterContainer
+                fixedHeight={130}
                 totalCount={response.contents.length}
                 request={request}
                 setRequest={setRequest}
@@ -221,7 +223,7 @@ const PaymentContainer = () => {
                 isUseConditionOfOrderBy
                 isUseConditionOfAmount
             />
-            <StyledPaymentListItemContainer>
+            <StyledPaymentListItemContainer className={`${scrollY >= 130 ? "fixed" : ""}`}>
                 {response.contents.map((payment, index) => (
                     <Fragment key={payment.id}>
                         <PaymentListItemHeader
@@ -247,16 +249,18 @@ const PaymentContainer = () => {
 
 export default PaymentContainer;
 
-const StyledTotalPaymentWrap = styled.section`
+export const StyledTotalPaymentWrap = styled.section`
     padding: 1rem 1rem 0 1rem;
-    &.fixed {
-        padding: 1rem 1rem 4.9rem 1rem;
-    }
 
     div {
         display: flex;
         flex-direction: column;
         padding: 1.2rem 0;
+
+        &.fixed {
+            padding: 1.2rem 0 0 0;
+        }
+
         p {
             color: ${Styles.colors.natural70};
             font-size: ${Styles.font.size.fontsize14};
@@ -282,4 +286,19 @@ const StyledTotalPaymentWrap = styled.section`
 
 const StyledPaymentListItemContainer = styled.div`
     padding-bottom: 2.8rem;
+    &.fixed {
+        padding-top: 2.5rem;
+    }
+`;
+
+const StyledFloatingBackground = styled.div`
+    &.fixed {
+        position: fixed;
+        top: 2rem;
+        left: 0;
+        width: 100%;
+        height: 3rem;
+        z-index: 99;
+        background-color: ${Styles.colors.systemWhite};
+    }
 `;

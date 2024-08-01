@@ -1,85 +1,144 @@
-import { useState } from "react";
+import { useState, useRef } from "react";
+import { Link } from "react-router-dom";
 import styled from "styled-components";
 
-import AppHeader from "@/components/header/AppHeader";
+import { Swiper, SwiperSlide } from "swiper/react";
+import SwiperCore from "swiper";
+import "swiper/css";
+
+import { FoodImg1, FoodImg2, FoodImg3, FoodImg4 } from "@/pages/shop/_images/shop";
+import ButtonMenu from "@/pages/shop/_component/ButtonMenu";
 import AppLayout from "@/components/layout/AppLayout";
+import AppShoppingHeader, { SHOP_MAIN_URL } from "@/components/header/AppShoppingHeader";
+import { IShopList } from "@/interface/shop/shop";
 
 import { Styles } from "@/style/Styles";
 
-import { ArrowDownIcon, FoodImg1, FoodImg2, FoodImg3, FoodImg4 } from "@/pages/shop/_images/shop";
-
-const ShopListData = [
+const ShopListData: IShopList[] = [
     {
         id: 1,
         img: FoodImg1,
         title: "[오늘의 특가] 돈사임당 뼈갈비 목심 스테이크",
-        cost: "26,800",
+        cost: 26800,
         sale: "52",
-        price: "13,200",
+        price: 13200,
     },
     {
         id: 2,
         img: FoodImg2,
         title: "[오늘의 특가] 돈사임당 목심 스테이크",
-        cost: "15,600",
+        cost: 15600,
         sale: "22",
-        price: "9,900",
+        price: 9900,
     },
     {
         id: 3,
         img: FoodImg3,
         title: "[오늘의 특가] 돈사임당 통오겹살",
-        cost: "15,800",
+        cost: 15800,
         sale: "12",
-        price: "12,700",
+        price: 12700,
     },
     {
         id: 4,
         img: FoodImg4,
         title: "[오늘의 특가] 돈사임당 매콤 불백",
-        cost: "15,600",
+        cost: 15600,
         sale: "22",
-        price: "9,900",
+        price: 9900,
     },
+];
+const tabs = [
+    { id: "home", title: "전체" },
+    { id: "best", title: "Best 50!" },
+    { id: "new", title: "신규입점특가!" },
+    { id: "big-event1", title: "빅이벤트1" },
+    { id: "big-event2", title: "빅이벤트2" },
+];
+const menuOptions = [
+    { id: 1, title: "MD 추천순" },
+    { id: 2, title: "인기순" },
+    { id: 3, title: "리뷰 많은순" },
 ];
 
 const ShopList = () => {
-    const [showMenu, setShowMenu] = useState(false);
+    const [activeTab, setActiveTab] = useState(0);
+    const contentSwiperRef = useRef<SwiperCore | null>(null);
 
-    const toggleMenu = () => {
-        setShowMenu(!showMenu);
+    const handleTabClick = (index: number) => {
+        setActiveTab(index);
+        if (contentSwiperRef.current) {
+            contentSwiperRef.current.slideTo(index);
+        }
     };
+
+    const handleSlideChange = (swiper: SwiperCore) => {
+        setActiveTab(swiper.activeIndex);
+    };
+
     return (
-        <AppLayout props={{ header: <AppHeader /> }}>
-            <StyledShopListWrapper>
-                <StyledButtonItem>
-                    <StyledButtonMenu>
-                        <button onClick={toggleMenu}>전체</button>
-                        {showMenu && (
-                            <ul>
-                                <li>MD 추천순</li>
-                                <li>인기순</li>
-                                <li>리뷰 많은순</li>
-                            </ul>
-                        )}
-                    </StyledButtonMenu>
-                    <span onClick={toggleMenu}>
-                        <img src={ArrowDownIcon} alt="Arrow Down Icon" />
-                    </span>
-                </StyledButtonItem>
-                <StyledShopListInner>
-                    {ShopListData.map((shop) => (
-                        <StyledShopItemInner key={shop.id}>
-                            <img src={shop.img} alt="" />
-                            <h3>{shop.title}</h3>
-                            <h4>{shop.cost}원</h4>
-                            <p>
-                                <span>{shop.sale}%</span>
-                                {shop.price}원
-                            </p>
-                        </StyledShopItemInner>
+        <AppLayout props={{ header: <AppShoppingHeader url={SHOP_MAIN_URL} /> }}>
+            <StyledShopTapList>
+                <Swiper slidesPerView="auto" spaceBetween={36} freeMode={true}>
+                    {tabs.map((tab, index) => (
+                        <SwiperSlide key={tab.id}>
+                            <button
+                                className={activeTab === index ? "active" : ""}
+                                onClick={() => handleTabClick(index)}
+                            >
+                                {tab.title}
+                            </button>
+                        </SwiperSlide>
                     ))}
-                </StyledShopListInner>
+                </Swiper>
+            </StyledShopTapList>
+            <StyledShopListWrapper>
+                <Swiper
+                    onSwiper={(swiper) => (contentSwiperRef.current = swiper)}
+                    onSlideChange={handleSlideChange}
+                    allowTouchMove={false}
+                >
+                    <SwiperSlide>
+                        <StyledShopInner>
+                            <ButtonMenu options={menuOptions} title="전체" />
+                            <StyledShopListInner>
+                                {ShopListData.map((shop) => (
+                                    <StyledShopItemInner key={shop.id}>
+                                        <Link to={`/shop/info/${shop.id}`}>
+                                            <img src={shop.img} alt="" />
+                                            <h3>{shop.title}</h3>
+                                            <h4>{shop.cost.toLocaleString()}원</h4>
+                                            <p>
+                                                <span>{shop.sale}%</span>
+                                                {shop.price.toLocaleString()}원
+                                            </p>
+                                        </Link>
+                                    </StyledShopItemInner>
+                                ))}
+                            </StyledShopListInner>
+                        </StyledShopInner>
+                    </SwiperSlide>
+                    <SwiperSlide>
+                        <StyledShopInner>
+                            <p>돈사임당 내용</p>
+                        </StyledShopInner>
+                    </SwiperSlide>
+                    <SwiperSlide>
+                        <StyledShopInner>
+                            <p>명절한정 내용</p>
+                        </StyledShopInner>
+                    </SwiperSlide>
+                    <SwiperSlide>
+                        <StyledShopInner>
+                            <p>빅이벤트1 내용</p>
+                        </StyledShopInner>
+                    </SwiperSlide>
+                    <SwiperSlide>
+                        <StyledShopInner>
+                            <p>빅이벤트2 내용</p>
+                        </StyledShopInner>
+                    </SwiperSlide>
+                </Swiper>
             </StyledShopListWrapper>
         </AppLayout>
     );
@@ -87,87 +146,52 @@ const ShopList = () => {
 
 const StyledShopListWrapper = styled.div`
     width: 100%;
-    padding: 0 1rem;
 `;
+const StyledShopTapList = styled.div`
+    border-bottom: 0.05rem solid ${Styles.colors.natural10};
+    padding: 0.4rem 0;
+    .swiper {
+        width: 100%;
+        padding: 0 1rem;
+    }
 
-const StyledButtonItem = styled.div`
-    width: 49.6%; /* 임시 */
-    position: relative;
-    display: flex;
-    align-items: center;
-    margin: 0.6rem 0;
-    margin-left: auto;
+    .swiper-slide {
+        width: auto;
+    }
+
     button {
-        width: 100%;
-        background: ${Styles.colors.systemBackground};
+        display: block;
+        padding: 0.5rem 0;
+        color: ${Styles.colors.natural40};
+        font-size: ${Styles.font.size.fontsize15};
+        font-weight: ${Styles.font.weight.regular};
         border: none;
-        border-radius: 0.4rem;
-        height: 2.3rem;
-        padding: 0.55rem 0.8rem;
-        caret-color: ${Styles.colors.primary100};
-        text-align: left;
         cursor: pointer;
-        color: ${Styles.colors.natural80};
-        font-size: ${Styles.font.size.fontsize15};
-        font-weight: ${Styles.font.weight.regular};
+        border-bottom: 0.1rem solid transparent;
     }
 
-    span {
-        position: absolute;
-        top: 50%;
-        right: 0.6rem;
-        transform: translateY(-50%);
-        cursor: pointer;
-        display: flex;
-        justify-content: end;
-        align-items: center;
-
-        img {
-            width: 1.2rem;
-            height: 1.2rem;
-            margin: 0;
-        }
+    button.active {
+        font-weight: ${Styles.font.weight.medium};
+        color: ${Styles.colors.primary100};
+        border-bottom: 0.1rem solid ${Styles.colors.primary100};
     }
-`;
 
-const StyledButtonMenu = styled.div`
-    position: relative;
-    width: 100%;
-
-    ul {
-        /* 임시 설정 */
-        position: absolute;
-        top: 2.7rem;
-        left: 0;
-        width: 100%;
-        color: ${Styles.colors.natural80};
-        font-size: ${Styles.font.size.fontsize15};
-        font-weight: ${Styles.font.weight.regular};
-        background-color: ${Styles.colors.systemBackground};
-        border-radius: 0.4rem;
-        z-index: 1;
-
-        li {
-            cursor: pointer;
-            padding: 0.55rem 0.8rem;
-            &:hover {
-                background-color: ${Styles.colors.natural00};
-            }
-        }
+    button:focus {
+        outline: none;
     }
 `;
 
 const StyledShopListInner = styled.ul`
     display: grid;
     grid-template-columns: 1fr 1fr;
-    gap: 0.75rem;
+    gap: 1.2rem 0.75rem;
 `;
 
 const StyledShopItemInner = styled.li`
     width: 100%;
     img {
-        width: 8rem;
-        height: 8rem;
+        width: 100%;
+        aspect-ratio: 1 / 1;
         border-radius: 0.5rem;
     }
     h3 {
@@ -192,6 +216,11 @@ const StyledShopItemInner = styled.li`
             padding-right: 0.2rem;
         }
     }
+`;
+
+const StyledShopInner = styled.div`
+    height: 100vh;
+    padding: 0 1rem;
 `;
 
 export default ShopList;

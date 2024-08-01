@@ -2,14 +2,13 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 
+import { Owner, Staff, CheckIcon } from "@/pages/auth/register/_images/register_img";
 import AppLayout from "@/components/layout/AppLayout";
 import AppBackHeader from "@/components/header/AppBackHeader";
-
-import { Styles } from "@/style/Styles";
-
-import { Owner, Staff, CheckIcon } from "@/pages/auth/register/_images/register_img";
 import FixedButton from "@/components/button/FixedButton";
 import AppBaseWrapper from "@/components/layout/AppBaseWrapper";
+
+import { Styles } from "@/style/Styles";
 
 const Register = () => {
     const [selectedOption, setSelectedOption] = useState("");
@@ -21,9 +20,9 @@ const Register = () => {
 
     const handleSubmit = () => {
         if (selectedOption === "owner") {
-            navigate("/register/owner");
+            navigate("/register/owner", { replace: true });
         } else if (selectedOption === "staff") {
-            navigate("/register/staff");
+            navigate("/register/staff", { replace: true });
         }
     };
 

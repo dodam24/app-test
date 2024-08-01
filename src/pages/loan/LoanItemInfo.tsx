@@ -1,14 +1,13 @@
+import { useNavigate, useParams } from "react-router-dom";
 import styled from "styled-components";
 
+import dummyLoanData from "@/pages/loan/_data/loanData";
 import AppBackHeader from "@/components/header/AppBackHeader";
 import AppLayout from "@/components/layout/AppLayout";
-
-import { Styles } from "@/style/Styles";
-
 import AppBaseWrapper from "@/components/layout/AppBaseWrapper";
 import FixedButton from "@/components/button/FixedButton";
-import { useNavigate, useParams } from "react-router-dom";
-import dummyLoanData from "@/pages/loan/_data/loanData";
+
+import { Styles } from "@/style/Styles";
 
 const LoanItemInfo = () => {
     const { id } = useParams<{ id: string }>();
@@ -21,7 +20,7 @@ const LoanItemInfo = () => {
     }
 
     const handleApplyButtonClick = () => {
-        navigate("/loan/terms");
+        navigate("/loan/terms", { replace: true });
     };
 
     return (

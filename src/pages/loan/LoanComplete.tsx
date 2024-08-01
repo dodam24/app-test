@@ -1,13 +1,12 @@
 import styled from "styled-components";
 
+import { PartyIcon } from "@/pages/loan/_images/loanImg";
 import AppBackHeader from "@/components/header/AppBackHeader";
 import AppLayout from "@/components/layout/AppLayout";
-
-import { Styles } from "@/style/Styles";
-
-import { PartyIcon } from "@/pages/loan/_images/loanImg";
 import FixedButton from "@/components/button/FixedButton";
 import AppBaseWrapper from "@/components/layout/AppBaseWrapper";
+
+import { Styles } from "@/style/Styles";
 
 const LoanComplete = () => {
     return (

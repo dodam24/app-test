@@ -14,6 +14,7 @@ import FoodImg2 from "@/assets/images/img/img_shoplist_food2_k.png";
 import FoodImg3 from "@/assets/images/img/img_shoplist_food3_k.png";
 import FoodImg4 from "@/assets/images/img/img_shoplist_food4_k.png";
 
+import FoodInfoImg1 from "@/assets/images/img/img_shoplist_food1_info_k.png";
 import ArrowDownIcon from "@/assets/images/icons/icon_insurance_arrowdown_k.png";
 
 export {
@@ -32,4 +33,5 @@ export {
     FoodImg4,
     ArrowDownIcon,
     StarIcon,
+    FoodInfoImg1,
 };

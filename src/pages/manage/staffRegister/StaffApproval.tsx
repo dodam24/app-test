@@ -1,14 +1,14 @@
+import { Link } from "react-router-dom";
 import styled from "styled-components";
 
 import AppBackHeader from "@/components/header/AppBackHeader";
 import AppLayout from "@/components/layout/AppLayout";
+import { IManageStaffApproval } from "@/interface/manage/staff/manageStaffRegister";
 
 import { Styles } from "@/style/Styles";
-
 import { NonIcon } from "@/pages/manage/_images/manageImg";
-import { Link } from "react-router-dom";
 
-const staffData = [
+const staffData: IManageStaffApproval[] = [
     {
         id: 1,
         name: "홍길동",

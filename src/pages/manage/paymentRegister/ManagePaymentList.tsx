@@ -1,11 +1,23 @@
-import styled from "styled-components";
-import { Styles } from "@/style/Styles";
-import { paymentListData } from "@/pages/manage/paymentRegister/_data/ManagePaymetData";
 import { Link } from "react-router-dom";
+import styled from "styled-components";
+
+import SpeechBubble from "@/components/SpeechBubble";
+import useSpeechBubble from "@/hooks/useSpeechBubble";
+import { paymentListData } from "@/pages/manage/paymentRegister/_data/ManagePaymetData";
+
+import { Styles } from "@/style/Styles";
 
 const ManagePaymentList = () => {
+    const { isClose, closeSpeechBubble } = useSpeechBubble();
     return (
         <StyledPaymentListWrapper>
+            <SpeechBubble
+                contents={"항목을 선택하면 지급내용을 수정할 수 있어요!"}
+                isClose={isClose}
+                closeSpeechBubble={closeSpeechBubble}
+                left={59}
+                top={21.8}
+            />
             {paymentListData.map((payment) => (
                 <li key={payment.id}>
                     <Link to={`/manage/payment/info/${payment.id}`}>
@@ -45,6 +57,7 @@ const StyledPaymentListWrapper = styled.ul`
         border-radius: 0.4rem;
         border: 1px solid ${Styles.colors.natural10};
     }
+    margin-bottom: 4rem;
 `;
 
 const StyledPaymentItemTop = styled.div`

@@ -1,84 +1,80 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import styled from "styled-components";
 import { Styles } from "@/style/Styles";
 import { CheckedOff, CheckedOn } from "@/pages/auth/register/_images/register_img";
+import { termsList, termsDetail } from "@/apis/checkBox/terms";
+import { Link } from "react-router-dom";
 
 interface ConsentComponentProps {
-    Loan?: boolean;
+    onChange: (requiredTermsAccepted: boolean, selectedTermsAcceptedList: string[]) => void;
+    category?: string;
 }
 
-const ConsentComponent = ({ Loan }: ConsentComponentProps) => {
-    const initialCheckboxStates = Loan
-        ? [
-              {
-                  label: "이용약관에 동의합니다. (필수)",
-                  checked: false,
-                  detailLink: "#",
-                  id: "1",
-              },
-              {
-                  label: "개인정보 수집 및 이용에 동의합니다. (필수)",
-                  checked: false,
-                  detailLink: "#",
-                  id: "2",
-              },
-              {
-                  label: "개인(신용) 정보 수집·이용·제공 동의 (필수)",
-                  checked: false,
-                  detailLink: "#",
-                  id: "3",
-              },
-              {
-                  label: "상품서비스 안내수단에 동의 (필수)",
-                  checked: false,
-                  detailLink: "",
-                  id: "4",
-              },
-              {
-                  label: "보증보험사 약관 동의 (필수)",
-                  checked: false,
-                  detailLink: "",
-                  id: "5",
-              },
-          ]
-        : [
-              {
-                  label: "이용약관에 동의합니다. (필수)",
-                  checked: false,
-                  detailLink: "#",
-                  id: "1",
-              },
-              {
-                  label: "개인정보 수집 및 이용에 동의합니다. (필수)",
-                  checked: false,
-                  detailLink: "#",
-                  id: "2",
-              },
-              {
-                  label: "만 14세 이상입니다. (필수)",
-                  checked: false,
-                  detailLink: "",
-                  id: "3",
-              },
-          ];
+interface Term {
+    id: string;
+    required: boolean;
+    title: string;
+    hasDetail?: boolean;
+}
 
-    const [checkboxStates, setCheckboxStates] = useState(initialCheckboxStates);
+const ConsentComponent = ({ onChange, category }: ConsentComponentProps) => {
+    const [isTermsData, setIsTermsData] = useState<Term[]>([]);
+    const [isAllChecked, setIsAllChecked] = useState(false);
+
+    const fetchTermsList = async () => {
+        try {
+            const response = await termsList(category ?? "signup"); // 원래는 없을 때 all
+            const initialTermsData = await Promise.all(
+                response.terms_list.map(async (term: Term) => {
+                    const detail = await termsDetail(term.id);
+                    return {
+                        ...term,
+                        hasDetail: !!detail,
+                    };
+                }),
+            );
+            setIsTermsData(initialTermsData);
+        } catch (error) {
+            console.error("약관 데이터 불러오기 오류:", error);
+        }
+    };
+
+    useEffect(() => {
+        fetchTermsList();
+    }, []);
 
     const handleCheckboxChange = (id: string) => {
-        const newCheckboxStates = checkboxStates.map((checkbox) =>
-            checkbox.id === id ? { ...checkbox, checked: !checkbox.checked } : checkbox,
+        const newTermsData = isTermsData.map((term) =>
+            term.id === id ? { ...term, required: !term.required } : term,
         );
-        setCheckboxStates(newCheckboxStates);
+        setIsTermsData(newTermsData);
+
+        const requiredTermsAccepted = newTermsData.every((term) => term.required);
+        const selectedTermsAcceptedList = newTermsData
+            .filter((term) => term.required)
+            .map((term) => term.id);
+        onChange(requiredTermsAccepted, selectedTermsAcceptedList);
     };
 
     const toggleAllCheckboxes = () => {
-        const allChecked = checkboxStates.every((checkbox) => checkbox.checked);
-        const newCheckboxStates = checkboxStates.map((checkbox) => ({
-            ...checkbox,
-            checked: !allChecked,
+        const newTermsData = isTermsData.map((term) => ({
+            ...term,
+            required: !isAllChecked,
         }));
-        setCheckboxStates(newCheckboxStates);
+        setIsTermsData(newTermsData);
+        setIsAllChecked(!isAllChecked);
+
+        const requiredTermsAccepted = newTermsData.every((term) => term.required);
+        const selectedTermsAcceptedList = newTermsData
+            .filter((term) => term.required)
+            .map((term) => term.id);
+        onChange(requiredTermsAccepted, selectedTermsAcceptedList);
     };
+
+    useEffect(() => {
+        const allTermsChecked = isTermsData.every((term) => term.required);
+        setIsAllChecked(allTermsChecked);
+    }, [isTermsData]);
 
     return (
         <CommonContent>
@@ -88,28 +84,26 @@ const ConsentComponent = ({ Loan }: ConsentComponentProps) => {
                     <input
                         id="consentAll"
                         type="checkbox"
-                        checked={checkboxStates.every((checkbox) => checkbox.checked)}
+                        checked={isAllChecked}
                         onChange={toggleAllCheckboxes}
                     />
                     <label htmlFor="consentAll">모두 동의</label>
                 </ConsentWrapper>
             </div>
             <ConsentContainer>
-                {checkboxStates.map((checkbox) => (
-                    <ConsentList key={checkbox.id}>
+                {isTermsData.map((term) => (
+                    <ConsentList key={term.id}>
                         <ConsentWrapper>
                             <input
-                                id={checkbox.id}
+                                id={term.id}
                                 type="checkbox"
-                                checked={checkbox.checked}
-                                onChange={() => handleCheckboxChange(checkbox.id)}
+                                checked={term.required}
+                                onChange={() => handleCheckboxChange(term.id)}
                             />
-                            <label htmlFor={checkbox.id}>{checkbox.label}</label>
+                            <label htmlFor={term.id}>{term.title}</label>
                         </ConsentWrapper>
-                        {checkbox.detailLink && (
-                            <a href={checkbox.detailLink} target="_blank" rel="noopener noreferrer">
-                                상세
-                            </a>
+                        {term.hasDetail && (
+                            <DetailLink to={`/checkbox/info/${term.id}`}>상세</DetailLink>
                         )}
                     </ConsentList>
                 ))}
@@ -191,6 +185,14 @@ const ConsentList = styled.li`
         text-underline-position: under;
         min-width: fit-content;
     }
+`;
+
+const DetailLink = styled(Link)`
+    color: ${Styles.colors.natural60};
+    font-size: ${Styles.font.size.fontsize12};
+    font-weight: ${Styles.font.weight.regular};
+    text-decoration: underline;
+    text-underline-position: under;
 `;
 
 export default ConsentComponent;

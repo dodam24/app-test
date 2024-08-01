@@ -1,7 +1,7 @@
 import AppBackHeader from "@/components/header/AppBackHeader";
 import AppLayout from "@/components/layout/AppLayout";
 import styled from "styled-components";
-import Details from "../../component/Details";
+import Details from "../../_component/Details";
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 

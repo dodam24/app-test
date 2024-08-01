@@ -1,16 +1,16 @@
+import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 
+import { ArrowIcon } from "@/pages/insurance/_images/insurance";
 import AppBackHeader from "@/components/header/AppBackHeader";
 import AppLayout from "@/components/layout/AppLayout";
+import FixedButton from "@/components/button/FixedButton";
+import AppBaseWrapper from "@/components/layout/AppBaseWrapper";
+import { IinsuranceService } from "@/interface/insurance/insurance";
 
 import { Styles } from "@/style/Styles";
 
-import { ArrowIcon } from "@/pages/insurance/_images/insurance";
-import FixedButton from "@/components/button/FixedButton";
-import AppBaseWrapper from "@/components/layout/AppBaseWrapper";
-import { useNavigate } from "react-router-dom";
-
-const insuranceData = [
+const insuranceData: IinsuranceService[] = [
     {
         id: 1,
         title: "재난배상책임보험",
@@ -22,12 +22,6 @@ const insuranceData = [
         title: "화재보험",
         company: "현대해상",
         expiryDate: "2024-07-15",
-    },
-    {
-        id: 3,
-        title: "건강보험",
-        company: "동부화재",
-        expiryDate: "2024-08-30",
     },
     {
         id: 3,
@@ -49,14 +43,14 @@ const InsuranceServiceList = () => {
     const navigate = useNavigate();
 
     const handleItemClick = () => {
-        navigate(`/insurance`);
+        navigate(`/insurance`, { replace: true });
     };
 
     const handleListClick = (id: number) => {
-        navigate(`/insurance/service/info/${id}`);
+        navigate(`/insurance/service/info/${id}`, { replace: true });
     };
     return (
-        <AppLayout props={{ header: <AppBackHeader title="서류등록" /> }}>
+        <AppLayout props={{ header: <AppBackHeader title="보험 서비스" /> }}>
             <AppBaseWrapper title={`보험 가입 서비스 확인하기`}>
                 <StyledServiceInner>
                     {insuranceData.map((insurance) => (
@@ -104,7 +98,7 @@ const StyledServiceItem = styled.li`
         font-size: ${Styles.font.size.fontsize16};
         font-weight: ${Styles.font.weight.semibold};
         padding: 0.85rem 0.8rem;
-        border-bottom: 1px solid ${Styles.colors.natural10};
+        border-bottom: 1px solid ${Styles.colors.natural00};
         width: 100%;
     }
 `;

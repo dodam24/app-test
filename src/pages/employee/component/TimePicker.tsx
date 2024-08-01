@@ -2,19 +2,25 @@ import { useState } from "react";
 import DatePicker from "react-mobile-datepicker-ts";
 import "react-mobile-datepicker-ts/dist/main.css";
 
-const TimePicker = () => {
+interface TimePickerProps {
+    isCheckIn: boolean;
+}
+
+const TimePicker = ({ isCheckIn }: TimePickerProps) => {
     const [time, setTime] = useState<Date>(new Date());
     const [isOpen, setIsOpen] = useState<boolean>(true);
 
     const now = new Date();
-    const minTime = new Date(now.getTime() - 10 * 60000);
-    const maxTime = new Date(now.getTime() + 10 * 60000);
+    const minTime = isCheckIn ? new Date(now.getTime() - 10 * 60000) : undefined;
+    const maxTime = isCheckIn ? new Date(now.getTime() + 10 * 60000) : undefined;
 
     const handleSelect = (e: TouchEvent, nextTime: typeof time) => {
         e.stopPropagation();
         setTime(nextTime);
         setIsOpen(false);
     };
+    // console.log(time);
+
     return (
         <DatePicker
             value={time}

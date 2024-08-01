@@ -30,9 +30,9 @@ const CheckOut = () => {
                     <p className="message">오늘도 고생많으셨습니다 :)</p>
                 </div>
             </StyledAttendanceDisplay>
-            <StyledTimePicker />
+            <StyledTimePicker isCheckIn={false} />
             <StyledAttendanceTimer>
-                <p className="timer_option">※ 선택가능범위 : 현재시각 ± 10분</p>
+                <p className="timer_option">※ 선택가능범위 : 제한 없음</p>
             </StyledAttendanceTimer>
             <FixedButton>등록</FixedButton>
         </AppLayout>

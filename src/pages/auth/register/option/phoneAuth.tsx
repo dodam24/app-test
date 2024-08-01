@@ -1,34 +1,27 @@
-import { useState, ChangeEvent, FormEvent } from "react";
-import styled from "styled-components";
+import { useState, FormEvent } from "react";
+import { useNavigate } from "react-router-dom";
+import useModal from "@/hooks/useModal";
 
 import AppLayout from "@/components/layout/AppLayout";
 import AppBackHeader from "@/components/header/AppBackHeader";
 import OptionInput from "@/components/input/OptionInput";
-
 import FixedButton from "@/components/button/FixedButton";
 import AppBaseWrapper from "@/components/layout/AppBaseWrapper";
-import { StyledBaseInputWrapper } from "@/components/styles/InputStyle";
 import PhoneAuthInput from "@/components/input/PhoneAuthInput";
 import ConsentCheckBox from "@/components/checkbox/ConsentCheckBox";
 import DynamicModal from "@/components/modal/DynamicModal";
 import ConfirmationModal from "@/components/modal/ui/ConfirmationModal";
-import useModal from "@/hooks/useModal";
-import { useNavigate } from "react-router-dom";
+
+import { StyledBaseInputWrapper } from "@/style/InputStyle";
+import { IRegisterPhone } from "@/interface/auth/register/register";
 
 const PhoneAuth = () => {
-    const [value, setValue] = useState({
+    const [value, setValue] = useState<IRegisterPhone>({
         company_id: "활빈당",
         name: "이몽룡",
         cellphone_number: "",
         verificationCode: "",
     });
-
-    const handle = (e: ChangeEvent<HTMLInputElement>) => {
-        setValue({
-            ...value,
-            [e.target.name]: e.target.value,
-        });
-    };
 
     const handlePhoneChange = (phone: string) => {
         setValue({
@@ -54,29 +47,21 @@ const PhoneAuth = () => {
     const navigate = useNavigate();
     const confirmHandler = () => {
         closeModal();
-        navigate("/register/staff");
+        navigate("/register/staff", { replace: true });
     };
 
     return (
         <AppLayout props={{ header: <AppBackHeader title="휴대폰 인증" /> }}>
             <AppBaseWrapper title={`최초 접속 인증을 진행해 주세요.`}>
-                <StyledInputContainer onSubmit={handleSubmit}>
+                <StyledBaseInputWrapper onSubmit={handleSubmit}>
                     <OptionInput
                         type="text"
                         name="company_id"
                         value={value.company_id}
-                        onChange={handle}
                         label="상호명"
-                        disabled
+                        readOnly
                     />
-                    <OptionInput
-                        type="text"
-                        name="name"
-                        value={value.name}
-                        onChange={handle}
-                        label="이름"
-                        disabled
-                    />
+                    <OptionInput type="text" name="name" value={value.name} label="이름" readOnly />
                     <PhoneAuthInput
                         onPhoneChange={handlePhoneChange}
                         onVerificationCodeChange={handleVerificationCodeChange}
@@ -93,12 +78,10 @@ const PhoneAuth = () => {
                             close={confirmHandler}
                         />
                     </DynamicModal>
-                </StyledInputContainer>
+                </StyledBaseInputWrapper>
             </AppBaseWrapper>
         </AppLayout>
     );
 };
-
-const StyledInputContainer = styled(StyledBaseInputWrapper)``;
 
 export default PhoneAuth;

@@ -1,23 +1,32 @@
 import AppLayout from "@/components/layout/AppLayout";
-import AppHeader from "@/components/header/AppHeader";
+import AppHeader, { MAIN_URL } from "@/components/header/AppHeader";
 import styled from "styled-components";
 import AppFooterBar from "@/components/footer/AppFooterBar";
-import { Styles } from "@/style/Styles";
 import MoreServiceMenu from "./MoreServiceMenu";
 import MoreUser from "./MoreUser";
 import DynamicModal from "@/components/modal/DynamicModal";
 import useModal from "@/hooks/useModal";
 import ConfirmationModal from "@/components/modal/ui/ConfirmationModal";
+import { useNavigate } from "react-router-dom";
 
 const More = () => {
-    // 로그아웃 modal 띄웠을 때 header(더보기) background 처리 X
     const { isOpen, openModal, closeModal } = useModal();
+    const navigate = useNavigate();
+
+    const handleLogout = () => {
+        // 로그아웃 처리 필요 (인증 토큰 제거, 사용자 상태 초기화 등)
+        navigate("/login", { replace: true });
+    };
 
     return (
-        <AppLayout props={{ header: <AppHeader title="더보기" />, footer: <AppFooterBar /> }}>
+        <AppLayout
+            props={{
+                header: <AppHeader url={MAIN_URL} title="더보기" />,
+                footer: <AppFooterBar />,
+            }}
+        >
             <StyledMoreWrap>
                 <MoreUser openModal={openModal} />
-                <div className="border" />
                 <MoreServiceMenu />
             </StyledMoreWrap>
 
@@ -29,7 +38,7 @@ const More = () => {
                     close={closeModal}
                     optionCancel
                     buttonText="로그아웃"
-                    // 로그아웃 처리: handler={}
+                    handler={handleLogout}
                 />
             </DynamicModal>
         </AppLayout>
@@ -38,12 +47,6 @@ const More = () => {
 
 const StyledMoreWrap = styled.section`
     width: 100%;
-
-    .border {
-        background: ${Styles.colors.systemBackground};
-        width: 100%;
-        height: 0.6rem;
-    }
 `;
 
 export default More;

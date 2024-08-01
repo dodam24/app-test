@@ -1,14 +1,17 @@
 import { useState, useRef } from "react";
+import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
+
 import AppBackHeader from "@/components/header/AppBackHeader";
 import AppLayout from "@/components/layout/AppLayout";
+import AppBaseWrapper from "@/components/layout/AppBaseWrapper";
+import FixedButton from "@/components/button/FixedButton";
+import { IinsuranceInfo } from "@/interface/insurance/insurance";
+
 import { Styles } from "@/style/Styles";
 import { ArrowDownIcon, ArrowUpIcon, FireBuildingIcon } from "@/pages/insurance/_images/insurance";
-import AppBaseWrapper from "@/components/layout/AppBaseWrapper";
-import { useNavigate } from "react-router-dom";
-import FixedButton from "@/components/button/FixedButton";
 
-const data = [
+const data: IinsuranceInfo[] = [
     { id: 1, title: "필수가입 대상", details: "이것은 필수가입 대상의 세부 사항입니다." },
     {
         id: 2,
@@ -22,7 +25,7 @@ const InsuranceItemInfo = () => {
     const navigate = useNavigate();
 
     const handleItemClick = () => {
-        navigate(`/insurance/complete`);
+        navigate(`/insurance/complete`, { replace: true });
     };
 
     return (
@@ -108,7 +111,7 @@ const StyledInfoWrapper = styled.div`
 `;
 
 const StyledAccordionItem = styled.div`
-    padding: 0.5rem 0;
+    /* padding: 0.5rem 0; */
     border-bottom: 1px solid ${Styles.colors.natural10};
 `;
 

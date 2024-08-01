@@ -1,4 +1,4 @@
-import instance from "@/apis/instance";
+import { instance } from "@/apis/instance";
 
 // 아이디 중복 확인 API
 interface RegisterIdData {
@@ -25,9 +25,9 @@ interface registerData {
     name: string;
     cellphone_number: string;
     verificationCode: string;
-    email?: string;
+    email: string;
     required_terms_accepted: boolean;
-    selected_terms_accepted_list?: [string];
+    selected_terms_accepted_list?: string[];
     user_type: string;
     compay_id?: string;
     account_back_code?: string;

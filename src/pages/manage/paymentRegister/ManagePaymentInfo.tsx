@@ -1,34 +1,48 @@
+import { useState, useEffect, FormEvent } from "react";
+import { Link } from "react-router-dom";
+import styled from "styled-components";
+
 import AppBackHeader from "@/components/header/AppBackHeader";
 import AppLayout from "@/components/layout/AppLayout";
-import { Link, useParams } from "react-router-dom";
-import { useState, useEffect, FormEvent } from "react";
-import { paymentListData } from "@/pages/manage/paymentRegister/_data/ManagePaymetData";
 import OptionInput from "@/components/input/OptionInput";
 import AppBaseWrapper from "@/components/layout/AppBaseWrapper";
 import FixedButton from "@/components/button/FixedButton";
-import styled from "styled-components";
+import Input from "@/components/input/Input";
+import useDateOverlay from "@/hooks/useDateOverlay";
+import DatePickerOverlay from "@/components/overlay/DatePickerOverlay";
+import { parseDate2 } from "@/utils/formatDateTime";
+import { IManagePaymentInfo } from "@/interface/manage/payment/managePaymentRegister";
+
 import { Styles } from "@/style/Styles";
 
-interface Payment {
-    id: number;
-    name: string;
-    paymentType: string;
-    expectedPayment: string;
-    actualPayment: string;
-    startDate: string;
-    endDate: string;
-}
-
 const ManagePaymentInfo = () => {
-    const { id = "" } = useParams();
-    const [payment, setPayment] = useState<Payment | undefined>(undefined);
+    const { overlayState, setOverlayState, hideOverlay } = useDateOverlay();
+
+    const [payment, setPayment] = useState<IManagePaymentInfo>({
+        id: 1,
+        name: "홍길동",
+        paymentType: "월급",
+        expectedPayment: 2000000,
+        actualPayment: 2000000,
+        startDate: "20230201",
+        endDate: "20230228",
+    });
 
     useEffect(() => {
-        const selectedPayment = paymentListData.find((item) => item.id === parseInt(id));
-        if (selectedPayment) {
-            setPayment(selectedPayment);
-        }
-    }, [id]);
+        setOverlayState({
+            ...overlayState,
+            startDate: overlayState.startDate ?? payment.startDate,
+            endDate: overlayState.endDate ?? payment.endDate,
+        });
+    }, []);
+
+    useEffect(() => {
+        setPayment({
+            ...payment,
+            startDate: overlayState.startDate ?? payment.startDate,
+            endDate: overlayState.endDate ?? payment.endDate,
+        });
+    }, [overlayState]);
 
     const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const { name, value } = e.target;
@@ -44,6 +58,8 @@ const ManagePaymentInfo = () => {
 
     const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
         event.preventDefault();
+        console.log(payment);
+        return;
     };
 
     return (
@@ -57,57 +73,86 @@ const ManagePaymentInfo = () => {
                             id="name"
                             value={payment.name}
                             label="직원"
-                            disabled
+                            readOnly
+                            className="readonly"
                         />
-                        <StyledDateContainer>
-                            <OptionInput
-                                type="text"
-                                name="startDate"
-                                id="startDate"
-                                value={payment.startDate}
-                                label="근무기간"
-                                onChange={handleInputChange}
-                            />
-                            <span>-</span>
-                            <OptionInput
-                                type="text"
-                                name="endDate"
-                                id="endDate"
-                                value={payment.endDate}
-                                onChange={handleInputChange}
-                            />
-                        </StyledDateContainer>
+                        <div className="date">
+                            <p>근무기간</p>
+                            <div>
+                                <Input
+                                    type="text"
+                                    name="startDate"
+                                    id="startDate"
+                                    onClick={() => {
+                                        setOverlayState({
+                                            ...overlayState,
+                                            isActive: true,
+                                            isStartDate: true,
+                                            isEndDate: false,
+                                        });
+                                    }}
+                                    value={parseDate2(payment.startDate)}
+                                    readOnly
+                                />
+                                <span>-</span>
+                                <Input
+                                    type="text"
+                                    name="endDate"
+                                    id="endDate"
+                                    onClick={() => {
+                                        setOverlayState({
+                                            ...overlayState,
+                                            isActive: true,
+                                            isStartDate: false,
+                                            isEndDate: true,
+                                        });
+                                    }}
+                                    value={parseDate2(payment.endDate)}
+                                    readOnly
+                                />
+                            </div>
+                        </div>
+
                         <OptionInput
                             type="text"
                             name="paymentType"
                             id="paymentType"
                             value={payment.paymentType}
                             label="급여유형"
-                            disabled
+                            readOnly
+                            className="readonly"
                         />
                         <OptionInput
                             type="text"
                             name="expectedPayment"
                             id="expectedPayment"
-                            value={payment.expectedPayment}
+                            value={payment.expectedPayment.toLocaleString()}
                             label="예상급여"
-                            disabled
+                            readOnly
+                            className="readonly"
                         />
                         <OptionInput
                             type="text"
                             name="actualPayment"
                             id="actualPayment"
-                            value={payment.actualPayment}
+                            value={payment.actualPayment.toLocaleString()}
                             label="지급 금액"
                             onChange={handleInputChange}
                         />
-
                         <Link to="/manage/payment/register">
                             <FixedButton type="button" onClick={handleUpdatePayment}>
                                 수정
                             </FixedButton>
                         </Link>
+                        <DatePickerOverlay
+                            overlayState={overlayState}
+                            setOverlayState={setOverlayState}
+                            hideOverlay={hideOverlay}
+                        />
                     </StyledManagePayListWrapper>
+                    <StyledBottmText>
+                        ※ 수정가능범위 : 근무 기간과 지급 금액만 수정가능합니다.
+                    </StyledBottmText>
                 </AppBaseWrapper>
             ) : (
                 <p>Loading...</p>
@@ -123,15 +168,28 @@ const StyledManagePayListWrapper = styled.form`
     flex-direction: column;
     gap: 1.2rem;
     margin-bottom: 4rem;
-`;
-
-const StyledDateContainer = styled.div`
-    display: flex;
-    align-items: end;
-    span {
-        margin-bottom: 1rem;
-        color: ${Styles.colors.natural40};
+    .date {
+        display: flex;
+        flex-direction: column;
+        gap: 0.4rem;
+        color: ${Styles.colors.natural80};
         font-size: ${Styles.font.size.fontsize14};
         font-weight: ${Styles.font.weight.regular};
+        div {
+            display: flex;
+            align-items: center;
+            span {
+                color: ${Styles.colors.natural40};
+                margin: 0 0.05rem;
+            }
+        }
     }
+`;
+
+const StyledBottmText = styled.p`
+    color: ${Styles.colors.natural50};
+    font-size: ${Styles.font.size.fontsize13};
+    font-weight: ${Styles.font.weight.regular};
+    position: fixed;
+    bottom: 5.2rem;
 `;

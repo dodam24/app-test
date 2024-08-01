@@ -1,32 +1,41 @@
 import { NavLink } from "react-router-dom";
 import { Styles } from "@/style/Styles";
 import styled from "styled-components";
+import {
+    HomeOff,
+    HomeOn,
+    CheckInOff,
+    CheckInOn,
+    CheckOutOff,
+    CheckOutOn,
+    WorkHistoryOff,
+    WorkHistoryOn,
+} from "@/components/footer/_images/icons";
 
-// 홈(직원 메인) 연동 필요
 const AppMenus = [
     {
-        to: "/employee",
+        to: "/employee/employeeMain",
         name: "홈",
-        enableIcon: "src/assets/images/icons/icon_home_on.png",
-        disableIcon: "src/assets/images/icons/icon_home_off.png",
+        enableIcon: HomeOn,
+        disableIcon: HomeOff,
     },
     {
         to: "/employee/checkin",
         name: "출근등록",
-        enableIcon: "src/assets/images/icons/icon_checkin_on_c.png",
-        disableIcon: "src/assets/images/icons/icon_checkin_off_c.png",
+        enableIcon: CheckInOn,
+        disableIcon: CheckInOff,
     },
     {
         to: "/employee/checkout",
         name: "퇴근등록",
-        enableIcon: "src/assets/images/icons/icon_checkout_on_c.png",
-        disableIcon: "src/assets/images/icons/icon_checkout_off_c.png",
+        enableIcon: CheckOutOn,
+        disableIcon: CheckOutOff,
     },
     {
-        to: "/employee/attendancelist",
+        to: "/employee/attendanceList",
         name: "근무내역",
-        enableIcon: "src/assets/images/icons/icon_attendance_list_on_c.png",
-        disableIcon: "src/assets/images/icons/icon_attendance_list_off_c.png",
+        enableIcon: WorkHistoryOn,
+        disableIcon: WorkHistoryOff,
     },
 ];
 

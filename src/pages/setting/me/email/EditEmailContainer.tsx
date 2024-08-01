@@ -3,20 +3,25 @@ import { Styles } from "@/style/Styles";
 import { useState } from "react";
 import styled from "styled-components";
 
-const EditEmailContainer = () => {
-    // 이메일 유효성 검사
-    const emailRegEx =
-        /^[A-Za-z0-9]([-_.]?[A-Za-z0-9])*@[A-Za-z0-9]([-_.]?[A-Za-z0-9])*\.[A-Za-z]{2,3}$/i;
+interface EmailProps {
+    initialEmail: string;
+    onEmailValidChange: (isValid: boolean) => void;
+}
+
+const EditEmailContainer = ({ initialEmail, onEmailValidChange }: EmailProps) => {
+    const emailRegEx = /^[a-zA-Z0-9._%+\-*\\.]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
 
     const emailCheck = (email: string) => {
         return emailRegEx.test(email);
     };
 
-    const [email, setEmail] = useState("");
+    const [email, setEmail] = useState(initialEmail);
+
     const [options, setOptions] = useState({
         buttonOption: { checkedOption: false },
         error: { errorStatus: false, errorMessage: "" },
     });
+
     const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const newEmail = e.target.value;
         setEmail(newEmail);
@@ -27,6 +32,7 @@ const EditEmailContainer = () => {
                 buttonOption: { checkedOption: true },
                 error: { errorStatus: false, errorMessage: "" },
             });
+            onEmailValidChange(true);
         } else {
             setOptions({
                 buttonOption: {
@@ -34,8 +40,13 @@ const EditEmailContainer = () => {
                 },
                 error: { errorStatus: true, errorMessage: "올바르지 않은 형식입니다." },
             });
+            onEmailValidChange(false);
         }
     };
+
+    // const handleSubmitEmail = () => {
+    //     // 서버로 이메일 수정 요청 보내는 로직 추가
+    // };
 
     return (
         <StyledEditEmailContainer>

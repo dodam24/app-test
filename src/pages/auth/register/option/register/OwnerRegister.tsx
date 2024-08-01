@@ -1,5 +1,6 @@
-import { ChangeEvent, FormEvent, useState } from "react";
-import styled from "styled-components";
+import { FormEvent } from "react";
+import { useNavigate } from "react-router-dom";
+import useModal from "@/hooks/useModal";
 
 import AppLayout from "@/components/layout/AppLayout";
 import AppBackHeader from "@/components/header/AppBackHeader";
@@ -9,152 +10,147 @@ import Button from "@/components/button/Button";
 import OptionInput from "@/components/input/OptionInput";
 import SelectInput from "@/components/input/SelectInput";
 import PhoneAuthInput from "@/components/input/PhoneAuthInput";
-import { StyledBaseInputWrapper, StyledEmailWrapper } from "@/components/styles/InputStyle";
-
-import { validatePassword, validateId } from "@/utils/inputVerify";
-import { registerIdverify } from "@/apis/auth/register";
 import ConsentCheckBox from "@/components/checkbox/ConsentCheckBox";
-import useModal from "@/hooks/useModal";
 import DynamicModal from "@/components/modal/DynamicModal";
 import ConfirmationModal from "@/components/modal/ui/ConfirmationModal";
-import { useNavigate } from "react-router-dom";
+
+import { register, registerIdverify } from "@/apis/auth/register";
+import { IRegisterValues } from "@/interface/auth/register/register";
+import { useInputHandler } from "@/utils/baseVerify";
+
+import { StyledBaseInputWrapper, StyledEmailWrapper } from "@/style/InputStyle";
 
 const OwnerRegister = () => {
-    const [value, setValue] = useState({
-        username: "",
-        password: "",
-        passwordVerify: "",
-        name: "",
-        cellphone_number: "",
-        verificationCode: "",
-        email_id: "",
-        selectDomain: "",
-        company_id: "",
-        user_type: "owner",
-        passwordMatch: false,
-        usernameValid: false,
-        idChecked: false,
-        nameValid: false,
-        showDeleteOption: false,
-    });
-
-    const [error, setError] = useState<string>("");
-
-    const handle = (e: ChangeEvent<HTMLInputElement>) => {
-        const { name, value: inputValue } = e.target;
-
-        setValue((prevState) => {
-            const newValue = {
-                ...prevState,
-                [name]: inputValue,
-            };
-
-            if (name === "password") {
-                if (!validatePassword(inputValue)) {
-                    setError("비밀번호는 8~20자리 영문+숫자+특수문자 포함이어야 합니다.");
-                } else {
-                    setError("");
-                }
-            } else if (name === "username") {
-                !validateId(inputValue);
-            }
-
-            if (name === "password") {
-                const isPasswordValid = validatePassword(inputValue);
-                newValue.passwordMatch = isPasswordValid && inputValue === prevState.passwordVerify;
-            } else if (name === "passwordVerify") {
-                newValue.passwordMatch = prevState.password === inputValue;
-            }
-
-            if (name === "username") {
-                const isIdValid = validateId(inputValue);
-                newValue.usernameValid = isIdValid;
-                newValue.idChecked = false;
-            }
-
-            if (name === "name") {
-                newValue.nameValid = inputValue.length >= 1;
-            }
-
-            return newValue;
+    const { values, error, handleInputChange, setValues, setError, validations, setValidations } =
+        useInputHandler<IRegisterValues>({
+            username: "",
+            password: "",
+            passwordVerify: "",
+            name: "",
+            cellphone_number: "",
+            verificationCode: "",
+            email: "",
+            email_id: "",
+            selectDomain: "",
+            company_id: "",
+            user_type: "EMPLOYER",
+            required_terms_accepted: false,
+            selected_terms_accepted_list: [] as string[],
         });
-    };
 
     const handlePhoneChange = (phone: string) => {
-        setValue({
-            ...value,
+        setValues((prevValues) => ({
+            ...prevValues,
             cellphone_number: phone,
-        });
+        }));
     };
 
     const handleVerificationCodeChange = (code: string) => {
-        setValue({
-            ...value,
+        setValues((prevValues) => ({
+            ...prevValues,
             verificationCode: code,
-        });
+        }));
     };
 
     const handleCheckId = async () => {
         try {
-            const response = await registerIdverify({ username: value.username });
+            const response = await registerIdverify({ username: values.username });
             console.log(response);
-            setValue((prevState) => ({
-                ...prevState,
-                idChecked: true,
+            setValidations((prevValidations) => ({
+                ...prevValidations,
+                idChecked: false,
             }));
         } catch (error) {
             console.error(error);
-            setValue((prevState) => ({
-                ...prevState,
-                idChecked: false,
+            setValidations((prevValidations) => ({
+                ...prevValidations,
+                idChecked: true,
             }));
         }
     };
 
-    const handleSelectDomain = (domain: string) => {
-        const updatedEmail = `${value.email_id}@${domain}`;
-        setValue((prevState) => ({
-            ...prevState,
-            email_id: value.email_id,
-            selectDomain: domain,
-        }));
-
-        console.log("Updated email:", updatedEmail);
+    const isFormValid = () => {
+        return (
+            validations.usernameValid &&
+            validations.passwordMatch &&
+            validations.nameValid &&
+            values.cellphone_number !== "" &&
+            values.verificationCode !== "" &&
+            values.required_terms_accepted &&
+            values.selected_terms_accepted_list.length > 0
+        );
     };
 
     const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
         event.preventDefault();
-        console.log(value);
+
+        if (!isFormValid()) {
+            setError("모든 필드를 올바르게 작성해주세요.");
+            return;
+        }
+
+        try {
+            const response = await register(values);
+            console.log(response);
+
+            openModal();
+        } catch (error) {
+            setError("회원가입 중 오류가 발생했습니다. 다시 시도해주세요.");
+            console.error("회원가입 오류:", error);
+        }
     };
-    //모달 함수
+
+    // 이메일 도메인 선택
+    const handleSelectDomain = (domain: string) => {
+        const updatedEmail = `${values.email_id}@${domain}`;
+        setValues((prevValues) => ({
+            ...prevValues,
+            email: updatedEmail,
+            email_id: prevValues.email_id,
+            selectDomain: domain,
+        }));
+    };
+
+    // 모달 함수
     const { isOpen, openModal, closeModal } = useModal();
     const navigate = useNavigate();
     const confirmHandler = () => {
         closeModal();
-        navigate("/login");
+        navigate("/login", { replace: true });
+    };
+
+    const handleConsentChange = (
+        requiredTermsAccepted: boolean,
+        selectedTermsAcceptedList: string[],
+    ) => {
+        setValues((prevValues) => ({
+            ...prevValues,
+            required_terms_accepted: requiredTermsAccepted,
+            selected_terms_accepted_list: selectedTermsAcceptedList,
+        }));
     };
 
     return (
         <AppLayout props={{ header: <AppBackHeader title="회원가입" /> }}>
             <AppBaseWrapper title={`소소상점과 함께\n더 즐거운 사업을 시작해 볼까요?`}>
-                <Form onSubmit={handleSubmit}>
+                <StyledBaseInputWrapper onSubmit={handleSubmit}>
                     <OptionInput
                         type="text"
                         name="username"
-                        value={value.username}
-                        onChange={handle}
+                        value={values.username}
+                        onChange={handleInputChange}
                         placeholder="6자 이상 영문+숫자 포함"
                         label="아이디"
                         id="username"
                         options={{
                             buttonOption: {
-                                checkedOption: value.idChecked,
+                                checkedOption: validations.idChecked,
                             },
                         }}
                     >
                         <Button
                             size="sub"
-                            disabled={!value.usernameValid}
+                            disabled={!validations.usernameValid}
                             onClick={handleCheckId}
                             type="button"
                         >
@@ -165,15 +161,15 @@ const OwnerRegister = () => {
                         type="password"
                         name="password"
                         id="password"
-                        value={value.password}
-                        onChange={handle}
+                        value={values.password}
+                        onChange={handleInputChange}
                         placeholder="8~20자리 영문+숫자+특수문자 포함"
                         maxLength={20}
                         label="비밀번호"
                         options={{
                             buttonOption: {
                                 passwordOption: true,
-                                checkedOption: validatePassword(value.password),
+                                checkedOption: validations.passwordValid,
                             },
                             error: {
                                 errorStatus: !!error,
@@ -185,15 +181,15 @@ const OwnerRegister = () => {
                         type="password"
                         name="passwordVerify"
                         id="passwordVerify"
-                        value={value.passwordVerify}
-                        onChange={handle}
+                        value={values.passwordVerify}
+                        onChange={handleInputChange}
                         placeholder="비밀번호를 한번 더 입력해 주세요."
                         maxLength={20}
                         label="비밀번호확인"
                         options={{
                             buttonOption: {
                                 passwordOption: true,
-                                checkedOption: value.passwordMatch,
+                                checkedOption: validations.passwordMatch,
                             },
                         }}
                     />
@@ -201,14 +197,14 @@ const OwnerRegister = () => {
                         type="text"
                         name="name"
                         id="name"
-                        value={value.name}
-                        onChange={handle}
+                        value={values.name}
+                        onChange={handleInputChange}
                         placeholder="예) 김소소"
                         label="이름"
                         options={{
                             buttonOption: {
-                                checkedOption: value.nameValid,
-                                deleteOption: value.nameValid,
+                                checkedOption: validations.nameValid,
+                                deleteOption: true,
                             },
                         }}
                     />
@@ -216,13 +212,14 @@ const OwnerRegister = () => {
                         onPhoneChange={handlePhoneChange}
                         onVerificationCodeChange={handleVerificationCodeChange}
                     />
-                    <StyledEmailContainer>
+
+                    <StyledEmailWrapper>
                         <OptionInput
                             type="text"
                             name="email_id"
                             id="email_id"
-                            value={value.email_id}
-                            onChange={handle}
+                            value={values.email_id}
+                            onChange={handleInputChange}
                             placeholder="이메일 아이디"
                             label="이메일"
                         />
@@ -239,24 +236,25 @@ const OwnerRegister = () => {
                             onSelect={handleSelectDomain}
                             placeholder="선택하세요"
                         />
-                    </StyledEmailContainer>
+                    </StyledEmailWrapper>
                     <OptionInput
                         type="text"
                         name="company_id"
                         id="company_id"
-                        value={value.company_id}
-                        onChange={handle}
+                        value={values.company_id}
+                        onChange={handleInputChange}
                         placeholder="영업점 ID를 입력해 주세요."
                         label="영업점(선택)"
                         options={{
                             buttonOption: {
                                 checkedOption: false,
+                                deleteOption: true,
                             },
                         }}
                     />
 
-                    <ConsentCheckBox />
-                    <FixedButton type="submit" onClick={openModal}>
+                    <ConsentCheckBox onChange={handleConsentChange} />
+                    <FixedButton type="submit" onClick={openModal} disabled={!isFormValid()}>
                         회원가입 신청
                     </FixedButton>
                     <DynamicModal open={isOpen} close={closeModal}>
@@ -267,13 +265,10 @@ const OwnerRegister = () => {
                             close={confirmHandler}
                         />
                     </DynamicModal>
-                </Form>
+                </StyledBaseInputWrapper>
             </AppBaseWrapper>
         </AppLayout>
     );
 };
-
-const Form = styled(StyledBaseInputWrapper)``;
-const StyledEmailContainer = styled(StyledEmailWrapper)``;
 
 export default OwnerRegister;

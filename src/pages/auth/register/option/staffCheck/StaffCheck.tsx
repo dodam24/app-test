@@ -1,9 +1,8 @@
-import AppLayout from "@/components/layout/AppLayout";
-import AppBackHeader from "@/components/header/AppBackHeader";
-
-import AppBaseWrapper from "@/components/layout/AppBaseWrapper";
 import StaffOfficeSearch from "@/pages/auth/register/option/staffCheck/StaffOfficeSearch";
 import StaffOfficeList from "@/pages/auth/register/option/staffCheck/StaffOfficeList";
+import AppLayout from "@/components/layout/AppLayout";
+import AppBackHeader from "@/components/header/AppBackHeader";
+import AppBaseWrapper from "@/components/layout/AppBaseWrapper";
 
 const StaffCheck = () => {
     return (

@@ -16,6 +16,8 @@ export interface FilterOptionsState {
 }
 
 interface FilterContainerProps {
+    isTransaction?: boolean;
+    fixedHeight: number;
     totalCount: number;
     request: RequestList;
     setRequest: Dispatch<SetStateAction<RequestList>>;
@@ -30,6 +32,8 @@ interface FilterContainerProps {
 }
 
 const FilterContainer = ({
+    isTransaction,
+    fixedHeight,
     totalCount,
     request,
     setRequest,
@@ -65,9 +69,18 @@ const FilterContainer = ({
         setFilterOptions({ ...filterOptions, isActive: true });
     };
 
+    if (filterOptions.isActive) {
+        document.body.style.overflow = "hidden";
+    } else {
+        document.body.style.overflow = "unset";
+    }
+
     return (
-        <StyledFilterWrap className={`${scrollY >= 130 ? "fixed" : ""}`}>
-            <StyledFilterContainer className={`${scrollY >= 130 ? "fixed" : ""}`}>
+        <StyledFilterWrap
+            className={`${scrollY >= fixedHeight ? "fixed" : ""}`}
+            $isTransaction={isTransaction}
+        >
+            <StyledFilterContainer className={`${scrollY >= fixedHeight ? "fixed" : ""}`}>
                 <span>총 {totalCount}건</span>
                 <ul>
                     {isUseConditionOfDate && filterOptions.filterDate && (
@@ -134,17 +147,16 @@ const FilterContainer = ({
 
 export default FilterContainer;
 
-const StyledFilterWrap = styled.section`
+const StyledFilterWrap = styled.section<{ $isTransaction?: boolean }>`
     &.fixed {
-        position: fixed;
-        top: 0;
+        position: sticky;
+        top: ${(props) => (props.$isTransaction ? "calc(6rem - 2px)" : "4rem")};
         left: 0;
         width: 100%;
-        height: 6.5rem;
         display: flex;
         align-items: flex-end;
         z-index: 99999;
-        background-color: transparent;
+        height: auto;
     }
 
     background-color: ${Styles.colors.systemWhite};
@@ -153,7 +165,6 @@ const StyledFilterWrap = styled.section`
 const StyledFilterContainer = styled.div`
     &.fixed {
         width: 100%;
-        z-index: 10;
     }
 
     display: flex;

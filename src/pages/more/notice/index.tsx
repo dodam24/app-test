@@ -1,7 +1,7 @@
 import AppBackHeader from "@/components/header/AppBackHeader";
 import AppLayout from "@/components/layout/AppLayout";
 import styled from "styled-components";
-import NoticeListItem from "../component/NoticeListItem";
+import NoticeListItem from "../_component/NoticeListItem";
 
 const Notice = () => {
     return (

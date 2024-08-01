@@ -1,11 +1,11 @@
 import styled from "styled-components";
 
+import InsuranceCheck from "@/pages/insurance/InsuranceCheck";
 import AppBackHeader from "@/components/header/AppBackHeader";
 import AppLayout from "@/components/layout/AppLayout";
-import InsuranceCheck from "@/pages/insurance/InsuranceCheck";
+import AppBaseWrapper from "@/components/layout/AppBaseWrapper";
 
 import { Styles } from "@/style/Styles";
-import AppBaseWrapper from "@/components/layout/AppBaseWrapper";
 
 const Insurance = () => {
     return (

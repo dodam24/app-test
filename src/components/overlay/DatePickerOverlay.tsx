@@ -86,7 +86,6 @@ const DatePickerOverlay = ({
                 dayIndex: 0,
             });
         };
-        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [overlayState]);
 
     const handleFilterInactive = () => {
@@ -137,7 +136,6 @@ const DatePickerOverlay = ({
             hideOverlay={hideOverlay}
         >
             <StyledDatePickerBody>
-                <div className="topBlur" />
                 {pickDate.initSelectedYear &&
                     pickDate.initSelectedMonth &&
                     pickDate.initSelectedDay && (
@@ -259,6 +257,7 @@ const DatePickerOverlay = ({
                             </Swiper>
                         </>
                     )}
+                <div className="central_active"></div>
             </StyledDatePickerBody>
             <StyledDatePickerButtonGroup>
                 <Button className="cancel" onClick={handleFilterInactive}>
@@ -273,28 +272,63 @@ const DatePickerOverlay = ({
 export default DatePickerOverlay;
 
 const StyledDatePickerBody = styled.div`
+    position: relative;
     height: calc(100% - 3rem);
     display: flex;
     overflow-y: hidden;
     padding: 0.7rem 0 1.25rem 0;
+
+    &::before {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: 0;
+        background: linear-gradient(
+            to bottom,
+            rgba(255, 255, 255, 0.8) 70%,
+            rgba(255, 255, 255, 0.5) 90%,
+            rgba(255, 255, 255, 0) 100%
+        );
+        width: 100%;
+        height: 13.5%;
+        z-index: 999;
+        pointer-events: none;
+    }
+
+    &::after {
+        content: "";
+        position: absolute;
+        bottom: 0.55rem;
+        left: 0;
+        background: linear-gradient(
+            to top,
+            rgba(255, 255, 255, 0.8) 10%,
+            rgba(255, 255, 255, 0.5) 70%,
+            rgba(255, 255, 255, 0) 100%
+        );
+        width: 100%;
+        height: 14%;
+        z-index: 999;
+        pointer-events: none;
+    }
+
+    div.central_active {
+        position: absolute;
+        top: calc(100% / 2 - 5px - 1.25rem);
+        left: 0;
+        width: 100%;
+        height: 2.5rem;
+        background-color: #f3f8ff;
+        border-radius: 0.4rem;
+    }
 
     .swiper-autoheight,
     .swiper-autoheight .swiper-slide {
         width: 100%;
         clip-path: border-box;
 
-        &.year {
-            border-top-left-radius: 0.4rem;
-            border-bottom-left-radius: 0.4rem;
-        }
-        &.day {
-            border-top-right-radius: 0.4rem;
-            border-bottom-right-radius: 0.4rem;
-        }
-
         &.swiper-slide-active {
             div {
-                background-color: ${Styles.colors.primary10};
                 color: ${Styles.colors.natural100};
                 font-size: ${Styles.font.size.fontsize16};
                 font-weight: ${Styles.font.weight.semibold};
@@ -311,22 +345,6 @@ const StyledDatePickerBody = styled.div`
             font-weight: ${Styles.font.weight.regular};
             height: 2.5rem;
         }
-    }
-
-    .topBlur {
-        position: absolute;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 3.5rem;
-        background: linear-gradient(
-            to top,
-            rgba(255, 255, 255, 0) 10%,
-            rgba(255, 255, 255, 0.25) 25%,
-            rgba(255, 255, 255, 0.5) 50%,
-            rgba(255, 255, 255, 0.75) 75%,
-            rgba(255, 255, 255, 1) 100%
-        );
     }
 `;
 

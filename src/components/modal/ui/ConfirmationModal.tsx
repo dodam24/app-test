@@ -1,3 +1,4 @@
+import UpdateModal from "@/components/modal/UpdateModal";
 import { Styles } from "@/style/Styles";
 import styled, { css } from "styled-components";
 
@@ -29,7 +30,7 @@ export default function ConfirmationModal({
         <ConfirmationModalContainer $modalSize={modalSize}>
             <ConfirmationContent>
                 {updateContent ? (
-                    updateContent
+                    <UpdateModal />
                 ) : (
                     <>
                         <h5>{title}</h5>

@@ -1,30 +1,30 @@
+import { ChangeEvent, FormEvent, useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
+import useModal from "@/hooks/useModal";
+import useDateOverlay from "@/hooks/useDateOverlay";
 
 import AppBackHeader from "@/components/header/AppBackHeader";
 import AppBaseWrapper from "@/components/layout/AppBaseWrapper";
 import AppLayout from "@/components/layout/AppLayout";
-
-import { ChangeEvent, FormEvent, useState } from "react";
-import { validateId, validatePassword } from "@/utils/inputVerify";
 import ConsentCheckBox from "@/components/checkbox/ConsentCheckBox";
 import FixedButton from "@/components/button/FixedButton";
 import OptionInput from "@/components/input/OptionInput";
-
-import {
-    StyledBaseInputWrapper,
-    StyledLabelRadioInputWrapper,
-} from "@/components/styles/InputStyle";
-import { registerIdverify } from "@/apis/auth/register";
 import Button from "@/components/button/Button";
 import SelectInput from "@/components/input/SelectInput";
 import Input from "@/components/input/Input";
 import DynamicModal from "@/components/modal/DynamicModal";
 import ConfirmationModal from "@/components/modal/ui/ConfirmationModal";
-import useModal from "@/hooks/useModal";
-import { useNavigate } from "react-router-dom";
+import DatePickerOverlay from "@/components/overlay/DatePickerOverlay";
+import { validateId, validatePassword } from "@/utils/inputVerify";
+import { IManageStaffRegisterInput } from "@/interface/manage/staff/manageStaffRegister";
+import { parseDate2, formatNewDate } from "@/utils/formatDateTime";
+import { registerIdverify } from "@/apis/auth/register";
+
+import { StyledBaseInputWrapper, StyledLabelRadioInputWrapper } from "@/style/InputStyle";
 
 const StaffManageInput = () => {
-    const [value, setValue] = useState({
+    const [value, setValue] = useState<IManageStaffRegisterInput>({
         username: "",
         password: "",
         passwordVerify: "",
@@ -32,7 +32,7 @@ const StaffManageInput = () => {
         cellphone_number: "",
         work_type: "",
         pay_type: "",
-        pay: "",
+        pay: 2000000,
         work_start_date: "",
         pay_day: "",
         account_bank_code: "",
@@ -110,7 +110,37 @@ const StaffManageInput = () => {
     const navigate = useNavigate();
     const confirmHandler = () => {
         closeModal();
-        navigate("/manage/staff/register");
+        navigate("/manage/staff/register", { replace: true });
+    };
+    //날짜 모달
+    const { overlayState, setOverlayState, hideOverlay } = useDateOverlay();
+    const today = formatNewDate(new Date());
+    const [isDateSelected, setIsDateSelected] = useState(false);
+
+    useEffect(() => {
+        setOverlayState((prevState) => ({
+            ...prevState,
+            startDate: today,
+        }));
+    }, []);
+
+    useEffect(() => {
+        if (overlayState.startDate && isDateSelected) {
+            setValue((prevValue) => ({
+                ...prevValue,
+                work_start_date: overlayState.startDate ?? prevValue.work_start_date,
+            }));
+        }
+    }, [overlayState.startDate, isDateSelected]);
+
+    const handleDateChange = () => {
+        setIsDateSelected(true);
+        setOverlayState((prevState) => ({
+            ...prevState,
+            isActive: true,
+            isStartDate: true,
+            isEndDate: false,
+        }));
     };
     return (
         <AppLayout props={{ header: <AppBackHeader title="직원등록" /> }}>
@@ -182,7 +212,7 @@ const StaffManageInput = () => {
                         options={{
                             buttonOption: {
                                 checkedOption: value.nameValid,
-                                deleteOption: value.nameValid,
+                                deleteOption: true,
                             },
                         }}
                     />
@@ -220,7 +250,7 @@ const StaffManageInput = () => {
                         />
                         <Input
                             placeholder="숫자만 입력하세요."
-                            value={value.pay}
+                            value={value.pay.toLocaleString()}
                             name="pay"
                             type="text"
                             onChange={handle}
@@ -230,18 +260,15 @@ const StaffManageInput = () => {
                         type="text"
                         name="work_start_date"
                         id="work_start_date"
-                        value={value.work_start_date}
+                        value={value.work_start_date ? parseDate2(value.work_start_date) : ""}
                         onChange={handle}
+                        onClick={handleDateChange}
                         placeholder="근무시작일을 입력해 주세요."
                         label="근무시작일"
-                        options={{
-                            buttonOption: {
-                                deleteOption: true,
-                            },
-                        }}
+                        readOnly="basic"
                     />
 
-                    <StyledSelectRadio>
+                    <StyledLabelRadioInputWrapper>
                         <label>4대포험 가입여부</label>
                         <div className="select_radio">
                             <label>
@@ -253,7 +280,7 @@ const StaffManageInput = () => {
                                 가입
                             </label>
                         </div>
-                    </StyledSelectRadio>
+                    </StyledLabelRadioInputWrapper>
                     <OptionInput
                         type="text"
                         name="pay_day"
@@ -308,6 +335,11 @@ const StaffManageInput = () => {
                             close={confirmHandler}
                         />
                     </DynamicModal>
+                    <DatePickerOverlay
+                        overlayState={overlayState}
+                        setOverlayState={setOverlayState}
+                        hideOverlay={hideOverlay}
+                    />
                 </Form>
             </AppBaseWrapper>
         </AppLayout>
@@ -322,4 +354,3 @@ const Form = styled(StyledBaseInputWrapper)`
         gap: 0.6rem;
     }
 `;
-const StyledSelectRadio = styled(StyledLabelRadioInputWrapper)``;

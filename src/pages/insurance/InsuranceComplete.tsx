@@ -1,23 +1,22 @@
+import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 
+import { PartyIcon } from "@/pages/insurance/_images/insurance";
 import AppBackHeader from "@/components/header/AppBackHeader";
 import AppLayout from "@/components/layout/AppLayout";
+import FixedButton from "@/components/button/FixedButton";
+import AppBaseWrapper from "@/components/layout/AppBaseWrapper";
 
 import { Styles } from "@/style/Styles";
-
-import { PartyIcon } from "@/pages/insurance/_images/insurance";
-import FixedButton from "@/components/button/FixedButton";
-import { useNavigate } from "react-router-dom";
-import AppBaseWrapper from "@/components/layout/AppBaseWrapper";
 
 const InsuranceComplete = () => {
     const navigate = useNavigate();
 
     const handleItemClick = () => {
-        navigate(`/`);
+        navigate(`/`, { replace: true });
     };
     return (
-        <AppLayout props={{ header: <AppBackHeader title="대출상품" /> }}>
+        <AppLayout props={{ header: <AppBackHeader title="보험 서비스" /> }}>
             <AppBaseWrapper>
                 <StyledCompleteWrapper>
                     <img src={PartyIcon} alt="" />

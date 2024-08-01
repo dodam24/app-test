@@ -1,3 +1,4 @@
+import { ILoanInfoData } from "@/interface/loan/loan";
 import {
     WalletIcon,
     MoneyIcon,
@@ -7,20 +8,7 @@ import {
     ChartIcon,
 } from "@/pages/loan/_images/loanImg";
 
-interface LoanData {
-    id: number;
-    title: string;
-    img: string;
-    interestRate: string;
-    limit: string;
-    details: {
-        img: string;
-        title: string;
-        description: string;
-    }[];
-}
-
-const dummyLoanData: LoanData[] = [
+const dummyLoanData: ILoanInfoData[] = [
     {
         id: 1,
         title: "소소상점을 이용하는\n소상공인들을 위한 소상공인론",

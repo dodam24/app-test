@@ -2,13 +2,13 @@ import AppBackHeader from "@/components/header/AppBackHeader";
 import AppLayout from "@/components/layout/AppLayout";
 import ShowMoreButton from "@/components/button/ShowMoreButton";
 import EmployeeFooterBar from "@/components/footer/EmployeeFooterBar";
-import styled, { createGlobalStyle } from "styled-components";
-import { Styles } from "@/style/Styles";
 import AppBaseWrapper from "@/components/layout/AppBaseWrapper";
 import { useEffect, useState } from "react";
 import { formatTime, getDayOfWeek, getWorkTime, calcOvertime } from "@/utils/formatDateTime";
 import AccessTime from "@/assets/images/icons/icon_access_time_primary_c.png";
 import AccessTimeError from "@/assets/images/icons/icon_access_time_error_c.png";
+import styled, { createGlobalStyle } from "styled-components";
+import { Styles } from "@/style/Styles";
 
 interface AttendanceContents {
     id: string;
@@ -101,10 +101,10 @@ const sampleData: AttendanceContents[] = [
 ];
 
 const AttendanceList = () => {
-    const [data, setData] = useState<AttendanceContents[][]>([]);
+    const [data, setData] = useState<{ month: Date; items: AttendanceContents[] }[]>([]);
     const [currentMonth, setCurrentMonth] = useState(new Date());
 
-    const loadMoreData = () => {
+    const handleLoadMoreData = () => {
         const previousMonth = new Date(currentMonth);
         previousMonth.setMonth(previousMonth.getMonth() - 1);
         setCurrentMonth(previousMonth);
@@ -113,7 +113,7 @@ const AttendanceList = () => {
             const itemMonth = parseInt(item.checked_in_at.substring(4, 6), 10);
             return itemMonth === previousMonth.getMonth() + 1;
         });
-        setData((prevData) => [...prevData, previousMonthData]);
+        setData((prevData) => [...prevData, { month: previousMonth, items: previousMonthData }]);
     };
 
     useEffect(() => {
@@ -121,8 +121,7 @@ const AttendanceList = () => {
             const itemMonth = parseInt(item.checked_in_at.substring(4, 6), 10);
             return itemMonth === currentMonth.getMonth() + 1;
         });
-        setData([initialData]);
-        // eslint-disable-next-line react-hooks/exhaustive-deps
+        setData([{ month: currentMonth, items: initialData }]);
     }, []);
 
     return (
@@ -130,61 +129,54 @@ const AttendanceList = () => {
             props={{ header: <AppBackHeader title="근무내역" />, footer: <EmployeeFooterBar /> }}
         >
             <StyledAttendanceBody />
-            {data.map((monthData, index) => {
-                const monthTitle = new Date(
-                    currentMonth.getFullYear(),
-                    currentMonth.getMonth() - index,
-                    1,
-                );
-                return (
-                    <AppBaseWrapper
-                        key={index}
-                        title={`${monthTitle.getFullYear()}.${(monthTitle.getMonth() + 1).toString().padStart(2, "0")}`}
-                    >
-                        {monthData.map((item, index) => {
-                            const { isOvertime } = calcOvertime(item.checked_out_at);
-                            return (
-                                <StyledEmployeeAttendanceList key={index}>
-                                    <div className="date">
-                                        <h6>{item.checked_in_at.substring(6, 8)}</h6>
-                                        <span>{getDayOfWeek(item.checked_in_at)}</span>
-                                    </div>
-                                    <div className="time">
-                                        <div className="check_in">
-                                            <div className="check_time">
-                                                <span>출근</span>
-                                                <p>{formatTime(item.checked_in_at)}</p>
-                                            </div>
-                                            <div className="work_time">
-                                                <img
-                                                    src={isOvertime ? AccessTimeError : AccessTime}
-                                                    alt={isOvertime ? "초과근무시간" : "근무시간"}
-                                                />
-                                                <span className={isOvertime ? "overtime" : ""}>
-                                                    총{" "}
-                                                    {getWorkTime(
-                                                        item.checked_in_at,
-                                                        item.checked_out_at,
-                                                    )}
-                                                    시간{isOvertime && "(초과)"}
-                                                </span>
-                                            </div>
+            {data.map((monthData, index) => (
+                <StyledAppBaseWrapper
+                    key={index}
+                    title={`${monthData.month.getFullYear()}.${(monthData.month.getMonth() + 1).toString().padStart(2, "0")}`}
+                >
+                    {monthData.items.map((item) => {
+                        const { isOvertime } = calcOvertime(item.checked_out_at);
+
+                        return (
+                            <StyledEmployeeAttendanceList key={item.id}>
+                                <div className="date">
+                                    <h6>{item.checked_in_at.substring(6, 8)}</h6>
+                                    <span>{getDayOfWeek(item.checked_in_at)}</span>
+                                </div>
+                                <div className="time">
+                                    <div className="check_in">
+                                        <div className="check_time">
+                                            <span>출근</span>
+                                            <p>{formatTime(item.checked_in_at)}</p>
                                         </div>
-                                        <div className="check_out">
-                                            <span>퇴근</span>
-                                            <p className={isOvertime ? "overtime" : ""}>
-                                                {formatTime(item.checked_out_at)}
-                                            </p>
+                                        <div className="work_time">
+                                            <img
+                                                src={isOvertime ? AccessTimeError : AccessTime}
+                                                alt={isOvertime ? "초과근무시간" : "근무시간"}
+                                            />
+                                            <span className={isOvertime ? "overtime" : ""}>
+                                                총
+                                                {getWorkTime(
+                                                    item.checked_in_at,
+                                                    item.checked_out_at,
+                                                )}
+                                                시간{isOvertime && "(초과)"}
+                                            </span>
                                         </div>
                                     </div>
-                                </StyledEmployeeAttendanceList>
-                            );
-                        })}
-                    </AppBaseWrapper>
-                );
-            })}
-            {/* 더보기 버튼 나타낼 때 조건 설정 */}
-            <ShowMoreButton title="한달 더보기" onClick={loadMoreData} />
+                                    <div className="check_out">
+                                        <span>퇴근</span>
+                                        <p className={isOvertime ? "overtime" : ""}>
+                                            {formatTime(item.checked_out_at)}
+                                        </p>
+                                    </div>
+                                </div>
+                            </StyledEmployeeAttendanceList>
+                        );
+                    })}
+                </StyledAppBaseWrapper>
+            ))}
+            <ShowMoreButton title="한달 더보기" onClick={handleLoadMoreData} threshold={0.5} />
         </AppLayout>
     );
 };
@@ -195,6 +187,10 @@ const StyledAttendanceBody = createGlobalStyle`
     body {
         background: ${Styles.colors.systemBackground};
     }
+`;
+const StyledAppBaseWrapper = styled(AppBaseWrapper)`
+    max-height: 80vh;
+    overflow-y: auto;
 `;
 const StyledEmployeeAttendanceList = styled.li`
     display: flex;

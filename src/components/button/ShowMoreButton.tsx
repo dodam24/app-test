@@ -1,21 +1,64 @@
+import { useEffect, useRef, useState } from "react";
 import ArrowDown from "@/assets/images/icons/icon_arrow_down_white_c.png";
 import { Styles } from "@/style/Styles";
 import styled from "styled-components";
 
-interface ShowMoreButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
+export interface ShowMoreButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
     title: string;
-    onClick: (e: React.MouseEvent<HTMLButtonElement>) => void;
+    threshold?: number;
+    onClick: () => void;
 }
 
-const ShowMoreButton = ({ title, onClick, ...props }: ShowMoreButtonProps) => {
+const ShowMoreButton = ({ title, onClick, threshold = 1 }: ShowMoreButtonProps) => {
+    const [isVisible, setIsVisible] = useState(false);
+    const observerRef = useRef<HTMLDivElement>(null);
+
+    useEffect(() => {
+        const observer = new IntersectionObserver(
+            ([entry]) => {
+                // 버튼이 화면에 들어오면 isVisible을 true로 변경
+                setIsVisible(entry.isIntersecting);
+            },
+            {
+                root: null, // root: 뷰포트
+                rootMargin: "0px",
+                threshold: threshold,
+            },
+        );
+
+        const currentObserver = observerRef.current;
+
+        if (currentObserver) {
+            observer.observe(currentObserver);
+        }
+
+        return () => {
+            if (currentObserver) {
+                observer.unobserve(currentObserver);
+            }
+        };
+    }, [threshold]);
+
+    const handleClick = () => {
+        onClick();
+    };
+
     return (
-        <StyledShowMoreButton onClick={onClick} {...props}>
-            <h5>{title}</h5>
-            <img src={ArrowDown} alt="아래 화살표" />
-        </StyledShowMoreButton>
+        <Wrapper ref={observerRef}>
+            {isVisible && (
+                <StyledShowMoreButton onClick={handleClick}>
+                    <h5>{title}</h5>
+                    <img src={ArrowDown} alt="아래 화살표" />
+                </StyledShowMoreButton>
+            )}
+        </Wrapper>
     );
 };
 
+const Wrapper = styled.div`
+    position: relative;
+    height: 0;
+`;
 const StyledShowMoreButton = styled.button`
     position: fixed;
     display: flex;

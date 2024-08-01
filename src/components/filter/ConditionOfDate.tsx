@@ -50,7 +50,6 @@ const ConditionOfDate = ({
             end_date: overlayState.endDate ?? request.end_date,
         });
         return () => {};
-        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [overlayState]);
 
     return (

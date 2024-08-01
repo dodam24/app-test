@@ -1,33 +1,35 @@
+import { ChangeEvent, FormEvent, useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
+import useModal from "@/hooks/useModal";
+import useDateOverlay from "@/hooks/useDateOverlay";
 
 import AppBackHeader from "@/components/header/AppBackHeader";
 import AppBaseWrapper from "@/components/layout/AppBaseWrapper";
 import AppLayout from "@/components/layout/AppLayout";
-
-import { ChangeEvent, FormEvent, useState } from "react";
 import ConsentCheckBox from "@/components/checkbox/ConsentCheckBox";
 import FixedButton from "@/components/button/FixedButton";
 import OptionInput from "@/components/input/OptionInput";
-
-import {
-    StyledBaseInputWrapper,
-    StyledLabelRadioInputWrapper,
-} from "@/components/styles/InputStyle";
 import SelectInput from "@/components/input/SelectInput";
 import Input from "@/components/input/Input";
 import DynamicModal from "@/components/modal/DynamicModal";
 import ConfirmationModal from "@/components/modal/ui/ConfirmationModal";
-import useModal from "@/hooks/useModal";
-import { useNavigate } from "react-router-dom";
+import DatePickerOverlay from "@/components/overlay/DatePickerOverlay";
+
+import { formatNewDate, parseDate2 } from "@/utils/formatDateTime";
+
+import { IManageStaffApprovalInput } from "@/interface/manage/staff/manageStaffRegister";
+
+import { StyledBaseInputWrapper, StyledLabelRadioInputWrapper } from "@/style/InputStyle";
 
 const StaffApprovalInput = () => {
-    const [value, setValue] = useState({
+    const [value, setValue] = useState<IManageStaffApprovalInput>({
         username: "sunflower",
         name: "오태식",
         cellphone_number: "010-1234-5678",
         work_type: "",
         pay_type: "",
-        pay: "",
+        pay: 2000000,
         work_start_date: "",
         pay_day: "",
         account_bank_code: "우리은행",
@@ -71,7 +73,38 @@ const StaffApprovalInput = () => {
     const navigate = useNavigate();
     const confirmHandler = () => {
         closeModal();
-        navigate("/manage/staff/register");
+        navigate("/manage/staff/register", { replace: true });
+    };
+
+    //날짜 모달
+    const { overlayState, setOverlayState, hideOverlay } = useDateOverlay();
+    const today = formatNewDate(new Date());
+    const [isDateSelected, setIsDateSelected] = useState(false);
+
+    useEffect(() => {
+        setOverlayState((prevState) => ({
+            ...prevState,
+            startDate: today,
+        }));
+    }, []);
+
+    useEffect(() => {
+        if (overlayState.startDate && isDateSelected) {
+            setValue((prevValue) => ({
+                ...prevValue,
+                work_start_date: overlayState.startDate ?? prevValue.work_start_date,
+            }));
+        }
+    }, [overlayState.startDate, isDateSelected]);
+
+    const handleDateChange = () => {
+        setIsDateSelected(true);
+        setOverlayState((prevState) => ({
+            ...prevState,
+            isActive: true,
+            isStartDate: true,
+            isEndDate: false,
+        }));
     };
     return (
         <AppLayout props={{ header: <AppBackHeader title="직원승인" /> }}>
@@ -83,7 +116,7 @@ const StaffApprovalInput = () => {
                         value={value.username}
                         label="아이디"
                         id="username"
-                        disabled
+                        readOnly
                     ></OptionInput>
                     <OptionInput
                         type="text"
@@ -91,7 +124,7 @@ const StaffApprovalInput = () => {
                         id="name"
                         value={value.name}
                         label="이름"
-                        disabled
+                        readOnly
                     />
                     <OptionInput
                         type="text"
@@ -99,7 +132,7 @@ const StaffApprovalInput = () => {
                         id="cellphone_number"
                         value={value.cellphone_number}
                         label="휴대폰 번호"
-                        disabled
+                        readOnly
                     />
                     <SelectInput
                         options={["직원", "알바"]}
@@ -120,7 +153,7 @@ const StaffApprovalInput = () => {
                         />
                         <Input
                             placeholder="숫자만 입력하세요."
-                            value={value.pay}
+                            value={value.pay.toLocaleString()}
                             name="pay"
                             type="text"
                             onChange={handle}
@@ -128,19 +161,16 @@ const StaffApprovalInput = () => {
                     </div>
                     <OptionInput
                         type="text"
-                        name="pay_day"
-                        id="pay_day"
-                        value={value.pay_day}
+                        name="work_start_date"
+                        id="work_start_date"
+                        value={value.work_start_date ? parseDate2(value.work_start_date) : ""}
                         onChange={handle}
+                        onClick={handleDateChange}
                         placeholder="근무시작일을 입력해 주세요."
                         label="근무시작일"
-                        options={{
-                            buttonOption: {
-                                deleteOption: true,
-                            },
-                        }}
+                        readOnly="basic"
                     />
-                    <StyledSelectRadio>
+                    <StyledLabelRadioInputWrapper>
                         <label>4대포험 가입여부</label>
                         <div className="select_radio">
                             <label>
@@ -152,7 +182,7 @@ const StaffApprovalInput = () => {
                                 가입
                             </label>
                         </div>
-                    </StyledSelectRadio>
+                    </StyledLabelRadioInputWrapper>
                     <OptionInput
                         type="text"
                         name="pay_day"
@@ -161,6 +191,7 @@ const StaffApprovalInput = () => {
                         onChange={handle}
                         placeholder="숫자 2자리만 입력해 주세요."
                         label="급여일(매월)"
+                        maxLength={2}
                         options={{
                             buttonOption: {
                                 deleteOption: true,
@@ -172,7 +203,7 @@ const StaffApprovalInput = () => {
                         name="account_bank_code"
                         id="account_bank_code"
                         value={value.account_bank_code}
-                        disabled
+                        readOnly
                         label="계좌은행"
                     />
                     <OptionInput
@@ -180,7 +211,7 @@ const StaffApprovalInput = () => {
                         name="account_holder"
                         id="account_holder"
                         value={value.account_holder}
-                        disabled
+                        readOnly
                         label="계좌주"
                     />
                     <OptionInput
@@ -188,7 +219,7 @@ const StaffApprovalInput = () => {
                         name="account_number"
                         id="account_number"
                         value={value.account_number}
-                        disabled
+                        readOnly
                         label="계좌번호"
                     />
                     <ConsentCheckBox />
@@ -203,6 +234,11 @@ const StaffApprovalInput = () => {
                             close={confirmHandler}
                         />
                     </DynamicModal>
+                    <DatePickerOverlay
+                        overlayState={overlayState}
+                        setOverlayState={setOverlayState}
+                        hideOverlay={hideOverlay}
+                    />
                 </Form>
             </AppBaseWrapper>
         </AppLayout>
@@ -217,4 +253,3 @@ const Form = styled(StyledBaseInputWrapper)`
         gap: 0.6rem;
     }
 `;
-const StyledSelectRadio = styled(StyledLabelRadioInputWrapper)``;

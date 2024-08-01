@@ -21,7 +21,7 @@ const ModalInnerBlock = styled.div`
     width: 100%;
     height: 100%;
     animation: ${fadeIn} 0.25s ease-in-out;
-    z-index: 9999;
+    z-index: 99999;
 `;
 const ModalOverlay = styled.div`
     position: absolute;

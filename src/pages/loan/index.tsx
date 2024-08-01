@@ -1,7 +1,7 @@
+import LoanContainer from "@/pages/loan/LoanContainer";
 import AppBackHeader from "@/components/header/AppBackHeader";
 import AppBaseWrapper from "@/components/layout/AppBaseWrapper";
 import AppLayout from "@/components/layout/AppLayout";
-import LoanContainer from "@/pages/loan/LoanContainer";
 
 const Loan = () => {
     return (

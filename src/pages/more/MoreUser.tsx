@@ -23,6 +23,8 @@ const MoreUser = ({ openModal }: MoreUserProps) => {
 
 const StyledCustomerInfoContainer = styled.section`
     padding: 2.2rem 1rem 1.6rem 1rem;
+    border-bottom: 0.6rem solid ${Styles.colors.systemBackground};
+
     .user_info {
         display: flex;
         align-items: center;
@@ -32,7 +34,6 @@ const StyledCustomerInfoContainer = styled.section`
         .user_name {
             display: flex;
             flex-direction: column;
-            align-items: flex-start;
             gap: 0.2rem;
 
             & > span {

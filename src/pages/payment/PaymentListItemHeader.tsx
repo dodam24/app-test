@@ -19,14 +19,18 @@ const PaymentListItemHeader = ({
         return (
             <StyledPaymentListItemHeaderContainer
                 ref={containerRef}
-                className={`${containerRef?.current && containerRef?.current?.getBoundingClientRect().top <= 130 && scrollY >= 130 ? "fixed" : ""}`}
+                className={`${scrollY >= 130 ? "fixed" : ""}`}
             >
                 <p>{formatDateWithYoil(transaction_at)}</p>
             </StyledPaymentListItemHeaderContainer>
         );
     }
 
-    if (containerRef?.current && containerRef?.current?.offsetTop - scrollY <= 130) {
+    if (
+        containerRef?.current &&
+        containerRef?.current?.getBoundingClientRect().top <= 130 &&
+        scrollY >= 130
+    ) {
         return (
             <>
                 <StyledPaymentListItemHeaderContainer className="fixed">
@@ -52,19 +56,18 @@ const PaymentListItemHeader = ({
 export default PaymentListItemHeader;
 
 const StyledPaymentListItemHeaderContainer = styled.div`
-    position: relative;
     padding: 0 1rem;
 
     &.fixed {
         position: fixed;
-        top: 0;
         left: 0;
         width: 100%;
         display: flex;
         align-items: flex-end;
-        height: 8.8rem;
+        height: auto;
         background-color: ${Styles.colors.systemWhite};
-        z-index: 10;
+        z-index: 9999;
+        top: 6.5rem;
     }
 
     p {

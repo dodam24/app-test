@@ -2,11 +2,11 @@ import styled from "styled-components";
 import useModal from "@/hooks/useModal";
 import DynamicModal from "@/components/modal/DynamicModal";
 import ConfirmationModal from "@/components/modal/ui/ConfirmationModal";
-
 import { Styles } from "@/style/Styles";
 
 const SettingsOption = () => {
     const { isOpen, openModal, closeModal } = useModal();
+
     return (
         <>
             <StyledSettingApp>

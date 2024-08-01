@@ -29,12 +29,6 @@ export const getAllDatesInMonth = (): Date[] => {
     return dates;
 };
 
-// month 비교
-// export const isSameMonth = (date1: Date, date2: Date): boolean => {
-//     return date1.getFullYear() === date2.getFullYear() && date1.getMonth() === date2.getMonth();
-// };
-// console.log(isSameMonth(new Date(), new Date()));
-
 // 날짜 형식 변환 (2023-03-22)
 export const formatDate = (dateStr: string): string => {
     const { date } = parseDate(dateStr);
@@ -53,18 +47,26 @@ export const formatDateWithDay = (date: Date): string => {
     return `${year}.${month}.${day} (${dayOfWeek})`;
 };
 
-// 시간 형식 변환 (09:00:00 or 09 : 00 : 00)
+// 시간 형식 변환 (09:00:00 또는 09 : 00 : 00)
 export const formatTime = (dateOrString: string | Date, withSpace: boolean = false): string => {
     let date: Date;
+    let originalHour: number;
 
     if (typeof dateOrString === "string") {
-        const { date: parsedDate } = parseDate(dateOrString);
+        const { date: parsedDate, hour } = parseDate(dateOrString);
         date = parsedDate;
+        originalHour = hour;
     } else {
         date = dateOrString;
+        originalHour = date.getHours();
     }
 
-    const hours = date.getHours().toString().padStart(2, "0");
+    let hours = originalHour.toString().padStart(2, "0");
+    if (originalHour >= 24) {
+        hours = originalHour.toString();
+    } else {
+        hours = date.getHours().toString().padStart(2, "0");
+    }
     const minutes = date.getMinutes().toString().padStart(2, "0");
     const seconds = date.getSeconds().toString().padStart(2, "0");
     const separator = withSpace ? " : " : ":";
@@ -78,17 +80,23 @@ export const getDayOfWeek = (dateStr: string): string => {
     return daysOfWeek[date.getDay()];
 };
 
-// 근무 시간 계산 (work_time 구할 때)
+// 근무 시간 계산: work_time(초) 받아와서 '시간' 단위로 표시
 export const getWorkTime = (checkedInAt: string, checkedOutAt: string): number => {
     const { date: checkedInTime } = parseDate(checkedInAt);
     const { date: checkedOutTime } = parseDate(checkedOutAt);
     const diff = checkedOutTime.getTime() - checkedInTime.getTime();
     const hours = Math.floor(diff / (1000 * 60 * 60));
-    // 휴게 시간 처리
-    const intervals = Math.floor(hours / 4);
-    const breakTime = intervals * 0.5;
+
+    const breakTime = hours > 8 ? 1 : 0;
     const realWorkTime = hours - breakTime;
     return realWorkTime;
+};
+
+// 퇴근 시간이 24시를 초과할 경우
+export const calcOvertime = (checkedOutAt: string) => {
+    const checkedOutHour = parseInt(checkedOutAt.substring(8, 10));
+    const isOvertime = checkedOutHour >= 24;
+    return { checkedOutHour, isOvertime };
 };
 
 // 퇴근 시간이 24시를 초과할 경우 (근무시간 초과 표시)
@@ -251,9 +259,18 @@ export const dayList = [
     27, 28, 29, 30, 31,
 ];
 
-// 퇴근 시간이 24시를 초과할 경우
-export const calcOvertime = (checkedOutAt: string) => {
-    const checkedOutHour = parseInt(checkedOutAt.substring(8, 10));
-    const isOvertime = checkedOutHour >= 24;
-    return { checkedOutHour, isOvertime };
+// 2024-04-30T16:08:09.306371+09:00 -> 16:08
+export const formatHourMinute = (date: string): string => {
+    return new Date(date).toLocaleTimeString("ko-KR", {
+        hour: "2-digit",
+        minute: "2-digit",
+        hourCycle: "h24",
+    });
+};
+
+export const formatNewDate = (date: Date) => {
+    const year = date.getFullYear();
+    const month = (date.getMonth() + 1).toString().padStart(2, "0");
+    const day = date.getDate().toString().padStart(2, "0");
+    return `${year}${month}${day}`;
 };

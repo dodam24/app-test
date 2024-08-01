@@ -1,20 +1,30 @@
 import { useState } from "react";
 import styled from "styled-components";
+import { Link } from "react-router-dom";
 import SideBar from "@/components/sidebar/SideBar";
 import { Styles } from "@/style/Styles";
-
 import Logo from "@/assets/images/icons/icon_logo.png";
 import Menu from "@/assets/images/btns/btn_menu.png";
+import { useNavigate } from "react-router-dom";
 
 interface AppHeaderProps {
     title?: string | undefined;
+    url: string;
 }
 
-const AppHeader = ({ title }: AppHeaderProps) => {
+export const MAIN_URL = "/";
+
+const AppHeader = ({ title, url }: AppHeaderProps) => {
     const [isMenuOpen, setIsMenuOpen] = useState<boolean>(false);
+
+    const navigate = useNavigate();
 
     const handleIsMenuOpen = () => {
         setIsMenuOpen(true);
+    };
+
+    const handlePrimaryBtnClick = () => {
+        navigate("/employee/employeeMain", { replace: true });
     };
 
     return (
@@ -23,11 +33,19 @@ const AppHeader = ({ title }: AppHeaderProps) => {
                 <StyledAppHeaderInner>
                     <div className="header_view">
                         {title ? (
-                            <h1 className="title">{title}</h1>
+                            <Link to={url} className="title">
+                                {title}
+                            </Link>
                         ) : (
-                            <a href="/" className="logo">
-                                <img src={Logo} alt="소소상점" />
-                            </a>
+                            <>
+                                <Link to={url} className="logo">
+                                    <img src={Logo} alt="소소상점" />
+                                </Link>
+                                {/* role값 받아와서 직원이면 primary_btn 표시 */}
+                                <button className="primary_btn" onClick={handlePrimaryBtnClick}>
+                                    직원용
+                                </button>
+                            </>
                         )}
                     </div>
                     <button className="btn_menu" onClick={handleIsMenuOpen}>
@@ -75,12 +93,26 @@ const StyledAppHeaderInner = styled.div`
             align-items: center;
             justify-content: center;
             height: inherit;
-            padding: 0 1rem;
+            padding: 0 0.35rem 0 1rem;
             & > img {
                 display: block;
                 width: 3.2rem;
                 height: 1.8rem;
             }
+        }
+        .primary_btn {
+            display: flex;
+            width: 2.3rem;
+            padding: 0.2rem;
+            justify-content: center;
+            align-items: center;
+            bottom: 0.85rem;
+            border-radius: 1.5rem;
+            background: ${Styles.colors.primary100};
+            color: ${Styles.colors.systemWhite};
+            font-size: ${Styles.font.size.fontsize12};
+            font-weight: ${Styles.font.weight.regular};
+            line-height: 1.4;
         }
     }
     .btn_menu {

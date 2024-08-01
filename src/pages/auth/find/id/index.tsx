@@ -1,50 +1,44 @@
-import { ChangeEvent, FormEvent, useState } from "react";
-import styled from "styled-components";
+import { FormEvent } from "react";
+import { useNavigate } from "react-router-dom";
 
 import AppLayout from "@/components/layout/AppLayout";
 import AppBackHeader from "@/components/header/AppBackHeader";
-
-import OptionInput from "@/components/input/OptionInput";
 import AppBaseWrapper from "@/components/layout/AppBaseWrapper";
-
+import OptionInput from "@/components/input/OptionInput";
 import FixedButton from "@/components/button/FixedButton";
-import { StyledBaseInputWrapper } from "@/components/styles/InputStyle";
 import PhoneAuthInput from "@/components/input/PhoneAuthInput";
-import { useNavigate } from "react-router-dom";
+
+import { IFindID } from "@/interface/auth/find/find";
+
+import { StyledBaseInputWrapper } from "@/style/InputStyle";
+import { useInputHandler } from "@/utils/baseVerify";
 
 const FindID = () => {
-    const [value, setValue] = useState({
+    const { values, handleInputChange, setValues } = useInputHandler<IFindID>({
         name: "",
         cellphone_number: "",
         verificationCode: "",
     });
 
-    const handleInputChange = (e: ChangeEvent<HTMLInputElement>) => {
-        setValue({
-            ...value,
-            [e.target.name]: e.target.value,
-        });
-    };
-
     const handlePhoneChange = (phone: string) => {
-        setValue({
-            ...value,
+        setValues((prevValues) => ({
+            ...prevValues,
             cellphone_number: phone,
-        });
+        }));
     };
 
     const handleVerificationCodeChange = (code: string) => {
-        setValue({
-            ...value,
+        setValues((prevValues) => ({
+            ...prevValues,
             verificationCode: code,
-        });
+        }));
     };
 
     const navigate = useNavigate();
 
     const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
         event.preventDefault();
-        navigate("/find/id/list");
+        navigate("/find/id/list", { replace: true });
     };
 
     return (
@@ -54,27 +48,30 @@ const FindID = () => {
             }}
         >
             <AppBaseWrapper title={`이름과 휴대폰 번호를 입력하여\n인증을 진행해 주세요.`}>
-                <StyledInputWrapper onSubmit={handleSubmit}>
+                <StyledBaseInputWrapper onSubmit={handleSubmit}>
                     <OptionInput
                         type="text"
                         name="name"
                         id="name"
-                        value={value.name}
+                        value={values.name}
                         onChange={handleInputChange}
                         placeholder="예) 김소소"
                         label="이름"
+                        options={{
+                            buttonOption: {
+                                deleteOption: true,
+                            },
+                        }}
                     />
                     <PhoneAuthInput
                         onPhoneChange={handlePhoneChange}
                         onVerificationCodeChange={handleVerificationCodeChange}
                     />
                     <FixedButton type="submit">다음</FixedButton>
-                </StyledInputWrapper>
+                </StyledBaseInputWrapper>
             </AppBaseWrapper>
         </AppLayout>
     );
 };
-
-const StyledInputWrapper = styled(StyledBaseInputWrapper)``;
 
 export default FindID;

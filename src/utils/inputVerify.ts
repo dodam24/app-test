@@ -4,6 +4,6 @@ export const validatePassword = (value: string): boolean => {
 };
 
 export const validateId = (value: string): boolean => {
-    const regex = /^(?=.*[a-zA-Z])(?=.*\d)[A-Za-z\d]{6,}$/;
+    const regex = /^(?=.*[a-zA-Z])(?=.*\d)[A-Za-z\d_-]{6,}$/;
     return regex.test(value);
 };

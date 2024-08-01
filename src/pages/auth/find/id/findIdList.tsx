@@ -1,19 +1,20 @@
-import styled from "styled-components";
 import { ChangeEvent, MouseEvent, useState } from "react";
+import { useNavigate } from "react-router-dom";
+import styled from "styled-components";
 
 import AppLayout from "@/components/layout/AppLayout";
 import AppBackHeader from "@/components/header/AppBackHeader";
+import AppBaseWrapper from "@/components/layout/AppBaseWrapper";
+import FixedButton from "@/components/button/FixedButton";
+
+import { IFindIdList } from "@/interface/auth/find/find";
 
 import { Styles } from "@/style/Styles";
-import AppBaseWrapper from "@/components/layout/AppBaseWrapper";
-
-import FixedButton from "@/components/button/FixedButton";
-import { StyleDoubleFixedButton } from "@/components/styles/ButtonSytle";
-import { StyledInputRadioWrapper } from "@/components/styles/InputStyle";
-import { useNavigate } from "react-router-dom";
+import { StyleDoubleFixedButton } from "@/style/ButtonSytle";
+import { StyledInputRadioWrapper } from "@/style/InputStyle";
 
 const FindIdList = () => {
-    const idList = [
+    const idList: IFindIdList[] = [
         { id: "user1", registrationDate: "2023-01-01" },
         { id: "user2", registrationDate: "2023-02-01" },
         { id: "user3", registrationDate: "2023-03-01" },
@@ -41,11 +42,11 @@ const FindIdList = () => {
     const navigate = useNavigate();
 
     const handlePwClick = () => {
-        navigate("/find/pw");
+        navigate("/find/pw", { replace: true });
     };
 
     const handleLoginClick = () => {
-        navigate("/login");
+        navigate("/login", { replace: true });
     };
 
     return (
@@ -76,12 +77,12 @@ const FindIdList = () => {
                     ))}
                 </StyledIdList>
 
-                <StyledButtonFlex>
+                <StyleDoubleFixedButton>
                     <FixedButton className="custom_btn" onClick={handlePwClick}>
                         비밀번호 찾기
                     </FixedButton>
                     <FixedButton onClick={handleLoginClick}>로그인</FixedButton>
-                </StyledButtonFlex>
+                </StyleDoubleFixedButton>
             </AppBaseWrapper>
         </AppLayout>
     );
@@ -120,6 +121,5 @@ const StyledRadioContainer = styled(StyledInputRadioWrapper)`
         color: ${Styles.colors.natural60};
     }
 `;
-const StyledButtonFlex = styled(StyleDoubleFixedButton)``;
 
 export default FindIdList;

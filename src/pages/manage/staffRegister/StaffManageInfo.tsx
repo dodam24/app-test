@@ -1,18 +1,17 @@
-import styled from "styled-components";
-
+import { Link, useNavigate } from "react-router-dom";
 import useModal from "@/hooks/useModal";
 
 import AppBackHeader from "@/components/header/AppBackHeader";
 import AppLayout from "@/components/layout/AppLayout";
 import DynamicModal from "@/components/modal/DynamicModal";
 import ConfirmationModal from "@/components/modal/ui/ConfirmationModal";
-
-import { StyleDoubleFixedButton } from "@/components/styles/ButtonSytle";
 import FixedButton from "@/components/button/FixedButton";
-import { StyledStateListWrapper } from "@/components/styles/StateBoxStyle";
-import { Link, useNavigate } from "react-router-dom";
+import { IManageStaffInfo } from "@/interface/manage/staff/manageStaffRegister";
 
-const staffinfoData = [
+import { StyledStateListWrapper } from "@/style/StateBoxStyle";
+import { StyleDoubleFixedButton } from "@/style/ButtonSytle";
+
+const staffinfoData: IManageStaffInfo[] = [
     {
         date: "2023.02.24 14:33:23",
         id: "sunflower",
@@ -28,12 +27,12 @@ const StaffManageInfo = () => {
     const navigate = useNavigate();
     const confirmHandler = () => {
         closeModal();
-        navigate("/manage/staff/approval");
+        navigate("/manage/staff/approval", { replace: true });
     };
 
     return (
         <AppLayout props={{ header: <AppBackHeader title="직원 상세정보" /> }}>
-            <StyledManageInfoWrapper>
+            <StyledStateListWrapper>
                 <ul>
                     <li>
                         <h4>신청일시</h4>
@@ -56,8 +55,8 @@ const StaffManageInfo = () => {
                         <span className="status_span">{staff.status}</span>
                     </li>
                 </ul>
-            </StyledManageInfoWrapper>
-            <StyledButtonFlex>
+            </StyledStateListWrapper>
+            <StyleDoubleFixedButton>
                 <FixedButton className="custom_btn" onClick={openModal}>
                     승인 반려
                 </FixedButton>
@@ -65,7 +64,7 @@ const StaffManageInfo = () => {
                 <Link to="/manage/staff/approval/input">
                     <FixedButton>승인 시작</FixedButton>
                 </Link>
-            </StyledButtonFlex>
+            </StyleDoubleFixedButton>
             <DynamicModal open={isOpen} close={closeModal}>
                 <ConfirmationModal
                     title="승인 반려"
@@ -80,7 +79,3 @@ const StaffManageInfo = () => {
 };
 
 export default StaffManageInfo;
-
-const StyledManageInfoWrapper = styled(StyledStateListWrapper)``;
-
-const StyledButtonFlex = styled(StyleDoubleFixedButton)``;

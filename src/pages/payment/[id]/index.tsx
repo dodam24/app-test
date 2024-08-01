@@ -80,7 +80,6 @@ const PaymentDetail = () => {
         });
 
         return () => {};
-        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
     const transactionType = (transaction_type: number): string => {

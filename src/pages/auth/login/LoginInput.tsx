@@ -1,64 +1,45 @@
-import React, { ChangeEvent, FormEvent, useState } from "react";
+import React, { FormEvent } from "react";
 import styled from "styled-components";
-
-import { login } from "@/apis/auth/login";
-import { validatePassword } from "@/utils/inputVerify";
-import { validateId } from "@/utils/inputVerify";
 
 import OptionInput from "@/components/input/OptionInput";
 import Button from "@/components/button/Button";
 
+import { ILoginValues } from "@/interface/auth/signIn/signIn";
+import { login } from "@/apis/auth/login";
+import { validatePassword, validateId } from "@/utils/inputVerify";
+import { useInputHandler } from "@/utils/baseVerify";
+
 import { LoginLogo } from "@/pages/auth/login/_images/loginImg";
 
 const LoginInput = () => {
-    const [value, setValue] = useState({
+    const { values, error, handleInputChange, setError } = useInputHandler<ILoginValues>({
         username: "",
         password: "",
     });
-    const [error, setError] = useState<string>("");
-
-    const handle = (e: ChangeEvent<HTMLInputElement>) => {
-        const { name, value: inputValue } = e.target;
-
-        setValue((prev) => ({
-            ...prev,
-            [name]: inputValue,
-        }));
-
-        if (name === "password") {
-            if (!validatePassword(inputValue)) {
-                setError("비밀번호는 8~20자리 영문+숫자+특수문자 포함이어야 합니다.");
-            } else {
-                setError("");
-            }
-        } else if (name === "username") {
-            !validateId(inputValue);
-        }
-    };
 
     const handleLogin = async (e: FormEvent | React.MouseEvent<HTMLButtonElement>) => {
         e.preventDefault();
 
-        if (!validateId(value.username)) {
+        if (!validateId(values.username)) {
             setError("아이디는 영문자와 숫자를 포함하여 6자 이상이어야 합니다.");
             return;
         }
 
-        if (!validatePassword(value.password)) {
+        if (!validatePassword(values.password)) {
             setError("8~20자리 영문+숫자+특수문자 모두 포함하여 입력해주세요.");
             return;
         }
 
         try {
-            const response = await login({ username: value.username, password: value.password });
+            const response = await login({ username: values.username, password: values.password });
             console.log(response);
         } catch (error) {
             setError("아이디 또는 비밀번호를 다시 입력해주세요.");
         }
     };
 
-    const isPasswordValid = validatePassword(value.password);
-    const isUsernameValid = validateId(value.username);
+    const isPasswordValid = validatePassword(values.password);
+    const isUsernameValid = validateId(values.username);
 
     return (
         <StyedLoginInputWrapper>
@@ -67,15 +48,15 @@ const LoginInput = () => {
                 <OptionInput
                     type="text"
                     name="username"
-                    value={value.username}
-                    onChange={handle}
+                    value={values.username}
+                    onChange={handleInputChange}
                     placeholder="아이디"
                 />
                 <OptionInput
                     type="password"
                     name="password"
-                    value={value.password}
-                    onChange={handle}
+                    value={values.password}
+                    onChange={handleInputChange}
                     placeholder="8~20자리 영문+숫자+특수문자 포함"
                     maxLength={20}
                     options={{

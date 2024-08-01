@@ -1,15 +1,18 @@
+import { Link } from "react-router-dom";
 import { Styles } from "@/style/Styles";
 import { styled } from "styled-components";
 import ArrowIcon from "@/assets/images/icons/icon_right_arrow_c.png";
-import { Link } from "react-router-dom";
 
 const MoreServiceMenu = () => {
-    // 세무서비스, 직원관리, 중고거래 페이지 링크 추후에 수정 필요(임시)
+    // 직원관리, 세무서비스, 중고거래 페이지 링크는 추후에 수정 필요(임시)
     const ServiceMenus = [
-        { title: "직원관리", to: "/manage/staff/info" },
+        {
+            title: "직원관리",
+            to: "/manage/staff/register",
+        },
         { title: "세무서비스", to: "/payment" },
         { title: "보험서비스", to: "/insurance" },
-        { title: "중고거래", to: "/" },
+        { title: "중고거래", to: "/" } /* 중고거래 페이지 없음 */,
         { title: "부동산", to: "/realty" },
     ];
     return (

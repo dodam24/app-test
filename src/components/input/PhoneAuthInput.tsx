@@ -15,8 +15,19 @@ interface PhoneAuthInputProps {
     onVerificationCodeChange: (verificationCode: string) => void;
 }
 
+interface IPhoneAuthState {
+    callphone_number: string;
+    verificationCode: string;
+    showVerificationInput: boolean;
+    verificationSuccess: boolean;
+    phoneSuccess: boolean;
+    errorStatus: boolean;
+    errorMessage: string;
+}
+
 const PhoneAuthInput = ({ onPhoneChange, onVerificationCodeChange }: PhoneAuthInputProps) => {
-    const [value, setValue] = useState({
+    const [value, setValue] = useState<IPhoneAuthState>({
+        callphone_number: "",
         verificationCode: "",
         showVerificationInput: false,
         verificationSuccess: false,
@@ -25,12 +36,27 @@ const PhoneAuthInput = ({ onPhoneChange, onVerificationCodeChange }: PhoneAuthIn
         errorMessage: "",
     });
 
+    const handleInputChangeVerification = (e: ChangeEvent<HTMLInputElement>) => {
+        setValue({
+            ...value,
+            [e.target.name]: e.target.value,
+            errorStatus: false,
+            errorMessage: "",
+        });
+        onVerificationCodeChange(e.target.value);
+    };
+
+    // 전화번호 유효성검사
     const { values, format, handleInputChange } = useInputHandler({
         phone: "",
     });
 
+    // 타이머
     const { timer, startTimer, resetTimer, formatTime } = useTimer(180);
 
+    const formattedTime = formatTime(timer.seconds);
+
+    // 모달
     const {
         isOpen: isOpenConfirmationModal,
         openModal: openConfirmationModal,
@@ -42,22 +68,31 @@ const PhoneAuthInput = ({ onPhoneChange, onVerificationCodeChange }: PhoneAuthIn
         closeModal: closeDynamicModal,
     } = useModal();
 
+    const confirmHandler = () => {
+        closeConfirmationModal();
+        closeDynamicModal();
+    };
+
+    //인증번호 요청 + 휴대폰 번호 인증 api 호출
     const handleRequestVerification = async () => {
         try {
             await requestPhoneVerification(values.phone);
             setValue({
                 ...value,
+                callphone_number: values.phone,
                 showVerificationInput: true,
                 phoneSuccess: true,
                 errorStatus: false,
                 errorMessage: "",
             });
             startTimer();
+            onPhoneChange(values.phone);
         } catch (error) {
             console.error("인증 요청 실패", error);
         }
     };
 
+    //인증번호 확인 api
     const handleRequestVerificationCheck = async () => {
         try {
             const success = await requestPhoneVerificationCheck(
@@ -90,6 +125,7 @@ const PhoneAuthInput = ({ onPhoneChange, onVerificationCodeChange }: PhoneAuthIn
         }
     };
 
+    // 인증번호 재전송
     const handleResendVerification = async () => {
         try {
             await requestPhoneVerification(values.phone);
@@ -106,33 +142,15 @@ const PhoneAuthInput = ({ onPhoneChange, onVerificationCodeChange }: PhoneAuthIn
         }
     };
 
-    const handleInputChangeVerification = (e: ChangeEvent<HTMLInputElement>) => {
-        setValue({
-            ...value,
-            [e.target.name]: e.target.value,
-            errorStatus: false,
-            errorMessage: "",
-        });
-        onVerificationCodeChange(e.target.value);
-    };
-
-    const formattedTime = formatTime(timer.seconds);
-
-    const noticeMessage = value.verificationSuccess
-        ? "" // 원래는 인증 완료 메세지가 나와야 하는데 파란색 설정이 되지 않아 잠시 비워둠
-        : timer.seconds > 0
-          ? `3분 이내로 인증번호를 입력해주세요.`
-          : "인증시간이 초과되었습니다.\n재전송 버튼을 눌러 다시 진행해주세요.";
-
-    const handlePhoneChange = (phone: string) => {
-        onPhoneChange(phone);
-    };
-
-    const confirmHandler = () => {
-        closeConfirmationModal();
-        closeDynamicModal();
-    };
-
+    const noticeMessage: { message: string; status: "" | "success" | "" } =
+        value.verificationSuccess
+            ? { message: "인증 완료 메세지", status: "success" }
+            : timer.seconds > 0
+              ? { message: "3분 이내로 인증번호를 입력해주세요.", status: "" }
+              : {
+                    message: "인증시간이 초과되었습니다.\n재전송 버튼을 눌러 다시 진행해주세요.",
+                    status: "",
+                };
     return (
         <StyledPhoneAuthWrapper>
             <OptionInput
@@ -142,7 +160,8 @@ const PhoneAuthInput = ({ onPhoneChange, onVerificationCodeChange }: PhoneAuthIn
                 name="phone"
                 value={format}
                 onChange={(e) => {
-                    handleInputChange(e, handlePhoneChange);
+                    onPhoneChange(values.phone);
+                    handleInputChange(e);
                 }}
                 placeholder="휴대폰 번호를 입력해주세요."
                 options={{
@@ -158,7 +177,7 @@ const PhoneAuthInput = ({ onPhoneChange, onVerificationCodeChange }: PhoneAuthIn
                         handleRequestVerification();
                         openDynamicModal();
                     }}
-                    disabled={values.phone.length < 11}
+                    disabled={values.phone.length < 11 || value.phoneSuccess}
                 >
                     인증요청
                 </Button>
@@ -189,14 +208,20 @@ const PhoneAuthInput = ({ onPhoneChange, onVerificationCodeChange }: PhoneAuthIn
                                     ""
                                 ),
                         },
-                        notice: !value.errorStatus ? noticeMessage : "",
+                        notice: noticeMessage.message,
+                        noticeStatus: noticeMessage.status,
                         error: {
                             errorStatus: value.errorStatus,
                             errorMessage: value.errorMessage,
                         },
                     }}
                 >
-                    <Button size="sub" onClick={handleRequestVerificationCheck} type="button">
+                    <Button
+                        size="sub"
+                        onClick={handleRequestVerificationCheck}
+                        type="button"
+                        disabled={value.verificationSuccess}
+                    >
                         인증확인
                     </Button>
                 </OptionInput>

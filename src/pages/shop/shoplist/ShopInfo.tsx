@@ -1,19 +1,28 @@
+import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 
+import { FoodInfoImg1, StarIcon } from "@/pages/shop/_images/shop";
 import AppBackHeader from "@/components/header/AppBackHeader";
 import AppLayout from "@/components/layout/AppLayout";
-
-import { Styles } from "@/style/Styles";
-
-import { FoodImg1, StarIcon } from "@/pages/shop/_images/shop";
-import { StyleDoubleFixedButton } from "@/components/styles/ButtonSytle";
 import FixedButton from "@/components/button/FixedButton";
 
+import { Styles } from "@/style/Styles";
+import { StyleDoubleFixedButton } from "@/style/ButtonSytle";
+import ShopSwiper from "@/pages/shop/_component/ShopSwiper";
+
+const images = [FoodInfoImg1, FoodInfoImg1, FoodInfoImg1, FoodInfoImg1, FoodInfoImg1];
+
 const ShopInfo = () => {
+    const navigate = useNavigate();
+
+    const handleBuyNow = () => {
+        navigate("/shop/payment", { replace: true });
+    };
+
     return (
         <AppLayout props={{ header: <AppBackHeader title="상세설명" /> }}>
             <StyledShopInfoWrapper>
-                <img src={FoodImg1} alt="" /> {/* 원래 스와이퍼임 이미지도 임시임 */}
+                <ShopSwiper images={images} usePagination={false} />
                 <StyledShopInfoInner>
                     <div>
                         <h3>[오늘의 특가] 돈사임당 뼈갈비 목심 스테이크</h3>
@@ -37,10 +46,10 @@ const ShopInfo = () => {
                     </div>
                     <em>프리미엄 회원가</em>
                 </StyledShopInfoInner>
-                <StyledButtonFlex>
+                <StyleDoubleFixedButton>
                     <FixedButton className="custom_btn">장바구니</FixedButton>
-                    <FixedButton>바로구매</FixedButton>
-                </StyledButtonFlex>
+                    <FixedButton onClick={handleBuyNow}>바로구매</FixedButton>
+                </StyleDoubleFixedButton>
             </StyledShopInfoWrapper>
         </AppLayout>
     );
@@ -52,9 +61,8 @@ const StyledShopInfoWrapper = styled.div`
     display: flex;
     flex-direction: column;
     gap: 1.2rem;
-    img {
-        width: 16.75rem;
-        height: 16.7rem;
+    .food_img {
+        aspect-ratio: 1/1;
     }
 `;
 const StyledShopInfoInner = styled.div`
@@ -114,5 +122,5 @@ const StyledShopStar = styled.div`
         height: 0.8rem;
     }
 `;
-const StyledButtonFlex = styled(StyleDoubleFixedButton)``;
+
 export default ShopInfo;

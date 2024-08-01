@@ -1,37 +1,49 @@
 import { NavLink } from "react-router-dom";
 import styled from "styled-components";
 import { Styles } from "@/style/Styles";
+import {
+    HomeOff,
+    HomeOn,
+    PaymentOff,
+    PaymentOn,
+    CalculateOff,
+    CalculateOn,
+    ComeOff,
+    ComeOn,
+    MoreOff,
+    MoreOn,
+} from "@/components/footer/_images/icons";
 
 const AppMenus = [
     {
         to: "/",
         name: "홈",
-        enableIcon: "src/assets/images/icons/icon_home_on.png",
-        disableIcon: "src/assets/images/icons/icon_home_off.png",
+        enableIcon: HomeOn,
+        disableIcon: HomeOff,
     },
     {
         to: "/payment",
         name: "결제정보",
-        enableIcon: "src/assets/images/icons/icon_payment_on.png",
-        disableIcon: "src/assets/images/icons/icon_payment_off.png",
+        enableIcon: PaymentOn,
+        disableIcon: PaymentOff,
     },
     {
-        to: "/calculate",
+        to: "/settlement",
         name: "정산정보",
-        enableIcon: "src/assets/images/icons/icon_calculate_on.png",
-        disableIcon: "src/assets/images/icons/icon_calculate_off.png",
+        enableIcon: CalculateOn,
+        disableIcon: CalculateOff,
     },
     {
-        to: "/come",
+        to: "/transaction",
         name: "매입매출",
-        enableIcon: "src/assets/images/icons/icon_come_on.png",
-        disableIcon: "src/assets/images/icons/icon_come_off.png",
+        enableIcon: ComeOn,
+        disableIcon: ComeOff,
     },
     {
         to: "/more",
         name: "더보기",
-        enableIcon: "src/assets/images/icons/icon_more_on.png",
-        disableIcon: "src/assets/images/icons/icon_more_off.png",
+        enableIcon: MoreOn,
+        disableIcon: MoreOff,
     },
 ];
 
@@ -46,6 +58,7 @@ const AppFooterBar = () => {
                                 to={menu.to}
                                 enable={menu.enableIcon}
                                 disable={menu.disableIcon}
+                                end
                             >
                                 {menu.name}
                             </StyledAppFooterBarLink>

@@ -1,44 +1,38 @@
+import { Link } from "react-router-dom";
 import styled from "styled-components";
 
 import AppBackHeader from "@/components/header/AppBackHeader";
 import AppLayout from "@/components/layout/AppLayout";
+import AppBaseWrapper from "@/components/layout/AppBaseWrapper";
+import { IRealtyData } from "@/interface/realty/realty";
+import { parseDate2 } from "@/utils/formatDateTime";
 
 import { Styles } from "@/style/Styles";
-import AppBaseWrapper from "@/components/layout/AppBaseWrapper";
-import { Link } from "react-router-dom";
 
-interface RealtyData {
-    id: number;
-    title: string;
-    status: string;
-    date: string;
-    amount: string;
-    scheduledDate: string;
-}
-const depositData: RealtyData[] = [
+const depositData: IRealtyData[] = [
     {
         id: 1,
         title: "임대료",
         status: "입금대기",
         date: "2023.03.01 09:58:34",
-        amount: "500,000",
-        scheduledDate: "2023.03.05",
+        amount: 500000,
+        scheduledDate: "20230305",
     },
     {
         id: 2,
         title: "관리비",
         status: "입금완료",
         date: "2023.03.02 14:20:45",
-        amount: "300,000",
-        scheduledDate: "2023.03.10",
+        amount: 300000,
+        scheduledDate: "20230310",
     },
     {
         id: 3,
         title: "수리비",
         status: "입금대기",
         date: "2023.03.03 11:30:22",
-        amount: "200,000",
-        scheduledDate: "2023.03.08",
+        amount: 200000,
+        scheduledDate: "20230308",
     },
 ];
 
@@ -59,9 +53,9 @@ const RealtyDepositList = () => {
                                 </div>
                                 <div className="botton_box">
                                     <p>
-                                        <span>입금(예정일)</span> {item.scheduledDate}
+                                        <span>입금(예정일)</span> {parseDate2(item.scheduledDate)}
                                     </p>
-                                    <h4>{item.amount}</h4>
+                                    <h4>{item.amount.toLocaleString()}원</h4>
                                 </div>
                             </StyledDepositItem>
                         </Link>
@@ -121,20 +115,25 @@ const StyledDepositItem = styled.li`
         border-radius: 0.25rem;
         background-color: ${Styles.colors.systemBackground};
         align-self: stretch;
-        align-items: center;
+        align-items: top;
+        gap: 0.6rem;
+
         p {
             color: ${Styles.colors.natural40};
             font-size: ${Styles.font.size.fontsize13};
             font-weight: ${Styles.font.weight.regular};
+            min-width: fit-content;
             span {
                 color: ${Styles.colors.systemError};
-                text-overflow: ellipsis;
             }
         }
         h4 {
             color: ${Styles.colors.natural90};
             font-size: ${Styles.font.size.fontsize15};
             font-weight: ${Styles.font.weight.regular};
+            text-align: right;
+            word-break: break-word;
+            overflow-wrap: break-word;
         }
     }
 `;

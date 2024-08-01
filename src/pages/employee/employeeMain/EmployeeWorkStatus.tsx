@@ -1,15 +1,36 @@
+import { useEffect, useState } from "react";
 import styled from "styled-components";
-import WorkStatus from "@/assets/images/icons/icon_employee_onduty_c.png";
 import { Styles } from "@/style/Styles";
+import WorkStatusOnDuty from "@/assets/images/icons/icon_employee_on_duty_c.png";
+import WorkStatusOffDuty from "@/assets/images/icons/icon_employee_off_duty_c.png";
 
-const EmployeeWorkStatus = () => {
+interface CheckInOutDataProps {
+    id: string;
+    check_in_date_time: string;
+    check_out_date_time: string;
+}
+
+const EmployeeWorkStatus = ({ checkInOutData }: { checkInOutData: CheckInOutDataProps }) => {
+    const [workStatus, setWorkStatus] = useState<string>("");
+    const [workStatusIcon, setWorkStatusIcon] = useState<string>("");
+
+    useEffect(() => {
+        if (checkInOutData.check_in_date_time && !checkInOutData.check_out_date_time) {
+            setWorkStatus("근무 중");
+            setWorkStatusIcon(WorkStatusOnDuty);
+        } else if (checkInOutData.check_in_date_time && checkInOutData.check_out_date_time) {
+            setWorkStatus("근무 종료");
+            setWorkStatusIcon(WorkStatusOffDuty);
+        }
+    }, [checkInOutData]);
+
     return (
         <StyledEmployeeWorkStatus>
             <div>
-                <span>아름님의 현재 상태는</span>
-                <strong>근무 중</strong>
+                <span>이몽룡님의 현재 상태는</span>
+                {<strong>{workStatus}</strong>}
             </div>
-            <img src={WorkStatus} alt="근무상태" />
+            {<img src={workStatusIcon} alt="근무상태" />}
         </StyledEmployeeWorkStatus>
     );
 };
@@ -23,7 +44,6 @@ const StyledEmployeeWorkStatus = styled.div`
     border-radius: 0.4rem;
     background: #fff;
     box-shadow: 0 0.1rem 0.6rem 0 rgba(0, 0, 0, 0.06);
-
     padding: 0.85rem 0.8rem;
     & > div {
         display: flex;

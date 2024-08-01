@@ -82,6 +82,7 @@ const StyledOfficeListWrapper = styled.div`
             cursor: pointer;
             &.selected {
                 background-color: ${Styles.colors.primary20};
+                /* border-bottom: 0.05rem solid ${Styles.colors.primary20}; */
                 span {
                     color: ${Styles.colors.primary100};
                 }
@@ -96,7 +97,7 @@ const StyledOfficeListWrapper = styled.div`
                 color: ${Styles.colors.natural80};
                 overflow: hidden;
                 display: -webkit-box;
-                -webkit-line-clamp: 1;
+                -webkit-line-clamp: 2;
                 -webkit-box-orient: vertical;
                 word-wrap: break-word;
             }

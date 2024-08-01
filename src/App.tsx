@@ -17,10 +17,9 @@ import Faq from "@/pages/more/faq";
 import FaqDetails from "@/pages/more/faq/[id]";
 import Notice from "@/pages/more/notice";
 import NoticeDetails from "@/pages/more/notice/[id]";
-import Inquiry from "@/pages/more/inquiry";
+import EmailConsultation from "@/pages/more/emailConsultation";
 import Alarm from "@/pages/alarm";
 import Setting from "@/pages/setting";
-import Attendance from "@/pages/employee/attendance";
 import AttendanceList from "@/pages/employee/attendanceList";
 
 import Loan from "@/pages/loan";
@@ -40,7 +39,7 @@ import Shop from "@/pages/shop";
 import ShopList from "@/pages/shop/shoplist/ShopList";
 import ShopInfo from "@/pages/shop/shoplist/ShopInfo";
 import ShopPayment from "@/pages/shop/shoplist/ShopPayment";
-import LoginSelect from "@/pages/auth/login/LoginSelect";
+import LoginSelect from "@/pages/auth/login/select/LoginSelect";
 
 import Me from "@/pages/setting/me";
 import ChangePassword from "@/pages/setting/password";
@@ -63,27 +62,42 @@ import StaffApprovalInput from "@/pages/manage/staffRegister/StaffApprovalInput"
 import StaffInfoChangeInput from "@/pages/manage/staffRegister/StaffInfoChangeInput";
 import RealtyDepositInfo from "@/pages/realty/RealtyDepositInfo";
 import InsuranceServiceInfo from "@/pages/insurance/InsuranceServiceInfo";
-import ManagePaymentInfo from "@/pages/manage/paymentRegister/ManagePaymentInfo";
+import Settlement from "@/pages/settlement";
+import SettlementDetail from "@/pages/settlement/[id]";
+import Transaction from "@/pages/transaction";
 import EmployeeMain from "./pages/employee/employeeMain/index";
+import TransactionDetail from "@/pages/transaction/[id]";
+import TransactionDetailEdit from "@/pages/transaction/[id]/TransactionDetailEdit";
+import TransactionPurchaseAdd from "@/pages/transaction/purchase";
+import TransactionSaleAdd from "@/pages/transaction/sale";
+import BasicSignUp from "@/pages/basic";
+import ConsentCheckBoxInfo from "@/components/checkbox/ConsentCheckBoxInfo";
+import ManagePaymentInfo from "@/pages/manage/paymentRegister/ManagePaymentInfo";
+import Splash from "@/pages/auth/Splash";
+import Tax from "@/pages/tax";
+import TaxNotApplied from "@/pages/tax/join/TaxNotApplied";
+import TaxWait from "@/pages/tax/join/TaxWait";
+import TaxJoinFin from "@/pages/tax/join/TaxJoinFin";
+import TaxSimpleAuth from "@/pages/tax/join/TaxSimpleAuth";
+import TaxJoinFinStaff from "@/pages/tax/join/TaxJoinFinStaff";
 
 function App() {
     return (
         <div>
             <Routes>
                 <Route path="/" element={<Main />} />
-
+                <Route path="/basic" element={<BasicSignUp />} />s
                 <Route path="/alarm" element={<Alarm />} />
                 <Route path="/setting" element={<Setting />} />
                 <Route path="/setting/me" element={<Me />} />
                 <Route path="/setting/me/phone" element={<EditPhone />} />
                 <Route path="/setting/me/email" element={<EditEmail />} />
                 <Route path="/setting/me/deleteAccount" element={<DeleteAccount />} />
-
                 <Route path="/setting/change_password" element={<ChangePassword />} />
                 <Route path="/setting/terms" element={<Terms />} />
                 <Route path="/terms/:id" element={<TermsDetail />} />
-
                 {/* 지민 작업사항 */}
+                <Route path="/splash" element={<Splash />} />
                 <Route path="/login" element={<Login />} />
                 <Route path="/login/select" element={<LoginSelect />} />
                 <Route path="/register" element={<Register />} />
@@ -95,30 +109,25 @@ function App() {
                 <Route path="/find/pw" element={<FindPW />} />
                 <Route path="/find/id/list" element={<FindIdList />} />
                 <Route path="/find/pw/list" element={<FindPwList />} />
-
                 <Route path="/loan" element={<Loan />} />
                 <Route path="/loan/info/:id" element={<LoanItemInfo />} />
                 <Route path="/loan/terms" element={<LoanTerms />} />
                 <Route path="/loan/complete" element={<LoanComplete />} />
-
                 <Route path="/realty" element={<Realty />} />
                 <Route path="/realty/examine" element={<RealtyExamine />} />
                 <Route path="/realty/payment" element={<RealtyPayment />} />
                 <Route path="/realty/deposit" element={<RealtyDepositList />} />
                 <Route path="/realty/deposit/info/:id" element={<RealtyDepositInfo />} />
-
                 <Route path="/insurance" element={<Insurance />} />
                 <Route path="/insurance/item" element={<InsuranceItemList />} />
                 <Route path="/insurance/info/:id" element={<InsuranceItemInfo />} />
                 <Route path="/insurance/complete" element={<InsuranceComplete />} />
                 <Route path="/insurance/service" element={<InsuranceServiceList />} />
                 <Route path="/insurance/service/info/:id" element={<InsuranceServiceInfo />} />
-
                 <Route path="/shop" element={<Shop />} />
-                <Route path="/shop/list" element={<ShopList />} />
-                <Route path="/shop/info" element={<ShopInfo />} />
+                <Route path="/shop/list/:id" element={<ShopList />} />
+                <Route path="/shop/info/:id" element={<ShopInfo />} />
                 <Route path="/shop/payment" element={<ShopPayment />} />
-
                 <Route path="/manage/staff/register" element={<ManageStaffRegister />} />
                 <Route path="/manage/staff/approval" element={<StaffApproval />} />
                 <Route path="/manage/staff/approval/input" element={<StaffApprovalInput />} />
@@ -127,15 +136,13 @@ function App() {
                 <Route path="/manage/staff/input" element={<StaffManageInput />} />
                 <Route path="/manage/payment/register" element={<ManagePaymentRegister />} />
                 <Route path="/manage/payment/info/:id" element={<ManagePaymentInfo />} />
-
                 <Route path={"*"} element={<NotFound />} />
                 <Route path="/more" element={<More />} />
                 <Route path="/more/faq" element={<Faq />} />
                 <Route path="/more/faq/:id" element={<FaqDetails />} />
                 <Route path="/more/notice" element={<Notice />} />
                 <Route path="/more/notice/:id" element={<NoticeDetails />} />
-                <Route path="/more/inquiry" element={<Inquiry />} />
-                <Route path="/employee/attendance" element={<Attendance />} />
+                <Route path="/more/emailConsultation" element={<EmailConsultation />} />
                 <Route path="/employee/checkin" element={<CheckIn />} />
                 <Route path="/employee/checkout" element={<CheckOut />} />
                 <Route path="/employee/attendanceList" element={<AttendanceList />} />
@@ -143,6 +150,20 @@ function App() {
                 <Route path="/employee/employeeMain" element={<EmployeeMain />} />
                 <Route path="/payment" element={<Payment />} />
                 <Route path="/payment/:id" element={<PaymentDetail />} />
+                <Route path="/settlement" element={<Settlement />} />
+                <Route path="/settlement/:id" element={<SettlementDetail />} />
+                <Route path="/transaction" element={<Transaction />} />
+                <Route path="/transaction/:id" element={<TransactionDetail />} />
+                <Route path="/transaction/:id/edit" element={<TransactionDetailEdit />} />
+                <Route path="/transaction/purchase/add" element={<TransactionPurchaseAdd />} />
+                <Route path="/transaction/sale/add" element={<TransactionSaleAdd />} />
+                <Route path="/checkbox/info/:id" element={<ConsentCheckBoxInfo />} />
+                <Route path="/tax" element={<Tax />} />
+                <Route path="/tax/notApplied" element={<TaxNotApplied />} />
+                <Route path="/tax/wait" element={<TaxWait />} />
+                <Route path="/tax/fin" element={<TaxJoinFin />} />
+                <Route path="/tax/auth" element={<TaxSimpleAuth />} />
+                <Route path="/tax/fin/staff" element={<TaxJoinFinStaff />} />
             </Routes>
         </div>
     );

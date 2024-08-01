@@ -1,12 +1,12 @@
 import React from "react";
+import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
-import { useNavigate } from "react-router-dom"; // useNavigate 추가
 
 import AppBackHeader from "@/components/header/AppBackHeader";
 import AppLayout from "@/components/layout/AppLayout";
+import { IinsuranceItem } from "@/interface/insurance/insurance";
 
 import { Styles } from "@/style/Styles";
-
 import {
     ArrowIcon,
     EarthIcon,
@@ -15,7 +15,7 @@ import {
     LockIcon,
 } from "@/pages/insurance/_images/insurance";
 
-const insuranceData = [
+const insuranceData: IinsuranceItem[] = [
     {
         id: 1,
         mainIcon: FireIcon,
@@ -50,11 +50,11 @@ const InsuranceItemList = () => {
     const navigate = useNavigate();
 
     const handleItemClick = (id: number) => {
-        navigate(`/insurance/info/${id}`);
+        navigate(`/insurance/info/${id}`, { replace: true });
     };
 
     return (
-        <AppLayout props={{ header: <AppBackHeader title="대출상품" /> }}>
+        <AppLayout props={{ header: <AppBackHeader title="보험 서비스" /> }}>
             <StyledItemListWrapper>
                 <h2>선택하신 사업에 해당하는 필수가입보험</h2>
                 {insuranceData.map((item) => (

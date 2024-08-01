@@ -4,14 +4,20 @@ import ConfirmationModal from "@/components/modal/ui/ConfirmationModal";
 import useModal from "@/hooks/useModal";
 
 import { Styles } from "@/style/Styles";
+import { useNavigate } from "react-router-dom";
 
 const MeOption = () => {
     const { isOpen, openModal, closeModal } = useModal();
+    const navigate = useNavigate();
+
+    const handleDeleteAccount = () => {
+        navigate("/setting/me/deleteAccount", { replace: true });
+    };
 
     return (
         <StyledMeOption>
             <div>
-                <button>서비스탈퇴</button>
+                <button onClick={handleDeleteAccount}>서비스탈퇴</button>
                 <button onClick={openModal}>세무대리해지</button>
             </div>
             <DynamicModal open={isOpen} close={closeModal}>

@@ -1,21 +1,25 @@
-import React, { useState, useRef, ReactNode } from "react";
+import { useState, useRef, ReactNode, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
+
+import FixedButton from "@/components/button/FixedButton";
+import { IinsuranceCheck } from "@/interface/insurance/insurance";
+
 import { Styles } from "@/style/Styles";
+
 import {
     ArrowDownIcon,
     CheckedIcon,
     CheckIcon,
     ArrowUpWhiteIcon,
 } from "@/pages/insurance/_images/insurance";
-import FixedButton from "@/components/button/FixedButton";
-import { useNavigate } from "react-router-dom";
 
 type AccordionDetailsProps = {
     isOpen: boolean;
     children: ReactNode;
 };
 
-const data = [
+const data: IinsuranceCheck[] = [
     {
         id: 1,
         title: "음식점",
@@ -39,7 +43,7 @@ const data = [
     { id: 5, title: "여행", details: ["여행", "여행"] },
 ];
 
-const InsuranceCheck: React.FC = () => {
+const InsuranceCheck = () => {
     const [openItems, setOpenItems] = useState<number[]>([]);
     const [selectedItem, setSelectedItem] = useState<{
         summaryId: number | "";
@@ -69,7 +73,7 @@ const InsuranceCheck: React.FC = () => {
     const navigate = useNavigate();
 
     const handleItemClick = () => {
-        navigate(`/insurance/item`);
+        navigate(`/insurance/item`, { replace: true });
     };
 
     return (
@@ -103,16 +107,25 @@ const InsuranceCheck: React.FC = () => {
                     </AccordionDetails>
                 </ul>
             ))}
-            <FixedButton onClick={handleItemClick}>다음</FixedButton>
+            <FixedButton onClick={handleItemClick} disabled={selectedItem.summaryId === ""}>
+                다음
+            </FixedButton>
         </StyledCheckListWrapper>
     );
 };
 
 const AccordionDetails = ({ isOpen, children }: AccordionDetailsProps) => {
     const contentRef = useRef<HTMLDivElement>(null);
+    const [maxHeight, setMaxHeight] = useState<string>("0px");
+
+    useEffect(() => {
+        if (contentRef.current) {
+            setMaxHeight(isOpen ? `${contentRef.current.scrollHeight}px` : "0px");
+        }
+    }, [isOpen, children]);
 
     return (
-        <StyledDetails ref={contentRef} $isOpen={isOpen}>
+        <StyledDetails ref={contentRef} $maxHeight={maxHeight} $isOpen={isOpen}>
             <div>{children}</div>
         </StyledDetails>
     );
@@ -147,9 +160,9 @@ const StyledSummary = styled.li<{ $isOpen: boolean }>`
     }
 `;
 
-const StyledDetails = styled.div<{ $isOpen: boolean }>`
+const StyledDetails = styled.div<{ $maxHeight: string; $isOpen: boolean }>`
     overflow: hidden;
-    max-height: ${({ $isOpen }) => ($isOpen ? "1000px" : "0")};
+    max-height: ${({ $isOpen, $maxHeight }) => ($isOpen ? $maxHeight : "0")};
     transition: max-height 0.3s ease;
     margin-bottom: 0.5rem;
 

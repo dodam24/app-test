@@ -1,18 +1,14 @@
 import { useState, ChangeEvent } from "react";
-import styled from "styled-components";
+import { useNavigate } from "react-router-dom";
 
 import AppBackHeader from "@/components/header/AppBackHeader";
 import AppLayout from "@/components/layout/AppLayout";
-
 import OptionInput from "@/components/input/OptionInput";
-import { Styles } from "@/style/Styles";
 import AppBaseWrapper from "@/components/layout/AppBaseWrapper";
 import FixedButton from "@/components/button/FixedButton";
-import { useNavigate } from "react-router-dom";
-import {
-    StyledBaseInputWrapper,
-    StyledLabelRadioInputWrapper,
-} from "@/components/styles/InputStyle";
+
+import { StyledBaseInputWrapper, StyledLabelRadioInputWrapper } from "@/style/InputStyle";
+import { StyledBottomText } from "@/style/FixedStyle";
 
 const RealtyPayment = () => {
     const [value, setValue] = useState({
@@ -31,12 +27,12 @@ const RealtyPayment = () => {
     const navigate = useNavigate();
 
     const handleItemClick = () => {
-        navigate(`/realty/deposit`);
+        navigate(`/realty/deposit`, { replace: true });
     };
     return (
         <AppLayout props={{ header: <AppBackHeader title="결제하기" /> }}>
             <AppBaseWrapper title={`소소상점과 함께\n간편한 결제를 시작해 볼까요?`}>
-                <StyledInputContainer>
+                <StyledBaseInputWrapper>
                     <OptionInput
                         type="text"
                         name="username"
@@ -55,7 +51,7 @@ const RealtyPayment = () => {
                         label="결제자명"
                         id="name"
                     />
-                    <StyledSelectRadio>
+                    <StyledLabelRadioInputWrapper>
                         <label>결제항목 선택</label>
                         <div className="select_radio">
                             <label>
@@ -71,7 +67,7 @@ const RealtyPayment = () => {
                                 수리비
                             </label>
                         </div>
-                    </StyledSelectRadio>
+                    </StyledLabelRadioInputWrapper>
                     <OptionInput
                         type="text"
                         name="amount"
@@ -97,26 +93,10 @@ const RealtyPayment = () => {
                         </p>
                     </StyledBottomText>
                     <FixedButton onClick={handleItemClick}>결제하기</FixedButton>
-                </StyledInputContainer>
+                </StyledBaseInputWrapper>
             </AppBaseWrapper>
         </AppLayout>
     );
 };
 
-const StyledInputContainer = styled(StyledBaseInputWrapper)``;
-
-const StyledBottomText = styled.div`
-    position: fixed;
-    bottom: 4.7rem;
-    p {
-        margin-top: 3.1rem;
-        color: ${Styles.colors.natural60};
-        font-size: ${Styles.font.size.fontsize13};
-        font-weight: ${Styles.font.weight.regular};
-        span {
-            color: ${Styles.colors.systemError};
-        }
-    }
-`;
 export default RealtyPayment;
-const StyledSelectRadio = styled(StyledLabelRadioInputWrapper)``;

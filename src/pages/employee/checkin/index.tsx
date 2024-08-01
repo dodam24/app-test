@@ -30,7 +30,7 @@ const CheckIn = () => {
                     <p className="message">오늘도 화이팅 하세요! :)</p>
                 </div>
             </StyledAttendanceDisplay>
-            <StyledTimePicker />
+            <StyledTimePicker isCheckIn={true} />
             <StyledAttendanceTimer>
                 <p className="timer_option">※ 선택가능범위 : 현재시각 ± 10분</p>
             </StyledAttendanceTimer>
